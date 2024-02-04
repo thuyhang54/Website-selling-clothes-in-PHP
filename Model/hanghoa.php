@@ -62,7 +62,7 @@
 
     function getHangHoaId($id){
         $db = new connect();
-        $select = "SELECT DISTINCT a.mahh, a.tenhh, a.mota, b.dongia, b.giamgia, b.soluongton FROM tbl_hanghoa a, tbl_cthanghoa b WHERE a.mahh =b.idhanghoa AND a.mahh=$id";
+        $select = "SELECT DISTINCT a.mahh, a.tenhh, a.mota, b.dongia, b.giamgia, SUM(b.soluongton) as tongsoluongton FROM tbl_hanghoa a, tbl_cthanghoa b WHERE a.mahh =b.idhanghoa AND a.mahh=$id";
         $result = $db->getInstance($select);
         return $result;
     }
@@ -156,6 +156,21 @@
         $result = $db->getList($select);
         return $result;
     }
+
+   //Phương thức lấy số lượng tồn của hàng hóa
+   function getSoLuongTon($idhh ,$idmau, $idsize){
+    echo $idhh, $idmau, $idsize;
+    $db = new connect();
+    $select = "SELECT soluongton FROM tbl_cthanghoa WHERE idhanghoa = $idhh AND idmau = $idmau AND idsize = $idsize";
+    $result = $db->getInstance($select);
+    return $result;
+   }
+//    function getTongSoLuongTon($idhh ){
+//     $db = new connect();
+//     $select = "SELECT SUM(soluongton) FROM tbl_cthanghoa WHERE idhanghoa = $idhh ";
+//     $result = $db->getInstance($select);
+//     return $result;
+//    }
 
 
 

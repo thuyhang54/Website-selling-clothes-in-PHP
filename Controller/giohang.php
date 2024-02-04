@@ -41,6 +41,12 @@ switch($act){
         if(isset($_GET['id'])){
             $id =$_GET['id'];
             unset($_SESSION['cart'][$id]);
+            // Hàm để xóa sản phẩm khỏi giỏ hàng
+// function deleteProduct($key) {
+//     if (isset($_SESSION['cart'][$key])) {
+//         unset($_SESSION['cart'][$key]);
+//     }
+// }
         }
         echo '<meta http-equiv="refresh" content="0;url=index.php?action=giohang"/>';
         break;
@@ -53,30 +59,31 @@ switch($act){
             if($_SESSION['cart'][$key]['soluong']!=$value){
                 $gh =new giohang();
                 $gh-> updateHH($key,$value);
+              
             }
         }
     }
     // Trong case 'update_gh':
-// if (isset($_POST['newmausac'])) {
-//     $newmausac = $_POST['newmausac'];
+if (isset($_POST['newmausac'])) {
+    $newmausac = $_POST['newmausac'];
  
 
-//     foreach ($newmausac as $key => $color) {
-//         $color = $newmausac[$key];
-//         $gh =new giohang();
-//         $gh->updateHHMau($key, $color);
-//     }
-// }
-// if (isset($_POST['newsize'])) {
+    foreach ($newmausac as $key => $color) {
+        $color = $newmausac[$key];
+        $gh =new giohang();
+        $gh->updateHHMau($key, $color);
+    }
+}
+if (isset($_POST['newsize'])) {
 
-//     $newsize = $_POST['newsize'];
+    $newsize = $_POST['newsize'];
 
-//     foreach ($newsize as $key => $size) {
-//         $size = $newsize[$key];
-//         $gh =new giohang();
-//         $gh->updateHHSize($key, $size);
-//     }
-// }
+    foreach ($newsize as $key => $size) {
+        $size = $newsize[$key];
+        $gh =new giohang();
+        $gh->updateHHSize($key, $size);
+    }
+}
 
     echo '<meta http-equiv="refresh" content="0;url=index.php?action=giohang"/>';
     break;

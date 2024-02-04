@@ -37,3 +37,4 @@ class connect
         return  $statement;
     }
 }
+?>

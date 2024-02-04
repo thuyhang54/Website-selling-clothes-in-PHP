@@ -16,13 +16,13 @@
               <input type="text" class="form-control" name="txtusername" placeholder="Nhập vào tên người dùng">
             </div>
             <div class="form-group">
-              <input type="email" class="form-control" name="txtemail"  placeholder=" Nhập vào Email">
+              <input type="email" class="form-control" name="txtemail"  placeholder=" Địa chỉ email">
             </div>
             <div class="form-group">
-            <input class="form-control" name="txtdiachi" placeholder="Địa chỉ khách hàng" required="" autofocus="" type="text"> 
+            <input class="form-control" name="txtdiachi" placeholder="Địa chỉ" required="" autofocus="" type="text"> 
             </div>
             <div class="form-group">
-            <input class="form-control" name="txtsodt" placeholder="Số điện thoại khách hàng" required="" autofocus="" type="text">
+            <input class="form-control" name="txtsodt" placeholder="Số điện thoại " required="" autofocus="" type="text">
             </div>
             <div class="form-group">
               <input type="password" class="form-control" name="txtpass"  placeholder="Nhập vào mật khẩu">
@@ -34,8 +34,8 @@
               <button type="submit" class="btn btn-main text-center" name="submit" value="submit">Đăng ký</button>
             </div>
           </form>
-          <p class="mt-20">Bạn đã có tài khoản ?<a href="login.html"> Đăng nhập</a></p>
-          <p><a href="forget-password.html"> Quên mật khẩu?</a></p>
+          <p class="mt-20">Bạn đã có tài khoản ?	<a href="index.php?action=dangnhap">Đăng nhập</a></p>
+          <p style="font-size: 14px;"><a href="index.php?action=forget" > Quên mật khẩu ?</a></p>
         </div>
       </div>
     </div>

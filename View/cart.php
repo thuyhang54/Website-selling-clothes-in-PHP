@@ -25,7 +25,7 @@
 						<div class="product-list">
 							<?php
 							if (isset($_SESSION['cart']) && count($_SESSION['cart']) > 0) {
-							
+
 							?>
 								<form method="post" action="index.php?action=giohang&act=update_gh">
 									<table class="table">
@@ -63,44 +63,82 @@
 														</div>
 													</td>
 													<td>
-														Màu: <?php
-														 echo $item['mausac']
-														  ?>
-														<select name="newmausac[<?php echo $key; ?>]" id="">
+														Màu:
+														
+														<?php 
+														// echo $item['mausac'];
+														 ?> 
+														 <?php 
+														 $hh = new hanghoa();
+																$availableColors = $hh->getHangHoaMau($item['mahh']);
+															while ($color = $availableColors->fetch()) {
+																if($item['mausac']==$color['Idmau'])
+																echo '<label for="">'.$color['mausac'].'</label>' ;
+															}
+															 ?>
+														<select name="newmausac[<?php echo $key; ?>]" id="mausac_<?php echo $key; ?>">
 															<?php
-															// $availableColors = $hh->getHangHoaMau($item['mahh']);
-															// foreach ($availableColors as $color) {
-															// 	$selected = ($item['mausac'] == $color['mausac']) ? "selected" : "";
-															// 	echo "<option value=\"$color[mausac]\" $selected>$color[mausac]</option>";
-															// }
+															$hh = new hanghoa();
+															$availableColors = $hh->getHangHoaMau($item['mahh']);
+															while ($color = $availableColors->fetch()) {
+																$selected = ($item['mausac'] === $color['Idmau']) ? "selected" : "";
+																echo "<option value=" . $color['Idmau'] . " $selected>" . $color['mausac'] . "</option>";
+															}
 															?>
 														</select>
+														
+
 														<br>
-														Size: <?php 
-														echo $item['size'];
-														 ?>
-														<select name="newsize[<?php echo $key; ?>]">
-															<?php
-															// $availableSizes = $hh->getHangHoaSize($item['mahh']);
-															// foreach ($availableSizes as $size) {
-															// 	$selected = ($item['size'] == $size['size']) ? "selected" : "";
-															// 	echo "<option value=\"$size[size]\" $selected>$size[size]</option>";
-															// }
+														Size: 
+														<?php 
+														 $hh = new hanghoa();
+																$availableSizes = $hh->getHangHoaSize($item['mahh']);
+															while ($size = $availableSizes->fetch()) {
+																if($item['size']== $size['Idsize'])
+																echo '<label for="">'.$size['size'].'</label>' ;
+															}
+															 ?>
+														<select name="newsize[<?php echo $key; ?>]" id="size_<?php echo $key; ?>">
+														<?php
+															$hh = new hanghoa();
+															$availableSizes = $hh->getHangHoaSize($item['mahh']);
+															while ($size = $availableSizes->fetch()) {
+																$selected = ($item['size'] === $size['Idsize']) ? "selected" : "";
+																echo "<option value=" . $size['Idsize'] . " $selected>" . $size['size'] . "</option>";
+															}
 															?>
 														</select>
 													</td>
-													<td class=""><?php echo number_format($item['giamgia'] ? $item['giamgia'] : $item['dongia']); ?></td>
+													<td class="">
+														<?php
+														$hh = new hanghoa();
+														$sp = $hh->getHangHoaId($item['mahh']);
+														$giamgia = $sp['giamgia'];
+														$dongiacu = $sp['dongia'];
+														if ($giamgia) {
+															echo '<font color="red"> ' . number_format($item["dongia"]) . '<sup><u>đ</u></sup></font>
+															<strike> ' . number_format($dongiacu) . ' <sup><u>đ</u></sup></strike>';
+														} else {
+															echo '<font class="price">' . number_format($item['dongia']) . '<u><sup>đ</sup></u></font>';
+														}; ?>
+
+													</td>
 													<td>
+														<?php 
+														// $hh = new hanghoa();
+														// $slt = $hh->getSoLuongTon($item['mahh'], $item['mausac'], $item['size']);
+														// $slt = $sp['tongsoluongton'];
+														 ?>
 														<div class="quantity">
-															<button class="quantity-btn" type="button" onclick="updateQuantity(<?php echo $key; ?>, 'decrease')">-</button>
-															<input type="text" name="newqty[<?php echo $key; ?>]" id="quantity_<?php echo $key; ?>" value="<?php echo $item['soluong']; ?>" class="quantity-input">
-															<button class="quantity-btn" type="button" onclick="updateQuantity(<?php echo $key; ?>, 'increase')">+</button>
+															<button class="quantity-btn" type="button" onclick="updateQuantity(<?php echo $key; ?>, 'decrease', <?php echo $slt; ?>)">-</button>
+															<input type="text" data-index="<?php echo $key; ?>" name="newqty[<?php echo $key; ?>]" id="quantity_<?php echo $key; ?>" value="<?php echo $item['soluong']; ?>" class="quantity-input">
+															<button class="quantity-btn" data-index="<?php echo $key; ?>" data-action="increase" data-slt="<?php echo $slt; ?>" type="button" onclick="updateQuantity(<?php echo $key; ?>, 'increase',<?php echo $slt; ?>)">+</button>
 														</div>
-														<!-- <input type="text" name="newqty[<?php echo $key; ?>]" id="" value="<?php echo $item['soluong']; ?>"> -->
+													
 													</td>
 													<td><?php echo number_format($item['thanhtien']); ?> <sup><u>đ</u></sup></td>
 													<td class=""><a class="product-remove" href="index.php?action=giohang&act=giohang_xoa&id=<?php echo $key; ?>"><button type="button" class="badge ">Xóa</button></a>
-														<button type="submit" class=" badge ">Sửa</button>
+														<button type="submit" class="update_soluong badge " data-index="<?php echo $key; ?>" data-slt="<?php echo $slt; ?>">Sửa</button>
 													</td>
 												</tr>
 											<?php endforeach; ?>
@@ -137,38 +175,125 @@
 </div>
 <style>
 	.product-list .quantity {
-    display: flex;
-    align-items: center;
-}
-.quantity-btn {
-    color: #777;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-	transition: ease-in 0.2s ;
-}
-.quantity-btn:hover{
-	background-color: #928b8b;
-}
-.quantity-input {
-    width: 30px;
-    text-align: center;
-    margin: 0 5px;
-    border: 1px solid #ddd;
-    padding: 5px;
-}
+		display: flex;
+		align-items: center;
+	}
 
+	.quantity-btn {
+		font-size: 20px;
+		color: #777;
+		border: none;
+		padding: 5px 10px;
+		cursor: pointer;
+		transition: ease-in 0.2s;
+	}
+
+	/* .quantity-btn:hover{
+background-color: #928b8b;
+} */
+	.quantity-input {
+		width: 45px;
+		text-align: center;
+		margin: 0 5px;
+		border: 1px solid #ddd;
+		padding: 5px;
+	}
 </style>
 <script>
-    // Đoạn mã JavaScript để xử lý thay đổi số lượng
-    function updateQuantity(index, action) {
-        var quantityInput = document.getElementById('quantity_' + index);
-        var currentQuantity = parseInt(quantityInput.value);
+	// Đoạn mã JavaScript để xử lý thay đổi số lượng
+	function updateQuantity(index, action, soLuongTon) {
+		var quantityInput = document.getElementById('quantity_' + index);
+		var increaseButton = document.querySelector('[data-index="' + index + '"][data-action="increase"]');
+		var currentQuantity = parseInt(quantityInput.value);
 
-        if (action === 'increase') {
-            quantityInput.value = currentQuantity + 1;
-        } else if (action === 'decrease' && currentQuantity > 1) {
-            quantityInput.value = currentQuantity - 1;
-        }
-    }
+		// Kiểm tra giá trị nhập có phải là số và không được là 0
+		if (isNaN(currentQuantity) || currentQuantity < 1) {
+			currentQuantity = 1; // Đặt lại giá trị nếu không hợp lệ
+		}
+
+		if (action === 'increase' && currentQuantity <= soLuongTon) {
+
+			quantityInput.value = currentQuantity + 1;
+
+		} else if (action === 'decrease' && currentQuantity > 1) {
+			quantityInput.value = currentQuantity - 1;
+		}
+		// Kiểm tra giá trị nhập không được lớn hơn số lượng tồn kho
+		if (soLuongTon !== undefined && currentQuantity > soLuongTon) {
+			alert("Chỉ còn " + soLuongTon + " sản phẩm trong kho.");
+			currentQuantity = soLuongTon;
+			quantityInput.value = currentQuantity;
+			increaseButton.disabled = true;
+		} else {
+			increaseButton.disabled = false;
+		}
+		// Nếu số lượng giảm và sẽ về 1, hiển thị hộp thoại xác nhận
+		if (action === 'decrease' && currentQuantity === 1) {
+			var confirmed = confirm("Hành động này sẽ xóa sản phẩm khỏi giỏ hàng. Bạn có chắc chắn muốn tiếp tục?");
+			if (!confirmed) {
+				return; // Hủy bỏ nếu người dùng chọn "Hủy"
+			} else {
+				window.location.href = "index.php?action=giohang&act=giohang_xoa&id=" + index;
+			}
+		}
+
+		console.log('currentQuantity:', currentQuantity);
+		console.log('soLuongTon:', soLuongTon);
+		console.log('increaseButton.disabled:', increaseButton.disabled);
+	}
+
+
+	// Sự kiện input để ngăn nhập giá trị không hợp lệ
+	document.addEventListener('input', function(event) {
+		var target = event.target;
+
+		// Kiểm tra nếu là input số lượng
+		if (target.classList.contains('quantity-input')) {
+			var inputValue = target.value.trim();
+
+			// Kiểm tra xem giá trị nhập liệu có phải là số và là số dương
+			if (/[^0-9]/.test(inputValue)) {
+				// Nếu có ký tự đặc biệt, loại bỏ chúng
+				target.value = inputValue.replace(/[^0-9]/g, '');
+			}
+			// Kiểm tra xem giá trị có "0" đầu tiên hay không và có chiều dài >= 2
+			if (inputValue.length >= 1 && inputValue[0] === '0') {
+				// Loại bỏ "0" đầu tiên
+				target.value = inputValue.slice(1);
+			}
+
+
+			// Kiểm tra nút "+" cần bị ẩn hay không
+			var index = target.getAttribute('data-index');
+			var increaseButton = document.querySelector('[data-index="' + index + '"][data-action="increase"]');
+			var currentQuantity = parseInt(inputValue);
+			var soLuongTon = parseInt(increaseButton.getAttribute('data-slt'));
+			if (soLuongTon !== undefined && currentQuantity >= soLuongTon) {
+				increaseButton.disabled = true;
+			} else {
+				increaseButton.disabled = false;
+			}
+		}
+
+	});
+
+	document.addEventListener('click', function(event) {
+		var target = event.target;
+		// Kiểm tra nếu là nút sửa 
+		if (target.classList.contains('update_soluong') && target.innerText === 'Sửa') {
+			var index = target.getAttribute('data-index');
+			var quantityInput = document.getElementById('quantity_' + index);
+			var currentQuantity = parseInt(quantityInput.value);
+			var soLuongTon = parseInt(target.getAttribute('data-slt'));
+
+			// Kiểm tra giá trị nhập không được lớn hơn số lượng tồn kho
+			if (soLuongTon !== undefined && currentQuantity > soLuongTon) {
+				alert("Chỉ còn " + soLuongTon + " sản phẩm trong kho.");
+				quantityInput.value = soLuongTon;
+			}
+
+			console.log(currentQuantity);
+
+		}
+	});
 </script>

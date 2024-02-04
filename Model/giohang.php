@@ -33,6 +33,8 @@ class giohang{
                 $flag =true;
                 $soluong += $item['soluong']; 
                 $this->updateHH($key,$soluong);
+                $this->updateHHMau($key, $item['mausac']);
+                $this->updateHHSize($key,$item['size']);
             }
         }
         if($flag==false){
@@ -80,20 +82,20 @@ class giohang{
 
     }
     // Trong class giohang
-// function updateHHMau($index, $mausac) {
-//     if (isset($_SESSION['cart'][$index])) {
-//         $_SESSION['cart'][$index]['mausac'] = $mausac;
+function updateHHMau($index, $mausac) {
+    if (isset($_SESSION['cart'][$index])) {
+        $_SESSION['cart'][$index]['mausac'] = $mausac;
        
-//     }
+    }
   
-// }
-// function updateHHSize($index, $size) {
-//     if (isset($_SESSION['cart'][$index])) {
+}
+function updateHHSize($index, $size) {
+    if (isset($_SESSION['cart'][$index])) {
 
-//         $_SESSION['cart'][$index]['size'] = $size;
-//     }
+        $_SESSION['cart'][$index]['size'] = $size;
+    }
   
-// }
+}
 
 }
 ?>

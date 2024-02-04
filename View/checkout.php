@@ -35,9 +35,9 @@
                            <?php
 
                            if (isset($_SESSION['masohd'])) {
-                              // echo '<pre>';
-                              // print_r($_SESSION);
-                              // echo '</pre>';
+                              echo '<pre>';
+                              print_r($_SESSION);
+                              echo '</pre>';
                               $mshd = $_SESSION['masohd'] ;
 
                               $hd = new hoadon();
@@ -122,7 +122,24 @@
                            </a>
                            <div class="media-body">
                               <h4 class="media-heading"><a href="product-single.html"><?php echo $setsp['tenhh'] ?></a></h4>
-                              <p>Phân loại: <?php echo $setsp['mausac']; ?> - <?php echo $setsp['size'] ?></p>
+                             <p> Phân loại: </p>
+                             <?php 
+                                 $hh = new hanghoa();
+                                    $availableColors = $hh->getHangHoaMau($item['mahh']);
+                                 while ($color = $availableColors->fetch()) {
+                                    if($item['mausac']==$color['Idmau'])
+                                    echo '<label for="">'.$color['mausac'].'</label>' ;
+                                 }
+                                    ?>-
+                                 <?php 
+                                 $hh = new hanghoa();
+                                    $availableSizes = $hh->getHangHoaSize($item['mahh']);
+                                 while ($size = $availableSizes->fetch()) {
+                                    if($item['size']== $size['Idsize'])
+                                    echo '<label for="">'.$size['size'].'</label>' ;
+                                 }
+												;?>
+                              <!-- <p>Phân loại: <?php echo $setsp['idmau']; ?> - <?php echo $setsp['idsize'] ?></p> -->
                               <p class="price"><?php echo $setsp['soluongmua']; ?> x <?php echo $setsp['giamgia'] ? $setsp['giamgia'] : $setsp['dongia']; ?><sup><u>đ</u></sup></p>
                               <span class="remove">Remove</span>
                            </div>

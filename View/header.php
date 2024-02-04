@@ -1,3 +1,4 @@
+
 <!-- Start Top Header Bar -->
 <section class="top-header">
 	<div class="container">
@@ -40,60 +41,79 @@
 				<!-- Cart -->
 				<ul class="top-menu text-right list-inline">
 					<li class="dropdown cart-nav dropdown-slide" style="position: relative;">
-						<a href="" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+						<a href="index.php?action=giohang" class="dropdown-toggle"  data-hover="dropdown">
 							<i class="tf-ion-android-cart" style="font-size: 22px; "></i>
-							<span class="badge" style="font-size:12px; line-height: 12px; background-color: red; position: absolute; top: -39%; left: 27%;">
-							<?php echo count($_SESSION['cart']); ?></span>Cart
+							<span class="badge" style="font-size:12px; line-height: 12px; background-color: red; position: absolute; top: -49%; right: -10%;">
+								<?php echo isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0 ?>
+							</span>
 						</a>
-						<div class="dropdown-menu cart-dropdown">
+
+						<?php if (isset($_SESSION['cart']) ){ ?>
+						<div class="dropdown-menu cart-dropdown"  style="min-width: 350px;">
+						<?php foreach ($_SESSION['cart'] as $key => $item) : ?>
 							<!-- Cart Item -->
 							<div class="media">
 								<a class="pull-left" href="#!">
-									<img class="media-object" src="Content/images/shop/cart/cart-1.jpg" alt="image" />
+								<img width="150px" src="Content/images/shop/products/<?php echo $item['hinh']; ?>" alt="imgProduct" />
 								</a>
 								<div class="media-body">
-									<h4 class="media-heading"><a href="#!">Ladies Bag</a></h4>
+									<h4 class="media-heading"><a href="#!"><?php echo $item['tenhh']; ?></a></h4>
 									<div class="cart-price">
-										<span>1 x</span>
-										<span>1250.00</span>
+										<span><?php echo $item['soluong']; ?> x</span>
+										<span><?php
+											$hh = new hanghoa();
+											$sp = $hh->getHangHoaId($item['mahh']);
+											$giamgia = $sp['giamgia'];
+											$dongiacu = $sp['dongia'];
+											if ($giamgia) {
+												echo '<font color="red"> ' . number_format($item["dongia"]) . '<sup><u>đ</u></sup></font>
+												<strike> ' . number_format($dongiacu) . ' <sup><u>đ</u></sup></strike>';
+											} else {
+												echo '<font class="price">' . number_format($item['dongia']) . '<u><sup>đ</sup></u></font>';
+											}; ?></span>
 									</div>
-									<h5><strong>$1200</strong></h5>
+									<h5><strong><?php echo number_format($item['thanhtien']); ?> <sup><u>đ</u></sup></strong></h5>
 								</div>
-								<a href="#!" class="remove"><i class="tf-ion-close"></i></a>
+								<a href="index.php?action=giohang&act=giohang_xoa&id=<?php echo $key; ?>" class="remove"><i class="tf-ion-close"></i></a>
 							</div><!-- / Cart Item -->
-							<!-- Cart Item -->
-							<!-- <div class="media">
-								<a class="pull-left" href="#!">
-									<img class="media-object" src="Content/images/shop/cart/cart-2.jpg" alt="image" />
-								</a>
-								<div class="media-body">
-									<h4 class="media-heading"><a href="#!">Ladies Bag</a></h4>
-									<div class="cart-price">
-										<span>1 x</span>
-										<span>1250.00</span>
-									</div>
-									<h5><strong>$1200</strong></h5>
-								</div>
-								<a href="#!" class="remove"><i class="tf-ion-close"></i></a>
-							</div> -->
-							<!-- / Cart Item -->
+							<?php endforeach; ?>
+							
 
-							<!-- <div class="cart-summary">
-								<span>Total</span>
-								<span class="total-price">$1799.00</span>
-							</div> -->
-							<ul class="text-center cart-buttons">
+							<div class="cart-summary">
+								<span>Tổng tiền:</span>
+								<span class="total-price">
+									<strong>
+									<?php
+									$gh = new giohang();
+									$total = $gh->getSubTotal();
+									echo "$total <sup><u>đ</u></sup>";
+									?>
+								</strong></span>
+							</div>
+							<ul class="text-center cart-buttons" >
 								<li><a href="index.php?action=giohang" class="btn btn-small">View Cart</a></li>
 								<li><a href="checkout.html" class="btn btn-small btn-solid-border">Checkout</a></li>
 							</ul>
 						</div>
-
+						<?php 
+						}else{
+							echo '
+							<div class="dropdown-menu cart-dropdown" style="min-width: 350px;">
+								<div class="media-body">
+								<div class="text-center" style="padding: 20px;">
+								<img style="min-width: 50%;" src="Content/images/empty/emptyCart.png" alt="imgProduct" />
+								<p style=" margin-top: 8px;">Chưa có sản phẩm</p>
+								</div>
+								</div>
+							</div>';
+						};?>
+					
 					</li><!-- / Cart -->
 
 					<!-- Search -->
-					<li class="dropdown search dropdown-slide">
+					<li class="dropdown search dropdown-slide" >
 						<a href="#!" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"><i class="tf-ion-ios-search-strong" style="font-size: 22px;"></i> Search</a>
-						<ul class="dropdown-menu search-dropdown">
+						<ul class="dropdown-menu search-dropdown" style="min-width: 100%;">
 							<li>
 								<form method="post" action="index.php?action=sanpham&act=timkiem"><input type="search" name="txtsearch" class="form-control" placeholder="Search...">
 
@@ -102,22 +122,27 @@
 						</ul>
 					</li><!-- / Search -->
 
+					
 					<?php
-					if (isset($_SESSION['makh']) && $_SESSION['makh'] != "") {
-						echo '<li><a href="index.php?act=userinfo" class="nav-link " style="color:red; font-size:25px">' . $_SESSION['tenkh'] . '</a></li>
-						<li><a href="index.php?action=dangnhap&act=dangxuat">Đăng xuất</a></li>
-						';
+					if (isset($_SESSION['makh'])) {
+						echo '<li class="dropdown dropdown-slide" >
+						<a href="#!" class="dropdown-toggle " data-toggle="dropdown" data-hover="dropdown" style="color:red; font-size:16px;"><i class="tf-ion-android-person"></i> ' . $_SESSION['tenkh'] . '</a>
+						<ul class="dropdown-menu " style="min-width: 50%;">
+							<li style="margin-top:12px;"><a href=""  >Tài khoản của tôi</a></li>
+							<li style="margin-top:12px;"><a href="" >Đơn mua</a></li>
+							<li style="margin:12px 0px;"><a href="index.php?action=dangnhap&act=dangxuat" >Đăng xuất <i class="tf-ion-log-out"></i></a></li>
+						</ul> 
+						</li>';
+						// echo '<li><a href="index.php?act=userinfo" class="nav-link " style="color:red; font-size:16px"><i class="tf-ion-android-person"></i> ' . $_SESSION['tenkh'] . '</a></li>
+						// <li><a href="index.php?action=dangnhap&act=dangxuat">Đăng xuất </a></li>';
 					} else {
-					?>
-
-						<li>
+						echo '<li><a href="index.php?action=dangnhap" style="color:red; font-size:16px;" class="nav-link"><i class="tf-ion-log-in"></i> Đăng Nhập</a></li>';
+					};?>
+					
+						<!-- <li>
 							<a href="index.php?action=dangky" class="nav-link">Đăng Ký</a>
-						</li>
-						<li>
-							<a href="index.php?action=dangnhap" class="nav-link">Đăng Nhập</a>
-						</li>
-					<?php } ?>
-
+						</li> -->	
+					
 				</ul><!-- / .nav .navbar-nav .navbar-right -->
 			</div>
 		</div>
@@ -148,17 +173,16 @@
 					while ($menuItem = $result->fetch()) :
 						// tao mot mang pages(luu tru duong dan) de thuc hien anh xa (mapping) voi $set['tenmenu]
 						$pages = array(
-							'Trang Chủ' => 'index.php',
-							'Cửa Hàng' => 'index.php?action=shop-sidebar',
-							'Blog' => 'index.php?action=blog-left-sidebar',
-							'Giới Thiệu' => 'index.php?action=about',
-							'Liên Hệ' => 'index.php?action=contact'
+							'1' => 'index.php?action=sale',
+							'2' => 'index.php?action=shop',
+							'3' => 'index.php?action=blog-left-sidebar',
+							
 						);
 
 					?>
 						<!-- Elements -->
 						<li class="dropdown full-width dropdown-slide <?php echo ($menuItem['idmenu'] == 2) ? 'dropdown' : ''; ?>">
-							<a href="<?php echo $pages[$menuItem['tenmenu']]; ?>" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="350" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $menuItem['tenmenu']; ?> <span class=""></span></a>
+							<a href="<?php echo $pages[$menuItem['idmenu']]; ?>" class="dropdown-toggle"  data-hover="dropdown" data-delay="350" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $menuItem['tenmenu']; ?> <span class=""></span></a>
 							<?php if ($menuItem['idmenu'] == 2) : ?>
 								<div class="dropdown-menu">
 									<div class="row">
@@ -172,7 +196,7 @@
 													$idcon = $loai->getLoaiSanPham($menuItem['idmenu']);
 													while ($menuItem = $idcon->fetch()) {
 														echo '<li class="dropdown-header"><a href="index.php?action=shop-sidebar&act=shop-sidebar&id=' . $menuItem['id_loai'] . '">' . $menuItem['tenloai'] . '</a></li>
-										<li role="separator" class="divider"></li>';
+															<li role="separator" class="divider"></li>';
 													};
 												}; ?>
 											</ul>

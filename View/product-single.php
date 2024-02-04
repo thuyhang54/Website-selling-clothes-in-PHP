@@ -34,7 +34,7 @@
 				</ol>
 			</div>
 		</div>
-		<form id="form1" action="index.php?action=giohang&act=giohang_action" method="post"  onsubmit="return validateForm()">
+		<form id="form1" action="index.php?action=giohang&act=giohang_action" method="post" onsubmit="return validateForm()">
 			<div class="row mt-20">
 
 				<div class="col-md-5">
@@ -52,8 +52,8 @@
 									$mota = $sp['mota'];
 									$dongia = $sp['dongia'];
 									$giamgia = $sp['giamgia'];
-									$soluongton = $sp['soluongton'];
-									echo $soluongton;
+									$soluongton = $sp['tongsoluongton'];
+									// echo $soluongton;
 									?>
 									<?php
 									$hinh = $hh->getHangHoaHinh($id);
@@ -120,14 +120,30 @@
 							echo '<h3 class="price">' . number_format($dongia) . ' <u><sup>đ</sup></u></h3>';
 						}
 						?>
-						<p>Kho: <?php echo $soluongton; ?></p>
+						<!-- Hiển thị số lượng tồn -->
+
+						<p>Kho: <?php
+						if(isset($soluongton)){
+							echo $soluongton;
+						}
+						//  if(isset($soluongton) && isset($sp['idmau']) && isset($sp['idsize']) ){
+						// 	$hh= new hanghoa();
+						// 	$soluongton = $hh->getSoLuongTon($id,$sp['idmau'],$sp['idsize']);
+						// 	echo $soluongton;
+						// 	echo $sp['idmau'];
+						// }
+						
+
+						  ?></p>
+						<p id="soluongton"></p>
+						
 
 						<p class="product-description mt-20">
 							<?php echo $mota; ?>
 						</p>
 						<div class="color-swatches">
 							<span>Màu sắc:</span>
-							<input type="hidden" name="mymausac" id="mymausac" value="" />
+							<input type="text" name="mymausac" id="mymausac" value="" />
 							<small class="error-message" id="colorEmpty"></small>
 
 							<?php
@@ -139,18 +155,11 @@
 								</button>
 							<?php endwhile; ?>
 
-							<!-- <select name="mymausac" class="form-control" style="width:150px;">
-                                <?php
-								$mau = $hh->getHangHoaMau($id);
-								while ($set = $mau->fetch()) :
-								?>
-                                <option value="<?php echo $set['Idmau']; ?>"><?php echo $set['mausac']; ?></option>
-                                <?php endwhile; ?>
-                            </select> -->
+							
 
 						</div>
 						<div class="product-size">
-							<input type="hidden" name="mysize" id="mysize" value="" />
+							<input type="text" name="mysize" id="mysize" value="" />
 							<small class="error-message" id="sizeEmpty"></small>
 
 							<span>Kích cỡ:</span>
@@ -165,7 +174,7 @@
 						<div class="product-quantity">
 							<span>Số lượng:</span>
 							<div class="product-quantity-slider">
-								<input type="number" id="product-quantity" name="product-quantity" value="1" disabled>
+								<input type="text" value="1" id="product-quantity" name="product-quantity" disabled>
 							</div>
 							<div id="message" style="display: none;">
 								<p>Không đủ số lượng hàng. Chỉ còn <?php echo $soluongton; ?> sản phẩm.</p>
@@ -187,10 +196,10 @@
 			</div>
 		</form>
 		<div class="alertPart">
-    <div class="alert alert-success alert-common" role="alert" id="successAlert" style="display: none;" >
-        <i class="tf-ion-thumbsup"></i><span>Chúc mừng!</span> Bạn đã thêm thành công vào giỏ hàng
-    </div>
-</div>
+			<div class="alert alert-success alert-common" role="alert" id="successAlert" style="display: none;">
+				<i class="tf-ion-thumbsup"></i><span>Chúc mừng!</span> Bạn đã thêm thành công vào giỏ hàng
+			</div>
+		</div>
 	</div>
 
 	</div>
@@ -379,17 +388,19 @@ while ($set = $result->fetch()) {
 	}
 </style>
 <script type="text/javascript">
+	
+	// document.addEventListener("DOMContentLoaded", function() {
 
-document.addEventListener("DOMContentLoaded", function(){
-
-	checkSoluong();
-});
+	// 	checkSoluong();
+	// });
 
 	function chonSize(a) {
 		document.getElementById("mysize").value = a;
 		// Thêm đường viền cho nút được nhấp
 		var selectedButton = document.querySelector('.product-size .btn[value="' + a + '"]');
 		selectedButton.classList.add('selected');
+
+		updateStock();
 		document.querySelectorAll('.product-size .btn').forEach((button) => {
 			if (button !== selectedButton) {
 				button.classList.remove('selected');
@@ -403,6 +414,9 @@ document.addEventListener("DOMContentLoaded", function(){
 		document.getElementById("mymausac").value = a;
 		var selectedButton = document.querySelector('.color-swatches .btn[value="' + a + '"]');
 		selectedButton.classList.add('selected');
+
+		// Gửi yêu cầu AJAX để lấy số lượng tồn kho dựa trên màu sắc và kích cỡ
+		updateStock();
 		// Xóa viền từ tất cả các nút (ngoại trừ nút đã chọn)
 		document.querySelectorAll('.color-swatches .btn').forEach((button) => {
 			if (button !== selectedButton) {
@@ -412,10 +426,32 @@ document.addEventListener("DOMContentLoaded", function(){
 
 		validateForm();
 	}
+	
+	function updateStock() {
+		var id_hang_hoa = <?php echo $id; ?>; // Truyền id hàng hóa từ PHP vào JavaScript
+		console.log(id_hang_hoa);
+    var mausac = document.getElementById("mymausac").value;
+	console.log(mausac);
+    var size = document.getElementById("mysize").value;
+	console.log(size);
+
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var soluongton = xhr.responseText;
+			console.log(soluongton);
+            document.getElementById("soluongton").innerHTML = "Kho: " + soluongton;
+            checkSoluong();
+        }
+    };
+	//http://localhost:8080/PHP2/MyProject-update/index.php?action=sanpham&act=sanphamchitiet&iddm=4&id=28
+    xhr.open("GET", "/PHP2/MyProject-update/Controller/soluongton.php?idhh=" + id_hang_hoa + "&idmau=" + mausac + "&idsize=" + size, true);
+    xhr.send();
+}
 
 
 	function validateForm() {
-		
+
 		var chonmau = document.getElementById("mymausac").value;
 		var chonsize = document.getElementById("mysize").value;
 		var addToCartBtn = document.getElementById("addToCartBtn");
@@ -427,26 +463,26 @@ document.addEventListener("DOMContentLoaded", function(){
 			return false;
 		}
 		soluong.disabled = false;
-		if(checkSoluong()){
+		if (checkSoluong()) {
 			addToCartBtn.disabled = false;
-		
+
 			// showSuccessAlert();
-		}else{
+		} else {
 			addToCartBtn.disabled = false;
 		}
-		
+
 		return true;
 	}
 
 	function checkSoluong() {
-    var soluongInput = document.getElementById("product-quantity");
-    var addToCartBtn = document.getElementById("addToCartBtn");
-    var message = document.getElementById('message');
-    var soluongconlai = document.getElementById('remaining-stock-quantity');
-    var soluongton = <?php echo $soluongton; ?>;
+		var soluongInput = document.getElementById("product-quantity");
+		var addToCartBtn = document.getElementById("addToCartBtn");
+		var message = document.getElementById('message');
+		var soluongconlai = document.getElementById('remaining-stock-quantity');
+		var soluongton = <?php echo $soluongton; ?>;
 
 		// Kiểm tra số lượng tồn kho trước khi kiểm tra số lượng mua
-		if (soluongton === 0){
+		if (soluongton === 0) {
 			addToCartBtn.disabled = true;
 			addToCartBtn.innerHTML = 'Hết hàng'
 			message.style.display = "block";
@@ -455,31 +491,32 @@ document.addEventListener("DOMContentLoaded", function(){
 			return;
 		}
 
-    soluongInput.addEventListener('change', function() {
-		var soluongmua = parseInt(soluongInput.value);
-        if (isNaN(soluongmua) || soluongmua <= 0) {
-            soluongmua = 1;
-            soluongInput.value = soluongmua;
-        }
+		
 
-        if (soluongmua > soluongton) {
-            addToCartBtn.disabled = true;
-            message.style.display = 'block';
-            // soluongconlai.innerHTML = soluongton;
-        } else {
-            addToCartBtn.disabled = false;
-            message.style.display = 'none';
-			message.innerHTML = '';
-            // soluongconlai.innerHTML = '';
-        }
-    });
-}
-//  function showSuccessAlert(){
-// 	var successAlert = document.getElementById('successAlert');
-// 	successAlert.style.display = "block";
-// 	setTimeout(function () {
-// 		successAlert.style.display = "none";
-// 	},3000);
-//  }
+		soluongInput.addEventListener('input',function() {
+			var soluongmua = parseInt(soluongInput.value);
+			if (isNaN(soluongmua) || soluongmua <= 0) {
+				soluongmua = 1;
+				soluongInput.value = soluongmua;
+			}
 
+			if (soluongmua > soluongton) {
+				addToCartBtn.disabled = true;
+				message.style.display = 'block';
+				// soluongconlai.innerHTML = soluongton;
+			} else {
+				addToCartBtn.disabled = false;
+				message.style.display = 'none';
+				message.innerHTML = '';
+				soluongconlai.innerHTML = '';
+			}
+		});
+	}
+	//  function showSuccessAlert(){
+	// 	var successAlert = document.getElementById('successAlert');
+	// 	successAlert.style.display = "block";
+	// 	setTimeout(function () {
+	// 		successAlert.style.display = "none";
+	// 	},3000);
+	//  }
 </script>

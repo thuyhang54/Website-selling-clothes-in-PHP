@@ -24,11 +24,13 @@ switch ($act) {
                 // Đăng nhập thành công, thiết lập session
                 $_SESSION['makh'] = $logkh['makh'];
                 $_SESSION['tenkh'] = $logkh['tenkh'];
-                echo '<script>alert("Đăng nhập thành công");</script>';
+              
                 echo '<meta http-equiv="refresh" content="0;url=index.php?action=home"/>';
+                echo '<script> showSuccessToast(); </script>';
             } else {
-                echo '<script>alert("Tài khoản hoặc mật khẩu sai");</script>';
+                // echo '<script>alert("Tài khoản hoặc mật khẩu sai");</script>';
                 echo '<meta http-equiv="refresh" content="0;url=index.php?action=dangnhap"/>';
+                echo '<script>showWarningToast();</script>';
             }
 
         }
@@ -38,5 +40,9 @@ switch ($act) {
             unset($_SESSION['tenkh']);
             echo '<meta http-equiv="refresh" content="0;url=index.php?action=home"/>';
         break;
+
 }
 ?>
+<script>
+  
+</script>

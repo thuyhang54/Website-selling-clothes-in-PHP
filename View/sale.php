@@ -11,26 +11,26 @@ $current_page = isset($_GET['page'])? (int)$_GET['page']:1;
 ?>
 <!-- /PHÂN TRANG -->
 <?php
-$ac = 1;
-if (isset($_GET['action'])) {
-	// echo "hello";
-	if (isset($_GET['act']) && $_GET['act'] == 'sanphamkhuyenmai') {
-		$ac = 2;
-	}else if(isset($_GET['act']) && $_GET['act']=='timkiem'){
-		$ac =3;
-	}
-	 else {
-		$ac = 1;
-	}
-}
+// $ac = 1;
+// if (isset($_GET['action'])) {
+// 	// echo "hello";
+// 	if (isset($_GET['act']) && $_GET['act'] == 'sanphamkhuyenmai') {
+// 		$ac = 2;
+// 	}else if(isset($_GET['act']) && $_GET['act']=='timkiem'){
+// 		$ac =3;
+// 	}
+// 	 else {
+// 		$ac = 1;
+// 	}
+// }
 ?>
 <?php
-$id_loai="";
-// Kiểm tra xem có tham số id_loai trong URL không
-if (isset($_GET['id']) && ($_GET['id'] > 0)) {
-	$id_loai = $_GET['id'];
-	//echo $id_loai;
-}
+// $id_loai="";
+// // Kiểm tra xem có tham số id_loai trong URL không
+// if (isset($_GET['id']) && ($_GET['id'] > 0)) {
+// 	$id_loai = $_GET['id'];
+// 	//echo $id_loai;
+// }
 ?>
 
 <section class="products section bg-gray">
@@ -38,38 +38,33 @@ if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 	<div class="row">
 		<div class="title text-center">
 			<?php
-			if ($ac == 1) {
+			// if ($ac == 1) {
 
-				echo '<h2>Tất cả sản phẩm</h2>';
-			}
-			if ($ac == 2) {
-				echo '<h2>Tất cả sản phẩm ưu đãi</h2>';
-			}
-			if($ac == 3){
-				echo '<h2>Sản phẩm tìm kiếm</h2>';
-			}
+			// 	echo '<h2>Tất cả sản phẩm</h2>';
+			// }
+			// if ($ac == 2) {
+			// 	echo '<h2>Tất cả sản phẩm ưu đãi</h2>';
+			// }
+			// if($ac == 3){
+			// 	echo '<h2>Sản phẩm tìm kiếm</h2>';
+			// }
 			?>
-
+		<h2>Tất cả </h2>
 		</div>
 	</div>
 	<div class="row">
 		<?php $hh = new hanghoa();
 
-		if ($ac == 1) {
-			// Nếu không có id_loai thì lấy tất cả sản phẩm
-			$result = ($id_loai) ? $hh->getHangHoaTheoDanhMuc($id_loai,$startPage, $limit) : $hh->getHangHoaAllPage($startPage, $limit);
-			// $result = $hh->getHangHoaAllPage($startPage,$limit);
-		}
-		if ($ac==2) {
+		
 
-			$result = ($id_loai) ? $hh->getHangHoaTheoDanhMuc($id_loai,$startPage, $limit) :  $hh->getHangHoaAllSalePage($startPage, $limit);
-		}
-		if($ac==3){
-			if(isset($_POST['txtsearch'])){
-				$tk=$_POST['txtsearch'];
-				$result=$hh->searchProduct($tk,$startPage,$limit);
-			}
-		}
+			$result =  $hh->getHangHoaAllSalePage($startPage, $limit);
+		
+		// if($ac==3){
+		// 	if(isset($_POST['txtsearch'])){
+		// 		$tk=$_POST['txtsearch'];
+		// 		$result=$hh->searchProduct($tk,$startPage,$limit);
+		// 	}
+		// }
 		// else{
 		// 	$result = $hh->getHangHoaTheoDanhMuc($id_loai,$startPage, $limit);	
 		// }
@@ -78,7 +73,7 @@ if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 			<div class="col-md-4">
 				<div class="product-item">
 					<div class="product-thumb">
-						<?php if ($ac==2) {echo '<span class="bage">Sale</span>';}?>
+						<span class="bage">Sale</span>
 						<img class="img-responsive" src="Content/images/shop/products/<?php echo $set['hinh']; ?>" alt="product-img" />
 						<div class="preview-meta">
 							<ul>
@@ -99,15 +94,12 @@ if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 					<div class="product-content">
 						<h4><a href="index.php?action=sanpham&act=sanphamchitiet&iddm=<?php echo $set['id_loai'];?>&id=<?php echo $set['mahh']; ?>"><?php echo $set['tenhh'] . " - " . $set['mausac']; ?></a></h4>
 						<?php
-						if ($ac == 1) {
-							echo '<p class="price">' . number_format($set['dongia']) . ' <u><sup>đ</sup></u></p>';
-						}
-						if ($ac == 2) {
+						
 							echo '  <h5 class="my-4 font-weight-bold" style="color: red;">
 							<font color="red">' . number_format($set['giamgia']) . '<sup><u>đ</u></sup></font>
 							<strike>' . number_format($set['dongia']) . '<sup><u>đ</u></sup></strike>
 							</h5>';
-						}
+					
 						?>
 
 					</div>
@@ -115,21 +107,15 @@ if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 			</div>
 		<?php }; ?>
 	</div>
-	<?php
-	if ($ac==1 || $ac==2):
-	 ?>
+	
 		<!-- HIỂN THỊ SỐ TRANG (Pagination) -->
 	<div class="text-center">
 			<ul class="pagination post-pagination">
 				<?php
-				$baseUrl = "index.php?action=";
-				if ($ac == 1) {
-					$baseUrl .= "sanpham&act=sanpham&id={$id_loai}";
-				} elseif ($ac == 2) {
-					$baseUrl .= "sanpham&act=sanphamkhuyenmai";
-				} else {
-					$baseUrl .= "sanpham";
-				}
+				$baseUrl = "index.php?action=sale";
+				
+					
+				
 				if($current_page >1 && $totalPages >1){
 					echo '<li><a href="'.$baseUrl.'&page='.($current_page-1).'">Prev</a></li>';
 				}
@@ -142,7 +128,7 @@ if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 				?>
 			</ul>
 		</div>
-		<?php endif; ?>
+	
 </div>
 </section>
 
@@ -195,4 +181,4 @@ if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 			</div>
 		<?php }; ?>
 		<!-- /.modal -->
-	
+

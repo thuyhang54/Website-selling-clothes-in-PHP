@@ -53,9 +53,7 @@
 
 
   // e-commerce touchspin
-  $('input[name=\'product-quantity\']').TouchSpin({
-    min:1,
-  });
+  $('input[name=\'product-quantity\']').TouchSpin();
 
 
   // Video Lightbox
@@ -76,7 +74,7 @@
 
   //Hero Slider
   $('.hero-slider').slick({
-    // autoplay: true,
+    autoplay: true,
     infinite: true,
     arrows: true,
     prevArrow: '<button type=\'button\' class=\'heroSliderArrow prevArrow tf-ion-chevron-left\'></button>',

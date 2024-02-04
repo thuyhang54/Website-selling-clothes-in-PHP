@@ -1,4 +1,5 @@
 <?php
+
 session_start(); // Bắt đầu phiên session
 ob_start();
 set_include_path(get_include_path().PATH_SEPARATOR.'Model/');
@@ -43,12 +44,19 @@ include_once "Model/class.phpmailer.php";
   
   <!-- Main Stylesheet -->
   <link rel="stylesheet" href="Content/css/style.css">
+  
+  <!-- <link rel="stylesheet" href="Content/plugins/toast/toastMess.css"> -->
+
+
+  
 
 </head>
 
 <body id="body">
+
     <?php include_once 'View/header.php'; ?>
-	
+  
+  
         <?php
         $ctrl ="home";
         if(isset($_GET['action'])){
@@ -86,4 +94,7 @@ include_once "Model/class.phpmailer.php";
 
     <!-- Main Js File -->
     <script src="Content/js/script.js"></script>
+
+    <!-- toastJS -->
+    <script src="Content/plugins/toast/toastMess.js"></script>
   </html>

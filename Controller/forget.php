@@ -68,7 +68,7 @@
                 }
                 else
                 {
-                    echo '<script> alert("Địa chỉ mail ko tồn tại");</script>';
+                    echo '<script> alert("Địa chỉ email không tồn tại. Vui lòng nhập lại địa chỉ email");</script>';
                     include "./View/forget-password.php";
                 }
                 
