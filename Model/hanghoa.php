@@ -14,6 +14,25 @@
         $result = $db->getList($select);
         return $result;
     }
+    function getHangHoaMuaNhieu(){
+        $db = new connect();
+        $select = "SELECT hh.mahh, hh.tenhh, hh.soluotxem, hh.id_loai, cthh.*, SUM(cthd.soluongmua) as soluotmua 
+        FROM tbl_cthoadon cthd 
+        JOIN tbl_cthanghoa cthh ON cthd.mahh = cthh.idhanghoa 
+        JOIN tbl_hanghoa hh ON cthh.idhanghoa = hh.mahh GROUP BY hh.mahh ORDER BY `soluotmua` DESC LIMIT 6";
+        $result = $db->getList($select);
+        return $result;
+    }
+    function tongLuotMua($id){
+        $db = new connect();
+        $select = " SELECT SUM(a.soluongmua) AS daban
+        FROM tbl_cthoadon a, tbl_cthanghoa b 
+        WHERE a.mahh = b.idhanghoa AND a.mahh=$id";
+        $result = $db->getInstance($select);
+        return $result[0];
+       
+    }
+  
     function getHangHoaAll(){
         $db = new connect();
         $select = "SELECT a.mahh, a.tenhh, a.soluotxem, a.mota,a.id_loai, b.hinh, b.dongia,b.giamgia, c.mausac FROM tbl_hanghoa a, tbl_cthanghoa b, tbl_mausac c
@@ -40,6 +59,15 @@
         $db = new connect();
         $select = "SELECT  a.mahh, a.tenhh, a.soluotxem,a.id_loai, b.hinh, b.dongia, c.mausac FROM tbl_hanghoa a, tbl_cthanghoa b, tbl_mausac c
         WHERE  a.mahh = b.idhanghoa AND b.idmau=c.Idmau AND b.giamgia=0 GROUP BY a.mahh ORDER BY a.mahh DESC LIMIT ".$start.",".$limit;
+        $result = $db->getList($select);
+        return $result;
+    }
+    function getHangHoaAllNoiBat($start,$limit){
+        $db = new connect();
+        $select = "SELECT hh.mahh, hh.tenhh, hh.soluotxem, hh.id_loai, cthh.*, COUNT(cthd.mahh) as soluotmua 
+        FROM tbl_cthoadon cthd 
+        JOIN tbl_cthanghoa cthh ON cthd.mahh = cthh.idhanghoa 
+        JOIN tbl_hanghoa hh ON cthh.idhanghoa = hh.mahh GROUP BY hh.mahh ORDER BY `soluotmua` DESC LIMIT ".$start.",".$limit;
         $result = $db->getList($select);
         return $result;
     }

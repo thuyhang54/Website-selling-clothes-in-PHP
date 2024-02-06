@@ -80,7 +80,7 @@
     prevArrow: '<button type=\'button\' class=\'heroSliderArrow prevArrow tf-ion-chevron-left\'></button>',
     nextArrow: '<button type=\'button\' class=\'heroSliderArrow nextArrow tf-ion-chevron-right\'></button>',
     dots: true,
-    autoplaySpeed: 7000,
+    autoplaySpeed: 3000,
     pauseOnFocus: false,
     pauseOnHover: false
   });

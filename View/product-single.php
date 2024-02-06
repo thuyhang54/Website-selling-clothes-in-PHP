@@ -1,30 +1,24 @@
+<!-- PHÂN TRANG -->
 <?php
-// $colorEmpty=$sizeEmpty="";
-// $isDisabled = true;
-// if(isset($_POST['submit'])){
-// 	$chon_mau = $_POST["mymausac"];
-// 	$chon_size = $_POST["mysize"];
+$id = isset($_GET['id']) ? $_GET['id'] : 0;
+$hh = new binhluan();
+$count = $hh->CountAllComment($id);
+$limit = 3;
+$page = new page();
+$totalPages = $page->findPage($count, $limit);
+$startPage = $page->findStart($limit);
+$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
-// 	if(empty($chon_mau)){
-// 		$colorEmpty ="Vui lòng chọn màu";
-// 	};
-// 	if(empty($chon_size)){
-// 		$sizeEmpty ="Vui lòng chọn kích cỡ";
-// 	};
-// 	if (!empty($chon_mau) && !empty($chon_size)) {
-// 		 $isDisabled = false;
-// 		echo "<script>alert('Thêm vào giỏ hàng thành công');</script>";
-//     }
-// }
 ?>
+<!-- /PHÂN TRANG -->
 <section class="single-product">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6">
 				<ol class="breadcrumb">
-					<li><a href="index.html">Home</a></li>
-					<li><a href="shop.html">Shop</a></li>
-					<li class="active">Single Product</li>
+					<li><a href="index.php?action=home">Trang chủ</a></li>
+					<li><a href="index.php?action=shop">Nữ</a></li>
+					<li class="active">Chi tiết</li>
 				</ol>
 			</div>
 			<div class="col-md-6">
@@ -110,6 +104,20 @@
 							?>
 
 						</div>
+						<div class="" style="display:inline-flex;">
+							<?php
+							$bl = new binhluan();
+							$countComment = $bl->CountAllComment($id);
+							echo '<p ><a data-toggle="tab" href="#reviews" aria-expanded="false">' . $countComment . '</a> Đánh giá</p>';
+							?>
+							<?php
+							$bl = new hanghoa();
+							$sumSold = $bl->tongLuotMua($id);
+							echo '<p style="border-left: 1px solid #dedede; margin:0 12px; padding:0 12px; height:100%; "><a data-toggle="tab" href="#reviews" aria-expanded="false">' . $sumSold . '</a> Đã Bán</p>';
+							?>
+						</div>
+
+
 						<?php
 						if ($giamgia) {
 							echo '  <h5 class="my-4 font-weight-bold" style="color: red;">
@@ -121,26 +129,17 @@
 						}
 						?>
 						<!-- Hiển thị số lượng tồn -->
-
-						<p>Kho: <?php
-						if(isset($soluongton)){
-							echo $soluongton;
-						}
-						//  if(isset($soluongton) && isset($sp['idmau']) && isset($sp['idsize']) ){
-						// 	$hh= new hanghoa();
-						// 	$soluongton = $hh->getSoLuongTon($id,$sp['idmau'],$sp['idsize']);
-						// 	echo $soluongton;
-						// 	echo $sp['idmau'];
-						// }
-						
-
-						  ?></p>
-						<p id="soluongton"></p>
-						
-
+						<p>Kho: <?php echo isset($soluongton) ? $soluongton : 0 ?></p>
 						<p class="product-description mt-20">
 							<?php echo $mota; ?>
 						</p>
+						<div class="product-category">
+							<span>Vận chuyển:</span>
+							<ul>
+								<li><a href="product-single.html">Products</a></li>
+								<li><a href="product-single.html">Soap</a></li>
+							</ul>
+						</div>
 						<div class="color-swatches">
 							<span>Màu sắc:</span>
 							<input type="text" name="mymausac" id="mymausac" value="" />
@@ -155,20 +154,21 @@
 								</button>
 							<?php endwhile; ?>
 
-							
+
 
 						</div>
 						<div class="product-size">
 							<input type="text" name="mysize" id="mysize" value="" />
 							<small class="error-message" id="sizeEmpty"></small>
 
-							<span>Kích cỡ:</span>
+							<span>Size:</span>
 							<?php
 							$size = $hh->getHangHoaSize($id);
 							while ($set = $size->fetch()) :
 							?>
 								<button type="button" onclick="chonSize(<?php echo $set['Idsize']; ?>)" name="" class="btn" style="margin-left: 12px;" value="<?php echo $set['Idsize']; ?>"> <?php echo $set['size']; ?></button>
 							<?php endwhile; ?>
+							<p id="soluongton" style="margin-left:12px;"></p>
 
 						</div>
 						<div class="product-quantity">
@@ -181,13 +181,7 @@
 								<!-- <p id="remaining-stock-quantity"></p> -->
 							</div>
 						</div>
-						<div class="product-category">
-							<span>Categories:</span>
-							<ul>
-								<li><a href="product-single.html">Products</a></li>
-								<li><a href="product-single.html">Soap</a></li>
-							</ul>
-						</div>
+
 
 					</div>
 
@@ -203,65 +197,90 @@
 	</div>
 
 	</div>
+	<div class="container">
+		<div class="row ">
+			<div class="col-xs-12">
+				<div class="tabCommon mt-20">
+					<ul class="nav nav-tabs">
+						<li class="active"><a data-toggle="tab" href="#details" aria-expanded="true">Details</a></li>
+						<?php
+						if (isset($_SESSION['makh'])) {
+							$bl = new binhluan();
+							$countComment = $bl->CountAllComment($id);
+							echo '<li class="" ><a data-toggle="tab" href="#reviews" aria-expanded="false" style ="color:red">Reviews (' . $countComment . ')</a></li>';
+						}
 
-	<div class="row">
-		<div class="col-xs-12">
-			<div class="tabCommon mt-20">
-				<ul class="nav nav-tabs">
-					<li class="active"><a data-toggle="tab" href="#details" aria-expanded="true">Details</a></li>
-					<li class=""><a data-toggle="tab" href="#reviews" aria-expanded="false">Reviews (3)</a></li>
-				</ul>
-				<div class="tab-content patternbg">
-					<div id="details" class="tab-pane fade active in">
-						<?php echo $mota; ?>
-					</div>
-					<div id="reviews" class="tab-pane fade">
-						<div class="post-comments">
-							<?php
-							if (isset($_SESSION['makh'])) :
-							?>
-								<form action="index.php?action=binhluan" method="post">
-									<div class="row">
-										<input type="hidden" name="txtmahh" value="<?php echo $id; ?>" />
-										<!-- <img src="./Content/imagetourdien/people.png" width="100px" height="100px" />-->
-										<textarea class="input-field" type="text" name="comment" rows="2" cols="70" id="comment" placeholder="Thêm bình luận"></textarea>
-										<input type="submit" name="submit" class="btn " id="submitButton" value="Bình Luận" />
-									</div>
-								</form>
-							<?php endif; ?>
-							<ul class="media-list comments-list m-bot-50 clearlist">
-								<!-- Comment Item start-->
+						?>
+					</ul>
+					<div class="tab-content patternbg">
+						<div id="details" class="tab-pane fade active in">
+							<?php echo $mota; ?>
+						</div>
+						<div id="reviews" class="tab-pane fade">
+							<div class="post-comments">
 								<?php
-								$bl = new binhluan();
-								$noidung = $bl->showAllComment($id);
-								while ($set = $noidung->fetch()) :
+								if (isset($_SESSION['makh'])) :
 								?>
-									<li class="media">
-
-										<a class="pull-left" href="#!">
-											<img class="media-object comment-avatar" src="Content/images/blog/OIP.jpg" alt="" width="50" height="50" />
-										</a>
-
-										<div class="media-body">
-											<div class="comment-info">
-												<h4 class="comment-author">
-													<a href="#!"> <?php echo '<b>' . $set['username'] . '</b>'; ?></a>
-
-												</h4>
-												<time datetime="2013-04-06T13:53">July 02, 2015, at 11:34</time>
-												<a class="comment-button" href="#!"><i class="tf-ion-chatbubbles"></i>Reply</a>
-											</div>
-
-											<p>
-												<?php echo  $set['content']; ?>
-											</p>
+									<form action="index.php?action=binhluan" method="post">
+										<div class="row">
+											<input type="hidden" name="txtmahh" value="<?php echo $id; ?>" />
+											<!-- <img src="./Content/imagetourdien/people.png" width="100px" height="100px" />-->
+											<textarea class="input-field" type="text" name="comment" rows="2" cols="70" id="comment" placeholder="Thêm bình luận"></textarea>
+											<input type="submit" name="submit" class="btn " id="submitButton" value="Bình Luận" />
 										</div>
+									</form>
 
-									</li>
-								<?php endwhile; ?>
-								<!-- End Comment Item -->
+									<ul class="media-list comments-list m-bot-50 clearlist">
+										<!-- Comment Item start-->
+										<?php
+										$bl = new binhluan();
+										$noidung = $bl->showAllComment($id, $startPage, $limit);
+										while ($set = $noidung->fetch()) :
+										?>
+											<li class="media">
 
-							</ul>
+												<a class="pull-left" href="#!">
+													<img class="media-object comment-avatar" src="Content/images/blog/OIP.jpg" alt="" width="50" height="50" />
+												</a>
+
+												<div class="media-body">
+													<div class="comment-info">
+														<h4 class="comment-author">
+															<a href="#!"> <?php echo '<b>' . $set['username'] . '</b>'; ?></a>
+
+														</h4>
+														<time datetime="2013-04-06T13:53">July 02, 2015, at 11:34</time>
+														<a class="comment-button" href="#!"><i class="tf-ion-chatbubbles"></i>Reply</a>
+													</div>
+
+													<p>
+														<?php echo  $set['content']; ?>
+													</p>
+												</div>
+
+											</li>
+										<?php endwhile; ?>
+										<!-- End Comment Item -->
+										<!-- HIỂN THỊ SỐ TRANG (Pagination) -->
+										<div class="text-center">
+											<ul class="pagination post-pagination">
+												<?php
+												$baseUrl = "index.php?action=sanpham&act=sanphamchitiet&iddm=4&id=28&reviews";
+												if ($current_page > 1 && $totalPages > 1) {
+													echo '<li style="font-size: 18px;"><a href="' . $baseUrl . '&page=' . ($current_page - 1) . '"><i class="tf-ion-ios-arrow-left"></i></a></li>';
+												}
+												for ($i = 1; $i <= $totalPages; $i++) {
+													echo '<li style="font-size: 18px;" ' . ($i == $current_page ? 'class="active"' : '') . '><a href="' . $baseUrl . '&page=' . $i . '">' . $i . '</a></li>';
+												}
+												if ($current_page < $totalPages && $totalPages > 1) {
+													echo '<li style="font-size: 18px;"><a href="' . $baseUrl . '&page=' . ($current_page + 1) . '"><i class="tf-ion-ios-arrow-right"></i></a></li>';
+												}
+												?>
+											</ul>
+										</div>
+									</ul>
+								<?php endif; ?>
+							</div>
 
 						</div>
 					</div>
@@ -359,7 +378,7 @@ while ($set = $result->fetch()) {
 							<div class="product-short-details">
 								<h2 class="product-title"><?php echo $set['tenhh']; ?></h2>
 								<?php
-								if ($set['giamgia']) {
+								if ($set['giamgia'] > 0) {
 									echo '	<h5 class="my-4 font-weight-bold" style="color: red;">
 										<font color="red">' . number_format($set['giamgia']) . '<sup><u>đ</u></sup></font>
 										<strike> ' . number_format($set['dongia']) . '<sup><u>đ</u></sup></strike>
@@ -388,7 +407,6 @@ while ($set = $result->fetch()) {
 	}
 </style>
 <script type="text/javascript">
-	
 	// document.addEventListener("DOMContentLoaded", function() {
 
 	// 	checkSoluong();
@@ -399,14 +417,19 @@ while ($set = $result->fetch()) {
 		// Thêm đường viền cho nút được nhấp
 		var selectedButton = document.querySelector('.product-size .btn[value="' + a + '"]');
 		selectedButton.classList.add('selected');
+		if (document.getElementById("mymausac").value !== "") {
+			updateStock();
+		}
 
-		updateStock();
 		document.querySelectorAll('.product-size .btn').forEach((button) => {
 			if (button !== selectedButton) {
 				button.classList.remove('selected');
 			}
 		});
-		validateForm();
+		// Gọi validateForm() chỉ khi cả màu sắc và size đều đã được chọn
+		if (document.getElementById("mymausac").value !== "") {
+			validateForm();
+		}
 
 	}
 
@@ -416,7 +439,9 @@ while ($set = $result->fetch()) {
 		selectedButton.classList.add('selected');
 
 		// Gửi yêu cầu AJAX để lấy số lượng tồn kho dựa trên màu sắc và kích cỡ
-		updateStock();
+		if (document.getElementById("mysize").value !== "") {
+			updateStock();
+		}
 		// Xóa viền từ tất cả các nút (ngoại trừ nút đã chọn)
 		document.querySelectorAll('.color-swatches .btn').forEach((button) => {
 			if (button !== selectedButton) {
@@ -424,30 +449,32 @@ while ($set = $result->fetch()) {
 			}
 		});
 
-		validateForm();
+		// Gọi validateForm() chỉ khi cả màu sắc và size đều đã được chọn
+		if (document.getElementById("mysize").value !== "") {
+			validateForm();
+		}
 	}
-	
+
 	function updateStock() {
 		var id_hang_hoa = <?php echo $id; ?>; // Truyền id hàng hóa từ PHP vào JavaScript
 		console.log(id_hang_hoa);
-    var mausac = document.getElementById("mymausac").value;
-	console.log(mausac);
-    var size = document.getElementById("mysize").value;
-	console.log(size);
+		var mausac = document.getElementById("mymausac").value;
+		console.log(mausac);
+		var size = document.getElementById("mysize").value;
+		console.log(size);
 
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            var soluongton = xhr.responseText;
-			console.log(soluongton);
-            document.getElementById("soluongton").innerHTML = "Kho: " + soluongton;
-            checkSoluong();
-        }
-    };
-	//http://localhost:8080/PHP2/MyProject-update/index.php?action=sanpham&act=sanphamchitiet&iddm=4&id=28
-    xhr.open("GET", "/PHP2/MyProject-update/Controller/soluongton.php?idhh=" + id_hang_hoa + "&idmau=" + mausac + "&idsize=" + size, true);
-    xhr.send();
-}
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				var soluongton = xhr.responseText;
+				document.getElementById("soluongton").innerHTML = soluongton > 0 ? `${soluongton} sản phẩm có sẵn` : 'Hết hàng';
+				checkSoluong();
+			}
+		};
+		//http://localhost:8080/PHP2/MyProject-update/index.php?action=sanpham&act=sanphamchitiet&iddm=4&id=28
+		xhr.open("GET", "Controller/soluongton.php?idhh=" + id_hang_hoa + "&idmau=" + mausac + "&idsize=" + size, true);
+		xhr.send();
+	}
 
 
 	function validateForm() {
@@ -491,9 +518,9 @@ while ($set = $result->fetch()) {
 			return;
 		}
 
-		
 
-		soluongInput.addEventListener('input',function() {
+
+		soluongInput.addEventListener('input', function() {
 			var soluongmua = parseInt(soluongInput.value);
 			if (isNaN(soluongmua) || soluongmua <= 0) {
 				soluongmua = 1;

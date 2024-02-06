@@ -150,10 +150,10 @@
 </section><!-- End Top Header Bar -->
 
 <!-- Main Menu Section -->
-<section class="menu">
-	<nav class="navbar navigation">
+<section class="menu" >
+	<nav class="navbar navigation" >
 		<div class="container">
-			<div class="navbar-header">
+			<div class="navbar-header" >
 				<h2 class="menu-title">Main Menu</h2>
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
 					<span class="sr-only">Toggle navigation</span>
@@ -162,11 +162,12 @@
 					<span class="icon-bar"></span>
 				</button>
 
-			</div><!-- / .navbar-header -->
+			</div>
+			<!-- / .navbar-header -->
 
 			<!-- Navbar Links -->
 			<div id="navbar" class="navbar-collapse collapse text-center">
-				<ul class="nav navbar-nav">
+				<ul class="nav navbar-nav" >
 					<?php
 					$menu = new menu();
 					$result = $menu->getMenu();
@@ -182,7 +183,7 @@
 					?>
 						<!-- Elements -->
 						<li class="dropdown full-width dropdown-slide <?php echo ($menuItem['idmenu'] == 2) ? 'dropdown' : ''; ?>">
-							<a href="<?php echo $pages[$menuItem['idmenu']]; ?>" class="dropdown-toggle"  data-hover="dropdown" data-delay="350" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $menuItem['tenmenu']; ?> <span class=""></span></a>
+							<a href="<?php echo $pages[$menuItem['idmenu']]; ?>" style="font-size: 18px;" class="dropdown-toggle"  data-hover="dropdown" data-delay="350" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $menuItem['tenmenu']; ?> </a>
 							<?php if ($menuItem['idmenu'] == 2) : ?>
 								<div class="dropdown-menu">
 									<div class="row">

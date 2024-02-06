@@ -151,6 +151,64 @@ include_once "hero-slider.php";
 		</div>
 	</div>
 </section>
+<section class="products section bg-gray">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="title text-center">
+				<h2>Được mua nhiều nhất</h2>
+			</div>
+		</div>
+		<div class="row">
+			<?php $hh = new hanghoa();
+			$result = $hh->getHangHoaMuaNhieu();
+			while ($set = $result->fetch()) {
+			?>
+				<div class="col-md-4">
+					<div class="product-item">
+						<div class="product-thumb">
+							<?php if ($set['giamgia']>0) echo '<span class="bage">Sale</span>'; ?>
+							<img class="img-responsive" src="Content/images/shop/products/<?php echo $set['hinh']; ?>" alt="product-img" />
+							<div class="preview-meta">
+								<ul>
+									<li>
+										<span data-toggle="modal" data-target="#product-modal-<?php echo $set['mahh']; ?>">
+											<i class="tf-ion-ios-search-strong"></i>
+										</span>
+									</li>
+									<li>
+										<a href="#!"><i class="tf-ion-ios-heart"><?php echo $set['soluotxem']; ?></i></a>
+									</li>
+									<li>
+										<a href="index.php?action=sanpham&act=sanphamchitiet&iddm=<?php echo $set['id_loai']; ?>&id=<?php echo $set['mahh']; ?>"><i class="tf-ion-android-cart"></i></a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="product-content">
+							<h4><a href="index.php?action=sanpham&act=sanphamchitiet&iddm=<?php echo $set['id_loai']; ?>&id=<?php echo $set['mahh']; ?>"><?php echo $set['tenhh'] . "<p> lượt mua: "  . $set['soluotmua']. " </p>"; ?></a></h4>
+							<?php if ($set['giamgia']>0){
+								 echo '<h5 class="my-4 font-weight-bold" style="color: red;">
+								 <font color="red">'.number_format($set['giamgia']).'<sup><u>đ</u></sup></font>
+								 <strike>'.number_format($set['dongia']).'<sup><u>đ</u></sup></strike>
+							 		</h5>';
+								}else{
+									echo '<p class="price">'.number_format($set['dongia']).' <u><sup>đ</sup></u></p>';
+								};?>
+							
+						</div>
+					</div>
+				</div>
+			<?php }; ?>
+			<div class="row text-center ">
+				<div class="col-md-12">
+					<button class="btn">
+						<a href="index.php?action=sanpham&act=sanphamnoibat">Xem thêm</a>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
 
 <!-- Modal -->
 <?php
@@ -200,3 +258,30 @@ while ($set = $result->fetch()) {
 	</div>
 <?php }; ?>
 <!-- /.modal -->
+
+	<!--
+Start Call To Action
+==================================== -->
+<?php if (!isset($_SESSION['makh'])) : ?>
+<section class="call-to-action bg-gray section">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 text-center">
+				<div class="title">
+					<h2>Đăng ký nhận thông báo mới nhất từ AVIATO</h2>
+					<p>Cập nhật nhanh nhất các chương trình ưu đãi và thông tin sản phẩm mới </p>
+				</div>
+				<div class="col-lg-6 col-md-offset-3">
+				    <div class="input-group subscription-form">
+				      <!-- <input type="text" class="form-control" placeholder="Nhập vào địa chỉ email của"> -->
+				      <span class="input-group-btn">
+				        <a href="index.php?action=dangky" class="btn btn-main" >Đăng ký ngay!</a>
+				      </span>
+				    </div><!-- /input-group -->
+			  </div><!-- /.col-lg-6 -->
+
+			</div>
+		</div> 		<!-- End row -->
+	</div>   	<!-- End container -->
+</section>   <!-- End section -->
+<?php endif ?>

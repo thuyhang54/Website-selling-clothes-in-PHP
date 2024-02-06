@@ -1,9 +1,7 @@
-<?php 
-include_once "hero-slider.php";
- ?>
+
 
 <!-- Category -->
-<section class="product-category section">
+<!-- <section class="product-category section">
 	<div class="">
 		<div class="row">
 			<div class="col-md-12">
@@ -44,8 +42,29 @@ include_once "hero-slider.php";
 			</div>
 		</div>
 	</div>
-</section>
+</section> -->
+<div class="row">
+<div class="col-md-3">
+			<div class=" widget">
 
+				<div id="categoryForm">
+					<?php
+
+					$loai = new loaisanpham();
+					$dsLoai = $loai->getAllCategories();
+					while ($row = $dsLoai->fetch()) {
+					?>
+						<div class="form-check">
+							<a href="index.php?action=shop-sidebar&act=shop-sidebar&id=<?php echo  $row['id_loai'] ?>" class="category-link" data-category-id="<?php echo $row['id_loai']; ?>">
+								<?php echo $row['tenloai']; ?>
+							</a>
+						</div>
+					<?php }; ?>
+				</div>
+
+
+			</div>
+</div>
 <!-- Products -->
 <section class="products section bg-gray">
 	<div class="container-fluid">
@@ -53,13 +72,26 @@ include_once "hero-slider.php";
 			<div class="title text-center">
 				<h2>Sản phẩm mới nhất</h2>
 			</div>
+			
 		</div>
 		<div class="row">
+		<div class="col-md-6">
+				<div class="category-box">
+					<a href="index.php?action=sanpham">
+						<img src="Content/images/shop/category/category-1.jpg" alt="" />
+						<div class="content">
+							<h3>Xu hướng thời trang</h3>
+							<p>Cập nhật liên tục áo quần trendy</p>
+						</div>
+					</a>	
+				</div>
+			</div>
+			
 			<?php $hh = new hanghoa();
 			$result = $hh->getHangHoaNew();
 			while ($set = $result->fetch()) {
 			?>
-				<div class="col-md-4">
+				<div class="col-md-3 ">
 					<div class="product-item">
 						<div class="product-thumb">
 							<img class="img-responsive" src="Content/images/shop/products/<?php echo $set['hinh']; ?>" alt="product-img" />
@@ -98,6 +130,26 @@ include_once "hero-slider.php";
 			</div>
 		</div>
 </section>
+
+<section class="product-category section">
+	<div class="">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="category-box">
+					<a href="index.php?action=sale">
+						<img src="Content/images/shop/category/category-1.webp" alt="" />
+						<!-- <div class="content">
+							<h3>Clothes Sales</h3>
+							<p>Shop New Season Clothing</p>
+						</div> -->
+					</a>	
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</section>
+
 <section class="products section bg-gray">
 	<div class="container-fluid">
 		<div class="row">
@@ -203,19 +255,20 @@ while ($set = $result->fetch()) {
 	<!--
 Start Call To Action
 ==================================== -->
+<?php if (!isset($_SESSION['makh'])) : ?>
 <section class="call-to-action bg-gray section">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12 text-center">
 				<div class="title">
-					<h2>SUBSCRIBE TO NEWSLETTER</h2>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat, <br> facilis numquam impedit ut sequi. Minus facilis vitae excepturi sit laboriosam.</p>
+					<h2>Đăng ký nhận thông báo mới nhất từ AVIATO</h2>
+					<p>Cập nhật nhanh nhất các chương trình ưu đãi và thông tin sản phẩm mới </p>
 				</div>
 				<div class="col-lg-6 col-md-offset-3">
 				    <div class="input-group subscription-form">
-				      <input type="text" class="form-control" placeholder="Enter Your Email Address">
+				      <!-- <input type="text" class="form-control" placeholder="Nhập vào địa chỉ email của"> -->
 				      <span class="input-group-btn">
-				        <button class="btn btn-main" type="button">Subscribe Now!</button>
+				        <a href="index.php?action=dangky" class="btn btn-main" >Đăng ký ngay!</a>
 				      </span>
 				    </div><!-- /input-group -->
 			  </div><!-- /.col-lg-6 -->
@@ -224,20 +277,7 @@ Start Call To Action
 		</div> 		<!-- End row -->
 	</div>   	<!-- End container -->
 </section>   <!-- End section -->
+<?php endif ?>
 
-<section class="section instagram-feed">
-	<div class="container">
-		<div class="row">
-			<div class="title">
-				<h2>View us on instagram</h2>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-12">
-				<div class="instagram-slider" id="instafeed" data-accessToken="IGQVJYeUk4YWNIY1h4OWZANeS1wRHZARdjJ5QmdueXN2RFR6NF9iYUtfcGp1NmpxZA3RTbnU1MXpDNVBHTzZAMOFlxcGlkVHBKdjhqSnUybERhNWdQSE5hVmtXT013MEhOQVJJRGJBRURn"></div>
-			</div>
-		</div>
-	</div>
-</section>
 
 

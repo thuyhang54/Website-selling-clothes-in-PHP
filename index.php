@@ -44,6 +44,7 @@ include_once "Model/class.phpmailer.php";
   
   <!-- Main Stylesheet -->
   <link rel="stylesheet" href="Content/css/style.css">
+  <link rel="stylesheet" href="Content/css/menu.css">
   
   <!-- <link rel="stylesheet" href="Content/plugins/toast/toastMess.css"> -->
 

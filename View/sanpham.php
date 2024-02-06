@@ -16,6 +16,8 @@ if (isset($_GET['action'])) {
 	// echo "hello";
 	if (isset($_GET['act']) && $_GET['act'] == 'sanphamkhuyenmai') {
 		$ac = 2;
+	}else if(isset($_GET['act']) && $_GET['act'] == 'sanphamnoibat'){
+		$ac= 4;
 	}else if(isset($_GET['act']) && $_GET['act']=='timkiem'){
 		$ac =3;
 	}
@@ -48,6 +50,9 @@ if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 			if($ac == 3){
 				echo '<h2>Sản phẩm tìm kiếm</h2>';
 			}
+			if($ac == 4) {
+				echo '<h2> Sản phẩm nổi bật</h2>';
+			}
 			?>
 
 		</div>
@@ -70,6 +75,9 @@ if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 				$result=$hh->searchProduct($tk,$startPage,$limit);
 			}
 		}
+		if($ac ==4){
+			$result = $hh->getHangHoaAllNoiBat($startPage,$limit);
+		}
 		// else{
 		// 	$result = $hh->getHangHoaTheoDanhMuc($id_loai,$startPage, $limit);	
 		// }
@@ -78,7 +86,7 @@ if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 			<div class="col-md-4">
 				<div class="product-item">
 					<div class="product-thumb">
-						<?php if ($ac==2) {echo '<span class="bage">Sale</span>';}?>
+						<?php if ($ac==2 ||( $ac==4 && $set['giamgia']>0)) {echo '<span class="bage">Sale</span>';}?>
 						<img class="img-responsive" src="Content/images/shop/products/<?php echo $set['hinh']; ?>" alt="product-img" />
 						<div class="preview-meta">
 							<ul>
@@ -97,7 +105,13 @@ if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 						</div>
 					</div>
 					<div class="product-content">
-						<h4><a href="index.php?action=sanpham&act=sanphamchitiet&iddm=<?php echo $set['id_loai'];?>&id=<?php echo $set['mahh']; ?>"><?php echo $set['tenhh'] . " - " . $set['mausac']; ?></a></h4>
+						<h4><a href="index.php?action=sanpham&act=sanphamchitiet&iddm=<?php echo $set['id_loai'];?>&id=<?php echo $set['mahh']; ?>">
+						<?php 
+						if($ac == 4){
+							echo $set['tenhh'] .  "<p> lượt mua: "  . $set['soluotmua']. " </p>"; 
+						}else{
+							echo $set['tenhh'] . " - " . $set['mausac'];
+						}; ?></a></h4>
 						<?php
 						if ($ac == 1) {
 							echo '<p class="price">' . number_format($set['dongia']) . ' <u><sup>đ</sup></u></p>';
@@ -108,7 +122,14 @@ if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 							<strike>' . number_format($set['dongia']) . '<sup><u>đ</u></sup></strike>
 							</h5>';
 						}
-						?>
+						if ($ac == 4 && $set['giamgia']>0){
+							echo '<h5 class="my-4 font-weight-bold" style="color: red;">
+							<font color="red">'.number_format($set['giamgia']).'<sup><u>đ</u></sup></font>
+							<strike>'.number_format($set['dongia']).'<sup><u>đ</u></sup></strike>
+								</h5>';
+						   }else{
+							   echo '<p class="price">'.number_format($set['dongia']).' <u><sup>đ</sup></u></p>';
+						   };?>
 
 					</div>
 				</div>
@@ -116,7 +137,7 @@ if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 		<?php }; ?>
 	</div>
 	<?php
-	if ($ac==1 || $ac==2):
+	if ($ac==1 || $ac==2 || $ac==4):
 	 ?>
 		<!-- HIỂN THỊ SỐ TRANG (Pagination) -->
 	<div class="text-center">
@@ -127,13 +148,15 @@ if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 					$baseUrl .= "sanpham&act=sanpham&id={$id_loai}";
 				} elseif ($ac == 2) {
 					$baseUrl .= "sanpham&act=sanphamkhuyenmai";
-				} else {
+				}elseif($ac==4){
+					$baseUrl .= "sanpham&act=sanphamnoibat";
+				}else {
 					$baseUrl .= "sanpham";
 				}
 				if($current_page >1 && $totalPages >1){
 					echo '<li><a href="'.$baseUrl.'&page='.($current_page-1).'">Prev</a></li>';
 				}
-				for ($i=1; $i < $totalPages; $i++) { 
+				for ($i=1; $i <= $totalPages; $i++) { 
 					echo '<li ' .($i == $current_page ? 'class="active"': ''). '><a href="'.$baseUrl.'&page='.$i.'">'.$i.'</a></li>';
 				}
 				if ($current_page < $totalPages && $totalPages > 1) {

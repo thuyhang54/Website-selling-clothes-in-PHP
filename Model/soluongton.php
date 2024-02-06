@@ -5,10 +5,8 @@ class soluongton {
    public function getSoLuongTon($idhh, $idmau, $idsize) {
       $db = new connect();
       $select = "SELECT soluongton FROM tbl_cthanghoa WHERE idhanghoa = $idhh AND idmau = $idmau AND idsize = $idsize";
-      echo $select;
       $result = $db->getInstance($select);
-      echo $result;
-      return $result;
+      return $result ? $result[0] : 0;
    }
 }
 ?>
