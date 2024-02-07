@@ -125,10 +125,10 @@
 													</td>
 													<td>
 														<?php 
-														// $hh = new hanghoa();
-														// $slt = $hh->getSoLuongTon($item['mahh'], $item['mausac'], $item['size']);
-														// $slt = $sp['tongsoluongton'];
-														 ?>
+														$hh = new hanghoa();
+														$slt = $hh->getSoLuongTon($item['mahh'], $item['mausac'], $item['size']);
+														echo $slt;
+														?>
 														<div class="quantity">
 															<button class="quantity-btn" type="button" onclick="updateQuantity(<?php echo $key; ?>, 'decrease', <?php echo $slt; ?>)">-</button>
 															<input type="text" data-index="<?php echo $key; ?>" name="newqty[<?php echo $key; ?>]" id="quantity_<?php echo $key; ?>" value="<?php echo $item['soluong']; ?>" class="quantity-input">
@@ -241,6 +241,7 @@ background-color: #928b8b;
 		console.log('soLuongTon:', soLuongTon);
 		console.log('increaseButton.disabled:', increaseButton.disabled);
 	}
+
 
 
 	// Sự kiện input để ngăn nhập giá trị không hợp lệ

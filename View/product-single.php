@@ -94,29 +94,29 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 					<input type="text" name="mahh" id="mahh" value="<?php echo $id; ?>">
 					<div class="single-product-details">
 						<h2><?php echo $tenhh; ?></h2>
+						<div class="" style="display:inline-flex;">
 						<div class="rating">
 							<div class="pstar" data-prid="<?= $id ?>"></div>
 							<?php
-							// for ($i=1; $i <=5 ; $i++) { 
-							// 	$img = $i <= $rating ? "star": "star-blank";
-							// 	echo "<img src='Content/images/star/$img.png' alt='' style='width:20px; cursor:pointer;'data-set='$i' />" ;
-							// }
+							$rating ='';
+							for ($i=1; $i <=5 ; $i++) { 
+								$img = $i <= $rating ? "star": "star-blank";
+								echo "<img src='Content/images/star/$img.png' alt='' style='width:20px; cursor:pointer;'data-set='$i' />" ;
+							}
 							?>
 
 						</div>
-						<div class="" style="display:inline-flex;">
 							<?php
 							$bl = new binhluan();
 							$countComment = $bl->CountAllComment($id);
-							echo '<p ><a data-toggle="tab" href="#reviews" aria-expanded="false">' . $countComment . '</a> Đánh giá</p>';
+							echo '<p style="border-left: 1px solid #dedede; margin-left:12px; padding:0 12px; height:100%;><a data-toggle="tab" href="#reviews" aria-expanded="false">' . $countComment . '</a> Đánh giá</p>';
 							?>
 							<?php
 							$bl = new hanghoa();
 							$sumSold = $bl->tongLuotMua($id);
-							echo '<p style="border-left: 1px solid #dedede; margin:0 12px; padding:0 12px; height:100%; "><a data-toggle="tab" href="#reviews" aria-expanded="false">' . $sumSold . '</a> Đã Bán</p>';
+							echo '<p style="border-left: 1px solid #dedede; margin-left:12px; padding:0 12px; height:100%; "><a data-toggle="tab" href="#reviews" aria-expanded="false">' . $sumSold . '</a> Đã Bán</p>';
 							?>
 						</div>
-
 
 						<?php
 						if ($giamgia) {
@@ -174,11 +174,7 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 						<div class="product-quantity">
 							<span>Số lượng:</span>
 							<div class="product-quantity-slider">
-								<input type="text" value="1" id="product-quantity" name="product-quantity" disabled>
-							</div>
-							<div id="message" style="display: none;">
-								<p>Không đủ số lượng hàng. Chỉ còn <?php echo $soluongton; ?> sản phẩm.</p>
-								<!-- <p id="remaining-stock-quantity"></p> -->
+								<input type="text"   data-bts-min="1" data-bts-max="100000" id="product-quantity" class="quantity-input"  name="product-quantity" >
 							</div>
 						</div>
 
@@ -204,11 +200,11 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 					<ul class="nav nav-tabs">
 						<li class="active"><a data-toggle="tab" href="#details" aria-expanded="true">Details</a></li>
 						<?php
-						if (isset($_SESSION['makh'])) {
+						// if (isset($_SESSION['makh'])) {
 							$bl = new binhluan();
 							$countComment = $bl->CountAllComment($id);
 							echo '<li class="" ><a data-toggle="tab" href="#reviews" aria-expanded="false" style ="color:red">Reviews (' . $countComment . ')</a></li>';
-						}
+						// }
 
 						?>
 					</ul>
@@ -229,7 +225,7 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 											<input type="submit" name="submit" class="btn " id="submitButton" value="Bình Luận" />
 										</div>
 									</form>
-
+									<?php endif; ?>
 									<ul class="media-list comments-list m-bot-50 clearlist">
 										<!-- Comment Item start-->
 										<?php
@@ -279,7 +275,7 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 											</ul>
 										</div>
 									</ul>
-								<?php endif; ?>
+								
 							</div>
 
 						</div>
@@ -408,10 +404,10 @@ while ($set = $result->fetch()) {
 </style>
 <script type="text/javascript">
 	// document.addEventListener("DOMContentLoaded", function() {
-
 	// 	checkSoluong();
 	// });
-
+// Khai báo biến toàn cục để lưu số lượng tồn
+var soLuongTon = 0;
 	function chonSize(a) {
 		document.getElementById("mysize").value = a;
 		// Thêm đường viền cho nút được nhấp
@@ -466,7 +462,8 @@ while ($set = $result->fetch()) {
 		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4 && xhr.status == 200) {
-				var soluongton = xhr.responseText;
+				var soluongton = parseInt(xhr.responseText);
+				soLuongTon = soluongton;  // Cập nhật giá trị toàn cục
 				document.getElementById("soluongton").innerHTML = soluongton > 0 ? `${soluongton} sản phẩm có sẵn` : 'Hết hàng';
 				checkSoluong();
 			}
@@ -483,61 +480,85 @@ while ($set = $result->fetch()) {
 		var chonsize = document.getElementById("mysize").value;
 		var addToCartBtn = document.getElementById("addToCartBtn");
 		var soluong = document.getElementById("product-quantity");
-
+	// Kiểm tra giá trị nhập có phải là số và không được là 0
+		if (soluong.value === ''){
+			soluong.value = 1; 
+		}
+			
+		
 		if (chonmau === "" || chonsize === "") {
 			addToCartBtn.disabled = true;
 			soluong.disabled = true;
 			return false;
-		}
-		soluong.disabled = false;
-		if (checkSoluong()) {
+		}else{
 			addToCartBtn.disabled = false;
-
-			// showSuccessAlert();
-		} else {
-			addToCartBtn.disabled = false;
+			soluong.disabled = false;
 		}
+		
 
 		return true;
 	}
 
-	function checkSoluong() {
-		var soluongInput = document.getElementById("product-quantity");
-		var addToCartBtn = document.getElementById("addToCartBtn");
-		var message = document.getElementById('message');
-		var soluongconlai = document.getElementById('remaining-stock-quantity');
-		var soluongton = <?php echo $soluongton; ?>;
+function checkSoluong() {
+	
+	var currentQuantity = parseInt(quantityInput.value);
 
-		// Kiểm tra số lượng tồn kho trước khi kiểm tra số lượng mua
-		if (soluongton === 0) {
-			addToCartBtn.disabled = true;
-			addToCartBtn.innerHTML = 'Hết hàng'
-			message.style.display = "block";
-			message.innerHTML = 'Sản phẩm đã hết hàng';
-			soluongInput.disabled = true;
-			return;
+	
+	// Sự kiện input để ngăn nhập giá trị không hợp lệ
+	document.addEventListener('input', function(event) {
+		var target = event.target;
+
+		// Kiểm tra nếu là input số lượng
+		if (target.classList.contains('quantity-input')) {
+			var inputValue = target.value.trim();
+
+			// Kiểm tra xem giá trị nhập liệu có phải là số và là số dương
+			if (/[^0-9]/.test(inputValue)) {
+				// Nếu có ký tự đặc biệt, loại bỏ chúng
+				target.value = inputValue.replace(/[^0-9]/g, '');
+			}
+			// Kiểm tra xem giá trị có "0" đầu tiên hay không và có chiều dài >= 1
+			if ( inputValue[0] === '0' && inputValue.length >= 1) {
+				// Loại bỏ "0" đầu tiên
+				target.value = inputValue.slice(1);
+			}
+			
+
+			// var currentQuantity  = parseInt(target.value);
+
+			// if(isNaN(currentQuantity) || currentQuantity < 0) {
+			// 	console.log(currentQuantity);
+			// 	currentQuantity = 1;
+			// 	// target.value = 1;
+			// }
+			// !isNaN(currentQuantity) && currentQuantity > 0 && (disabled nếu quatity-input rỗng)
+			if ( currentQuantity <= soLuongTon ) {
+				document.getElementById("addToCartBtn").disabled = false;
+			}else{
+				document.getElementById("addToCartBtn").disabled = true;
+			}
+
+			// Kiểm tra nút "+" cần bị ẩn khi soluongcanmua > soluongton .bootstrap-touchspin-up
+			var increaseButton = document.querySelector('.bootstrap-touchspin-up');
+			// console.log(increaseButton);
+			var slt = parseInt(soLuongTon);
+			if (slt !== undefined && currentQuantity >= soLuongTon) {
+				increaseButton.disabled = true;
+			} else {
+				increaseButton.disabled = false;
+			}
+
+			// var decreaseButton = document.querySelector('.bootstrap-touchspin-down');
+			// console.log(decreaseButton);
+			// if(currentQuantity < 1){
+			// 	decreaseButton.disabled = true;
+			// }else{
+			// 	decreaseButton.disabled =false;
+			// }
 		}
 
 
-
-		soluongInput.addEventListener('input', function() {
-			var soluongmua = parseInt(soluongInput.value);
-			if (isNaN(soluongmua) || soluongmua <= 0) {
-				soluongmua = 1;
-				soluongInput.value = soluongmua;
-			}
-
-			if (soluongmua > soluongton) {
-				addToCartBtn.disabled = true;
-				message.style.display = 'block';
-				// soluongconlai.innerHTML = soluongton;
-			} else {
-				addToCartBtn.disabled = false;
-				message.style.display = 'none';
-				message.innerHTML = '';
-				soluongconlai.innerHTML = '';
-			}
-		});
+	});
 	}
 	//  function showSuccessAlert(){
 	// 	var successAlert = document.getElementById('successAlert');
@@ -546,4 +567,29 @@ while ($set = $result->fetch()) {
 	// 		successAlert.style.display = "none";
 	// 	},3000);
 	//  }
+		
+	var starts = {
+		init: function() {
+			for (let docket of document.getElementsByClassName("pstar")){// lấy được thẻ div bên ngoài
+				for(let star of docket.getElementsByTagName("img")){ // 5 ngôi sao
+					star.addEventListener("click", starts.click)
+				}
+			} 
+			
+		},
+		click: function() {
+			// lấy ra 5 ngôi sao
+			let all = this.parentElement.getElementsByTagName("img"), set = this.dataset.set // 3
+			i =1;
+			for(let star of all){
+				star.src = i <= $set ?"star.png": "star-blank.png";
+				i++;
+		}
+		// đỗ dữ liệu lên form
+		
+	}
+
+	};
+
+
 </script>

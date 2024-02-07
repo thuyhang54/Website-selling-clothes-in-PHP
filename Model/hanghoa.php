@@ -187,11 +187,12 @@
 
    //Phương thức lấy số lượng tồn của hàng hóa
    function getSoLuongTon($idhh ,$idmau, $idsize){
-    echo $idhh, $idmau, $idsize;
+    // echo $idhh, $idmau, $idsize;
     $db = new connect();
     $select = "SELECT soluongton FROM tbl_cthanghoa WHERE idhanghoa = $idhh AND idmau = $idmau AND idsize = $idsize";
     $result = $db->getInstance($select);
-    return $result;
+    // echo $result[0];
+    return $result[0] ? $result[0] : 0;
    }
 //    function getTongSoLuongTon($idhh ){
 //     $db = new connect();
