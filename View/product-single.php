@@ -28,6 +28,7 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 				</ol>
 			</div>
 		</div>
+		<!-- Product-detail-Form -->
 		<form id="form1" action="index.php?action=giohang&act=giohang_action" method="post" onsubmit="return validateForm()">
 			<div class="row mt-20">
 
@@ -90,22 +91,28 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 					</div>
 				</div>
 				<div class="col-md-7">
-
+					<!-- hidden để hiển thị star -->
+					<form id="ninForm_2" method="post" target="_self">
+						<input type="text" name="pid" id="ninPdt">
+						<input type="text" name="stars" id="ninStar">
+					</form>
 					<input type="text" name="mahh" id="mahh" value="<?php echo $id; ?>">
 					<div class="single-product-details">
 						<h2><?php echo $tenhh; ?></h2>
 						<div class="" style="display:inline-flex;">
-						<div class="rating">
-							<div class="pstar" data-prid="<?= $id ?>"></div>
-							<?php
-							$rating ='';
-							for ($i=1; $i <=5 ; $i++) { 
-								$img = $i <= $rating ? "star": "star-blank";
-								echo "<img src='Content/images/star/$img.png' alt='' style='width:20px; cursor:pointer;'data-set='$i' />" ;
-							}
-							?>
+							<div class="rating">
+								<div class="pstar" data-pid="<?= $id ?>"></div>
+								<?php
+								$ratingOject = new rating();
+								$rating = $ratingOject->getRating();
+								for ($i = 1; $i <= 5; $i++) {
+									$img = $i <= $rating ? "star" : "star-blank"; // rating lấy từ database
+									echo "<img src='Content/images/star/$img.png' alt='' style='width:20px; cursor:pointer;'data-set='$i' />";
+								}
+								?>
 
-						</div>
+							</div>
+
 							<?php
 							$bl = new binhluan();
 							$countComment = $bl->CountAllComment($id);
@@ -140,57 +147,49 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 								<li><a href="product-single.html">Soap</a></li>
 							</ul>
 						</div>
-						<div class="color-swatches">
-							<span>Màu sắc:</span>
-							<input type="text" name="mymausac" id="mymausac" value="" />
-							<small class="error-message" id="colorEmpty"></small>
+						<div id="check-form">
+							<div class="color-swatches">
+								<span>Màu sắc:</span>
+								<input type="text" name="mymausac" id="mymausac" value="" />
+								<small class="error-message" id="colorEmpty"></small>
 
-							<?php
-							$mau = $hh->getHangHoaMau($id);
-							while ($set = $mau->fetch()) :
-							?>
-								<button type="button" name="" class="btn" style="margin-left: 12px;" value="<?php echo $set['Idmau']; ?>" onclick="chonMau(<?php echo $set['Idmau']; ?>)">
-									<?php echo $set['mausac']; ?>
-								</button>
-							<?php endwhile; ?>
-
-
-
-						</div>
-						<div class="product-size">
-							<input type="text" name="mysize" id="mysize" value="" />
-							<small class="error-message" id="sizeEmpty"></small>
-
-							<span>Size:</span>
-							<?php
-							$size = $hh->getHangHoaSize($id);
-							while ($set = $size->fetch()) :
-							?>
-								<button type="button" onclick="chonSize(<?php echo $set['Idsize']; ?>)" name="" class="btn" style="margin-left: 12px;" value="<?php echo $set['Idsize']; ?>"> <?php echo $set['size']; ?></button>
-							<?php endwhile; ?>
-							<p id="soluongton" style="margin-left:12px;"></p>
-
-						</div>
-						<div class="product-quantity">
-							<span>Số lượng:</span>
-							<div class="product-quantity-slider">
-								<input type="text"   data-bts-min="1" data-bts-max="100000" id="product-quantity" class="quantity-input"  name="product-quantity" >
+								<?php
+								$mau = $hh->getHangHoaMau($id);
+								while ($set = $mau->fetch()) :
+								?>
+									<button type="button" name="" class="btn" style="margin-left: 12px;" value="<?php echo $set['Idmau']; ?>" onclick="chonMau(<?php echo $set['Idmau']; ?>)">
+										<?php echo $set['mausac']; ?>
+									</button>
+								<?php endwhile; ?>
 							</div>
-						</div>
+							<div class="product-size">
+								<input type="text" name="mysize" id="mysize" value="" />
+								<small class="error-message" id="sizeEmpty"></small>
 
+								<span>Size:</span>
+								<?php
+								$size = $hh->getHangHoaSize($id);
+								while ($set = $size->fetch()) :
+								?>
+									<button type="button" id="btnSize" onclick="chonSize(<?php echo $set['Idsize']; ?>)" name="" class="btn" style="margin-left: 12px;" value="<?php echo $set['Idsize']; ?>"> <?php echo $set['size']; ?></button>
+								<?php endwhile; ?>
+								<p id="soluongton" style="margin-left:12px;"></p>
+
+							</div>
+							<div class="product-quantity">
+								<span>Số lượng:</span>
+								<div class="product-quantity-slider">
+									<input type="text" value="1" data-bts-min="1" data-bts-max="<?php echo $soluongton; ?>" id="product-quantity" class="quantity-input" name="product-quantity">
+								</div>
+							</div>
+							<div id="error-message" style="color: red; display:none;"></div>
+						</div>
 
 					</div>
-
 				</div>
-				<button type="submit" class="btn btn-main mt-20" id="addToCartBtn" disabled>Thêm vào giỏ hàng</button>
+				<button type="submit" class="btn btn-main mt-20" id="addToCartBtn">Thêm vào giỏ hàng</button>
 			</div>
-		</form>
-		<div class="alertPart">
-			<div class="alert alert-success alert-common" role="alert" id="successAlert" style="display: none;">
-				<i class="tf-ion-thumbsup"></i><span>Chúc mừng!</span> Bạn đã thêm thành công vào giỏ hàng
-			</div>
-		</div>
-	</div>
+		</form> <!-- End product-detail-Form -->
 
 	</div>
 	<div class="container">
@@ -201,9 +200,9 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 						<li class="active"><a data-toggle="tab" href="#details" aria-expanded="true">Details</a></li>
 						<?php
 						// if (isset($_SESSION['makh'])) {
-							$bl = new binhluan();
-							$countComment = $bl->CountAllComment($id);
-							echo '<li class="" ><a data-toggle="tab" href="#reviews" aria-expanded="false" style ="color:red">Reviews (' . $countComment . ')</a></li>';
+						$bl = new binhluan();
+						$countComment = $bl->CountAllComment($id);
+						echo '<li class="" ><a data-toggle="tab" href="#reviews" aria-expanded="false" style ="color:red">Reviews (' . $countComment . ')</a></li>';
 						// }
 
 						?>
@@ -225,57 +224,57 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 											<input type="submit" name="submit" class="btn " id="submitButton" value="Bình Luận" />
 										</div>
 									</form>
-									<?php endif; ?>
-									<ul class="media-list comments-list m-bot-50 clearlist">
-										<!-- Comment Item start-->
-										<?php
-										$bl = new binhluan();
-										$noidung = $bl->showAllComment($id, $startPage, $limit);
-										while ($set = $noidung->fetch()) :
-										?>
-											<li class="media">
+								<?php endif; ?>
+								<ul class="media-list comments-list m-bot-50 clearlist">
+									<!-- Comment Item start-->
+									<?php
+									$bl = new binhluan();
+									$noidung = $bl->showAllComment($id, $startPage, $limit);
+									while ($set = $noidung->fetch()) :
+									?>
+										<li class="media">
 
-												<a class="pull-left" href="#!">
-													<img class="media-object comment-avatar" src="Content/images/blog/OIP.jpg" alt="" width="50" height="50" />
-												</a>
+											<a class="pull-left" href="#!">
+												<img class="media-object comment-avatar" src="Content/images/blog/OIP.jpg" alt="" width="50" height="50" />
+											</a>
 
-												<div class="media-body">
-													<div class="comment-info">
-														<h4 class="comment-author">
-															<a href="#!"> <?php echo '<b>' . $set['username'] . '</b>'; ?></a>
+											<div class="media-body">
+												<div class="comment-info">
+													<h4 class="comment-author">
+														<a href="#!"> <?php echo '<b>' . $set['username'] . '</b>'; ?></a>
 
-														</h4>
-														<time datetime="2013-04-06T13:53">July 02, 2015, at 11:34</time>
-														<a class="comment-button" href="#!"><i class="tf-ion-chatbubbles"></i>Reply</a>
-													</div>
-
-													<p>
-														<?php echo  $set['content']; ?>
-													</p>
+													</h4>
+													<time datetime="2013-04-06T13:53">July 02, 2015, at 11:34</time>
+													<a class="comment-button" href="#!"><i class="tf-ion-chatbubbles"></i>Reply</a>
 												</div>
 
-											</li>
-										<?php endwhile; ?>
-										<!-- End Comment Item -->
-										<!-- HIỂN THỊ SỐ TRANG (Pagination) -->
-										<div class="text-center">
-											<ul class="pagination post-pagination">
-												<?php
-												$baseUrl = "index.php?action=sanpham&act=sanphamchitiet&iddm=4&id=28&reviews";
-												if ($current_page > 1 && $totalPages > 1) {
-													echo '<li style="font-size: 18px;"><a href="' . $baseUrl . '&page=' . ($current_page - 1) . '"><i class="tf-ion-ios-arrow-left"></i></a></li>';
-												}
-												for ($i = 1; $i <= $totalPages; $i++) {
-													echo '<li style="font-size: 18px;" ' . ($i == $current_page ? 'class="active"' : '') . '><a href="' . $baseUrl . '&page=' . $i . '">' . $i . '</a></li>';
-												}
-												if ($current_page < $totalPages && $totalPages > 1) {
-													echo '<li style="font-size: 18px;"><a href="' . $baseUrl . '&page=' . ($current_page + 1) . '"><i class="tf-ion-ios-arrow-right"></i></a></li>';
-												}
-												?>
-											</ul>
-										</div>
-									</ul>
-								
+												<p>
+													<?php echo  $set['content']; ?>
+												</p>
+											</div>
+
+										</li>
+									<?php endwhile; ?>
+									<!-- End Comment Item -->
+									<!-- HIỂN THỊ SỐ TRANG (Pagination) -->
+									<div class="text-center">
+										<ul class="pagination post-pagination">
+											<?php
+											$baseUrl = "index.php?action=sanpham&act=sanphamchitiet&iddm=4&id=28&reviews";
+											if ($current_page > 1 && $totalPages > 1) {
+												echo '<li style="font-size: 18px;"><a href="' . $baseUrl . '&page=' . ($current_page - 1) . '"><i class="tf-ion-ios-arrow-left"></i></a></li>';
+											}
+											for ($i = 1; $i <= $totalPages; $i++) {
+												echo '<li style="font-size: 18px;" ' . ($i == $current_page ? 'class="active"' : '') . '><a href="' . $baseUrl . '&page=' . $i . '">' . $i . '</a></li>';
+											}
+											if ($current_page < $totalPages && $totalPages > 1) {
+												echo '<li style="font-size: 18px;"><a href="' . $baseUrl . '&page=' . ($current_page + 1) . '"><i class="tf-ion-ios-arrow-right"></i></a></li>';
+											}
+											?>
+										</ul>
+									</div>
+								</ul>
+
 							</div>
 
 						</div>
@@ -326,7 +325,67 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 						<div class="product-content">
 							<h4><a href="index.php?action=sanpham&act=sanphamchitiet&iddm=<?php echo $set['id_loai']; ?>&id=<?php echo $set['mahh']; ?>"><?php echo $set['tenhh']; ?></a></h4>
 							<?php
-							if ($set['giamgia']) {
+							if ($set['giamgia'] > 0) {
+								echo '	<h5 class="my-4 font-weight-bold" style="color: red;">
+								<font color="red">' . number_format($set['giamgia']) . '<sup><u>đ</u></sup></font>
+								<strike> ' . number_format($set['dongia']) . '<sup><u>đ</u></sup></strike>
+							</h5>';
+							} else {
+								echo '<p class="product-price">' . number_format($set['dongia']) . '<u><sup>đ</sup></u>';
+							}
+							?>
+						</div>
+					</div>
+				</div>
+			<?php
+			};
+			?>
+
+
+		</div>
+	</div>
+</section>
+<section class="products related-products section">
+	<div class="container">
+		<div class="row">
+			<div class="title text-center">
+				<h2>Sản phẩm tương tự</h2>
+			</div>
+		</div>
+		<div class="row">
+			<?php
+			$iddm = isset($_GET['iddm']) ? $_GET['iddm'] : 0;
+			$id = isset($_GET['id']) ? $_GET['id'] : 0;
+			$sptt = $hh->getHangHoaTuongTu($id, $iddm);
+			while ($set = $sptt->fetch()) {
+			?>
+				<div class="col-md-3">
+					<div class="product-item">
+						<div class="product-thumb">
+							<?php if ($set['giamgia']) {
+								echo '<span class="bage">Sale</span>';
+							} ?>
+							<img class="img-responsive" src="Content/images/shop/products/<?php echo $set['hinh'] ?>" alt="product-img" />
+							<div class="preview-meta">
+								<ul>
+									<li>
+										<span data-toggle="modal" data-target="#product-modal-<?php echo $set['mahh']; ?>">
+											<i class="tf-ion-ios-search"></i>
+										</span>
+									</li>
+									<li>
+										<a href="#"><i class="tf-ion-ios-heart"></i></a>
+									</li>
+									<li>
+										<a href="index.php?action=sanpham&act=sanphamchitiet&iddm=<?php echo $set['id_loai']; ?>&id=<?php echo $set['mahh']; ?>"><i class="tf-ion-android-cart"></i></a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="product-content">
+							<h4><a href="index.php?action=sanpham&act=sanphamchitiet&iddm=<?php echo $set['id_loai']; ?>&id=<?php echo $set['mahh']; ?>"><?php echo $set['tenhh']; ?></a></h4>
+							<?php
+							if ($set['giamgia'] > 0) {
 								echo '	<h5 class="my-4 font-weight-bold" style="color: red;">
 								<font color="red">' . number_format($set['giamgia']) . '<sup><u>đ</u></sup></font>
 								<strike> ' . number_format($set['dongia']) . '<sup><u>đ</u></sup></strike>
@@ -406,8 +465,12 @@ while ($set = $result->fetch()) {
 	// document.addEventListener("DOMContentLoaded", function() {
 	// 	checkSoluong();
 	// });
-// Khai báo biến toàn cục để lưu số lượng tồn
-var soLuongTon = 0;
+
+	// Khai báo biến toàn cục để lưu số lượng tồn
+	var soLuongTon = 0;
+	// Biến để lưu trữ số lượng sản phẩm trong giỏ hàng
+	var soLuongDaThemGioHang = 0;
+
 	function chonSize(a) {
 		document.getElementById("mysize").value = a;
 		// Thêm đường viền cho nút được nhấp
@@ -450,7 +513,7 @@ var soLuongTon = 0;
 			validateForm();
 		}
 	}
-
+	// lấy ra số lượng tồn của sp có cùng idhh màu và size
 	function updateStock() {
 		var id_hang_hoa = <?php echo $id; ?>; // Truyền id hàng hóa từ PHP vào JavaScript
 		console.log(id_hang_hoa);
@@ -461,11 +524,27 @@ var soLuongTon = 0;
 
 		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function() {
+			var addToCartBtn = document.getElementById("addToCartBtn");
+			var chonmau = document.getElementById("mymausac");
+
+			var quantity = document.querySelector(" .quantity-input");
 			if (xhr.readyState == 4 && xhr.status == 200) {
 				var soluongton = parseInt(xhr.responseText);
-				soLuongTon = soluongton;  // Cập nhật giá trị toàn cục
-				document.getElementById("soluongton").innerHTML = soluongton > 0 ? `${soluongton} sản phẩm có sẵn` : 'Hết hàng';
-				checkSoluong();
+				soLuongTon = soluongton; // Cập nhật giá trị toàn cục
+				if (soluongton === 0) {
+					addToCartBtn.disabled = true;
+					quantity.disabled = true;
+
+					document.getElementById("soluongton").innerHTML = 'Hết hàng';
+				} else {
+					addToCartBtn.disabled = false;
+					quantity.disabled = false;
+
+					document.getElementById("soluongton").innerHTML = `${soluongton} sản phẩm có sẵn`;
+					checkSoluong();
+				}
+
+
 			}
 		};
 		//http://localhost:8080/PHP2/MyProject-update/index.php?action=sanpham&act=sanphamchitiet&iddm=4&id=28
@@ -474,91 +553,91 @@ var soLuongTon = 0;
 	}
 
 
+	// Validate form
 	function validateForm() {
 
-		var chonmau = document.getElementById("mymausac").value;
-		var chonsize = document.getElementById("mysize").value;
-		var addToCartBtn = document.getElementById("addToCartBtn");
-		var soluong = document.getElementById("product-quantity");
-	// Kiểm tra giá trị nhập có phải là số và không được là 0
-		if (soluong.value === ''){
-			soluong.value = 1; 
+		var chonmau = document.getElementById("mymausac");
+		var chonsize = document.getElementById("mysize");
+		// var addToCartBtn = document.getElementById("addToCartBtn");
+		var checkForm = document.getElementById("check-form");
+		var errorMessage = document.getElementById("error-message");
+		var currentQuantity = document.querySelector(" .quantity-input");
+		// autoload lại 1 nếu product-quantity = rỗng
+		if(currentQuantity.value == ""){
+			currentQuantity.value = 1;
 		}
-			
 		
-		if (chonmau === "" || chonsize === "") {
-			addToCartBtn.disabled = true;
-			soluong.disabled = true;
+		if (chonmau.value === "" || chonsize.value === "") {
+			// if(chonmau.value !== "" && chonsize !=="" && soLuongTon < 0){
+			// addToCartBtn.disabled = true;
+			// document.querySelector(" .quantity-input").disabled = true;
+			// }
+			checkForm.style.backgroundColor = "#ff00001f";
+			// checkForm.style.padding = "12px";
+			document.querySelector(" .quantity-input").disabled = true;
+			errorMessage.textContent = "Vui lòng chọn Phân loại hàng";
+			errorMessage.style.display = "block";
 			return false;
-		}else{
-			addToCartBtn.disabled = false;
-			soluong.disabled = false;
 		}
-		
-
+		checkForm.style.backgroundColor = "initial";
+		document.querySelector(" .quantity-input").disabled = false;
+		errorMessage.textContent = "";
+		errorMessage.style.display = "none";
 		return true;
+
+	}
+	document.getElementById("addToCartBtn").onclick = function() {
+		validateForm();
 	}
 
-function checkSoluong() {
-	
-	var currentQuantity = parseInt(quantityInput.value);
+	function checkSoluong() {
 
-	
-	// Sự kiện input để ngăn nhập giá trị không hợp lệ
-	document.addEventListener('input', function(event) {
-		var target = event.target;
-
-		// Kiểm tra nếu là input số lượng
-		if (target.classList.contains('quantity-input')) {
-			var inputValue = target.value.trim();
-
-			// Kiểm tra xem giá trị nhập liệu có phải là số và là số dương
-			if (/[^0-9]/.test(inputValue)) {
-				// Nếu có ký tự đặc biệt, loại bỏ chúng
-				target.value = inputValue.replace(/[^0-9]/g, '');
-			}
-			// Kiểm tra xem giá trị có "0" đầu tiên hay không và có chiều dài >= 1
-			if ( inputValue[0] === '0' && inputValue.length >= 1) {
-				// Loại bỏ "0" đầu tiên
-				target.value = inputValue.slice(1);
-			}
-			
-
-			// var currentQuantity  = parseInt(target.value);
-
-			// if(isNaN(currentQuantity) || currentQuantity < 0) {
-			// 	console.log(currentQuantity);
-			// 	currentQuantity = 1;
-			// 	// target.value = 1;
-			// }
-			// !isNaN(currentQuantity) && currentQuantity > 0 && (disabled nếu quatity-input rỗng)
-			if ( currentQuantity <= soLuongTon ) {
-				document.getElementById("addToCartBtn").disabled = false;
-			}else{
-				document.getElementById("addToCartBtn").disabled = true;
-			}
-
-			// Kiểm tra nút "+" cần bị ẩn khi soluongcanmua > soluongton .bootstrap-touchspin-up
+		// Sự kiện input để ngăn nhập giá trị không hợp lệ
+		document.addEventListener('input', function(event) {
+			var target = event.target;
+			var currentQuantity = parseInt(target.value);
 			var increaseButton = document.querySelector('.bootstrap-touchspin-up');
-			// console.log(increaseButton);
-			var slt = parseInt(soLuongTon);
-			if (slt !== undefined && currentQuantity >= soLuongTon) {
+
+			// Kiểm tra nếu là input số lượng
+			if (target.classList.contains('quantity-input')) {
+				var inputValue = target.value.trim();
+
+				// Kiểm tra xem giá trị nhập liệu có phải là số và là số dương
+				if (/[^0-9]/.test(inputValue)) {
+					// Nếu có ký tự đặc biệt, loại bỏ chúng
+					target.value = inputValue.replace(/[^0-9]/g, '');
+				}
+				// Kiểm tra xem giá trị có "0" đầu tiên hay không và có chiều dài >= 1
+				if (inputValue[0] === '0' && inputValue.length >= 1) {
+					// Loại bỏ "0" đầu tiên
+					target.value = inputValue.slice(1);
+				}
+
+				if (currentQuantity >= soLuongTon) {
+					target.value = soLuongTon
+					increaseButton.disabled = true;
+
+				} else {
+					increaseButton.disabled = false;
+
+				}
+
+				console.log("Số lượng hiện tại:", currentQuantity);
+				console.log("Số lượng tồn:", slt);
+			}
+		});
+		// Ẩn button (+) nếu input số lượng  lớn hoặc bằng số lượng tồn
+		document.addEventListener('click', function(event) {
+			var increaseButton = document.querySelector('.bootstrap-touchspin-up');
+			var currentQuantity = document.querySelector(" .quantity-input").value;
+			if (parseInt(currentQuantity) >= soLuongTon) {
 				increaseButton.disabled = true;
 			} else {
 				increaseButton.disabled = false;
 			}
-
-			// var decreaseButton = document.querySelector('.bootstrap-touchspin-down');
-			// console.log(decreaseButton);
-			// if(currentQuantity < 1){
-			// 	decreaseButton.disabled = true;
-			// }else{
-			// 	decreaseButton.disabled =false;
-			// }
-		}
+		});
 
 
-	});
 	}
 	//  function showSuccessAlert(){
 	// 	var successAlert = document.getElementById('successAlert');
@@ -567,29 +646,33 @@ function checkSoluong() {
 	// 		successAlert.style.display = "none";
 	// 	},3000);
 	//  }
-		
-	var starts = {
-		init: function() {
-			for (let docket of document.getElementsByClassName("pstar")){// lấy được thẻ div bên ngoài
-				for(let star of docket.getElementsByTagName("img")){ // 5 ngôi sao
-					star.addEventListener("click", starts.click)
-				}
-			} 
-			
-		},
-		click: function() {
-			// lấy ra 5 ngôi sao
-			let all = this.parentElement.getElementsByTagName("img"), set = this.dataset.set // 3
-			i =1;
-			for(let star of all){
-				star.src = i <= $set ?"star.png": "star-blank.png";
-				i++;
-		}
-		// đỗ dữ liệu lên form
-		
-	}
 
-	};
+	// 	var stars = {
+	// 		init: function() {
+	// 			for (let docket of document.getElementsByClassName("pstar")){// lấy được thẻ div bên ngoài
+	// 				for(let star of docket.getElementsByTagName("img")){ // 5 ngôi sao
+	// 					star.addEventListener("click", stars.click)
+	// 				}
+	// 			} 
 
+	// 		},
+	// 		click: function() {
+	// 			// lấy ra 5 ngôi sao
+	// 			console.log('Star clicked!');
+	// 			let all = this.parentElement.getElementsByTagName("img"),
+	// 			 set = this.dataset.set, // dataset.set lấy giá trị của data -(set) 3
+	// 			i =1;
+	// 			for(let star of all){
+	// 				star.src = i <= set ?"star.png": "star-blank.png";
+	// 				i++;
+	// 		}
+	// 		// đỗ dữ liệu lên form
+	// 		document.getElementById("ninPdt").value = this.parentElement.dataset.pid; // 24
+	// 		document.getElementById("ninStar").value = this.dataset.set;
+	// 		document.getElementById("ninForm_2").submit();
+	// 	}
 
+	// 	};
+
+	// window.addEventListener('DOMContentLoaded',stars.init);
 </script>

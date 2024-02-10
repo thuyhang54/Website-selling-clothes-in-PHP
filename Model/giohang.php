@@ -5,7 +5,13 @@ class giohang{
         // còn thiếu hình, tên ,đơn giá, thành tiền
         $sanpham = new hanghoa();
         $sp = $sanpham->getHangHoaId($mahh);
-     
+  // Kiểm tra số lượng tồn
+  $soLuongTonHienTai = $sanpham->getSoLuongTon($mahh, $Idmausac, $Idsize);
+  if ($soLuongTonHienTai < $soluong){
+    echo "<script>alert('Không đủ số lượng tồn hàng');</script>";
+    return;
+  }
+
         $tenhh = $sp['tenhh'];
         $dongia = $sp['dongia'];
         $giamgia = $sp['giamgia'];
@@ -37,7 +43,7 @@ class giohang{
                 $this->updateHHSize($key,$item['size']);
             }
         }
-        if($flag==false){
+        if(!$flag){
               // giỏ hàng chứa một món hàng = 1 Object
         $item = array(
             'mahh' => $mahh, //thuộc tính -> giá trị tên thuôc tính tự đặt
