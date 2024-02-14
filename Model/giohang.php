@@ -5,12 +5,12 @@ class giohang{
         // còn thiếu hình, tên ,đơn giá, thành tiền
         $sanpham = new hanghoa();
         $sp = $sanpham->getHangHoaId($mahh);
-  // Kiểm tra số lượng tồn
-  $soLuongTonHienTai = $sanpham->getSoLuongTon($mahh, $Idmausac, $Idsize);
-  if ($soLuongTonHienTai < $soluong){
-    echo "<script>alert('Không đủ số lượng tồn hàng');</script>";
-    return;
-  }
+//   // Kiểm tra số lượng tồn
+  $soLuongTon = $sanpham->getSoLuongTon($mahh, $Idmausac, $Idsize);
+//   if ($soLuongTon < $soluong){
+//     echo "<script>alert('Không đủ số lượng tồn hàng');</script>";
+//     return;
+//   }
 
         $tenhh = $sp['tenhh'];
         $dongia = $sp['dongia'];
@@ -37,10 +37,20 @@ class giohang{
         foreach($_SESSION['cart'] as $key => $item){
             if($item['mahh']==$mahh && $item['mausac'] == $Idmausac && $item['size']== $Idsize ){
                 $flag =true;
-                $soluong += $item['soluong']; 
-                $this->updateHH($key,$soluong);
-                $this->updateHHMau($key, $item['mausac']);
-                $this->updateHHSize($key,$item['size']);
+
+                $soLuongTonConLai = $soLuongTon - $item['soluong'];
+                if($soLuongTonConLai <= $soluong){
+                    echo "<script>alert('Không đủ số lượng tồn hàng');</script>";
+                    return;
+                }else{
+                    $soluongToAdd = min($soluong, $soLuongTonConLai);
+                    $soluong += $item['soluong']; 
+                    $this->updateHH($key,$soluong);
+                    $this->updateHHMau($key, $item['mausac']);
+                    $this->updateHHSize($key,$item['size']);
+                    echo "<script>alert('Thêm vào giỏ hàng thành công!');</script>";
+                }
+              
             }
         }
         if(!$flag){
@@ -58,6 +68,9 @@ class giohang{
         ); 
         // đem  đối tượng add vào giỏ hàng $_SESSION['cart'] là tên mảng; [] gia trị của mảng
         $_SESSION['cart'][]=$item;
+        echo "<script>alert('Thêm vào giỏ hàng thành công!');</script>";
+        }elseif (!$flag) {
+            echo "<script>alert('Không đủ số lượng tồn hàng');</script>";
         }
      
     }

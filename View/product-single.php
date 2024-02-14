@@ -103,12 +103,13 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 							<div class="rating">
 								<div class="pstar" data-pid="<?= $id ?>"></div>
 								<?php
-								$ratingOject = new rating();
-								$rating = $ratingOject->getRating();
-								for ($i = 1; $i <= 5; $i++) {
-									$img = $i <= $rating ? "star" : "star-blank"; // rating lấy từ database
-									echo "<img src='Content/images/star/$img.png' alt='' style='width:20px; cursor:pointer;'data-set='$i' />";
-								}
+								// $ratingOject = new rating();
+								// $rating = $ratingOject->getRating();
+								// echo $rating;
+								// for ($i = 1; $i <= 5; $i++) {
+								// 	$img = $i <= $rating ? "star" : "star-blank"; // rating lấy từ database
+								// 	echo "<img src='Content/images/star/$img.png' alt='' style='width:20px; cursor:pointer;'data-set='$i' />";
+								// }
 								?>
 
 							</div>
@@ -119,8 +120,8 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 							echo '<p style="border-left: 1px solid #dedede; margin-left:12px; padding:0 12px; height:100%;><a data-toggle="tab" href="#reviews" aria-expanded="false">' . $countComment . '</a> Đánh giá</p>';
 							?>
 							<?php
-							$bl = new hanghoa();
-							$sumSold = $bl->tongLuotMua($id);
+							$sum = new hanghoa();
+							$sumSold = $sum->tongLuotMua($id);
 							echo '<p style="border-left: 1px solid #dedede; margin-left:12px; padding:0 12px; height:100%; "><a data-toggle="tab" href="#reviews" aria-expanded="false">' . $sumSold . '</a> Đã Bán</p>';
 							?>
 						</div>
@@ -462,14 +463,54 @@ while ($set = $result->fetch()) {
 	}
 </style>
 <script type="text/javascript">
+	//  function showSuccessAlert(){
+	// 	var successAlert = document.getElementById('successAlert');
+	// 	successAlert.style.display = "block";
+	// 	setTimeout(function () {
+	// 		successAlert.style.display = "none";
+	// 	},3000);
+	//  }
+
+	// 	var stars = {
+	// 		init: function() {
+	// 			for (let docket of document.getElementsByClassName("pstar")){// lấy được thẻ div bên ngoài
+	// 				for(let star of docket.getElementsByTagName("img")){ // 5 ngôi sao
+	// 					star.addEventListener("click", stars.click)
+	// 				}
+	// 			} 
+
+	// 		},
+	// 		click: function() {
+	// 			// lấy ra 5 ngôi sao
+	// 			console.log('Star clicked!');
+	// 			let all = this.parentElement.getElementsByTagName("img"),
+	// 			 set = this.dataset.set, // dataset.set lấy giá trị của data -(set) 3
+	// 			i =1;
+	// 			for(let star of all){
+	// 				star.src = i <= set ?"star.png": "star-blank.png";
+	// 				i++;
+	// 		}
+	// 		  // Đẩy dữ liệu lên form
+	// 	// 	  let form = this.closest('ninForm_2'); // Tìm form chứa ngôi sao được click
+    //     // form.querySelector("input[name='pid']").value = form.querySelector(".pstar").dataset.pid; 
+    //     // form.querySelector("input[name='stars']").value = form.dataset.set;
+    //     // form.submit();
+	// 		document.getElementById("ninPdt").value = this.parentElement.dataset.pid; // 24
+	// 		document.getElementById("ninStar").value = this.dataset.set;
+	// 		document.getElementById("ninForm_2").submit();
+	// 	}
+
+	// 	};
+
+	// window.addEventListener('DOMContentLoaded',stars.init);
 	// document.addEventListener("DOMContentLoaded", function() {
 	// 	checkSoluong();
 	// });
 
 	// Khai báo biến toàn cục để lưu số lượng tồn
 	var soLuongTon = 0;
-	// Biến để lưu trữ số lượng sản phẩm trong giỏ hàng
-	var soLuongDaThemGioHang = 0;
+	
+	
 
 	function chonSize(a) {
 		document.getElementById("mysize").value = a;
@@ -537,6 +578,7 @@ while ($set = $result->fetch()) {
 
 					document.getElementById("soluongton").innerHTML = 'Hết hàng';
 				} else {
+					quantity.value = 1;
 					addToCartBtn.disabled = false;
 					quantity.disabled = false;
 
@@ -639,40 +681,6 @@ while ($set = $result->fetch()) {
 
 
 	}
-	//  function showSuccessAlert(){
-	// 	var successAlert = document.getElementById('successAlert');
-	// 	successAlert.style.display = "block";
-	// 	setTimeout(function () {
-	// 		successAlert.style.display = "none";
-	// 	},3000);
-	//  }
 
-	// 	var stars = {
-	// 		init: function() {
-	// 			for (let docket of document.getElementsByClassName("pstar")){// lấy được thẻ div bên ngoài
-	// 				for(let star of docket.getElementsByTagName("img")){ // 5 ngôi sao
-	// 					star.addEventListener("click", stars.click)
-	// 				}
-	// 			} 
-
-	// 		},
-	// 		click: function() {
-	// 			// lấy ra 5 ngôi sao
-	// 			console.log('Star clicked!');
-	// 			let all = this.parentElement.getElementsByTagName("img"),
-	// 			 set = this.dataset.set, // dataset.set lấy giá trị của data -(set) 3
-	// 			i =1;
-	// 			for(let star of all){
-	// 				star.src = i <= set ?"star.png": "star-blank.png";
-	// 				i++;
-	// 		}
-	// 		// đỗ dữ liệu lên form
-	// 		document.getElementById("ninPdt").value = this.parentElement.dataset.pid; // 24
-	// 		document.getElementById("ninStar").value = this.dataset.set;
-	// 		document.getElementById("ninForm_2").submit();
-	// 	}
-
-	// 	};
-
-	// window.addEventListener('DOMContentLoaded',stars.init);
+	
 </script>
