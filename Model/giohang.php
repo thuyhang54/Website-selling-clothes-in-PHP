@@ -43,7 +43,7 @@ class giohang{
                     echo "<script>alert('Không đủ số lượng tồn hàng');</script>";
                     return;
                 }else{
-                    $soluongToAdd = min($soluong, $soLuongTonConLai);
+                    // $soluongToAdd = min($soluong, $soLuongTonConLai);
                     $soluong += $item['soluong']; 
                     $this->updateHH($key,$soluong);
                     $this->updateHHMau($key, $item['mausac']);

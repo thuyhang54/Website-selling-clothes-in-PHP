@@ -1,7 +1,7 @@
 <?php
 class connect
 {
-    var $db = null;
+     private $db = null;
     // Hàm tạo
     function __construct()
     {   // Khởi tạo các biến chứa dữ liệu csdl
@@ -36,4 +36,5 @@ class connect
         $statement =$this->db->prepare($query);
         return  $statement;
     }
+    
 }

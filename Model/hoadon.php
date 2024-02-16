@@ -28,7 +28,7 @@ class hoadon
         $query = "UPDATE tbl_hoadon SET tongtien = $tongtien WHERE masohd=$masohd AND makh=$makh";
         $db->exec($query);
     }
-    //phương thức hiển thị thông tin khách hàng dựa vào masokh
+    //phương thức hiển thị thông tin khách hàng dựa vào mshd
     function getThongTinKhachHang($masohd)
     {
         $db = new connect();
@@ -40,53 +40,37 @@ class hoadon
     function getThongTinHHID($masohd)
     {
         $db = new connect();
-        $select = "SELECT a.tenhh,  c.idmau ,  c.idsize, b.hinh, b.dongia, b.giamgia, c.soluongmua, c.thanhtien 
-        FROM tbl_hanghoa a JOIN tbl_cthanghoa b ON a.mahh = b.idhanghoa JOIN
-         tbl_cthoadon c ON a.mahh = c.mahh 
-         WHERE c.masohd = $masohd
-          GROUP BY a.mahh;";
+        $select = "SELECT a.mahh, a.tenhh, c.idmau, c.idsize, b.hinh, b.dongia, b.giamgia, c.soluongmua, c.thanhtien, c.tinhtrang, d.ngaydat, d.tongtien
+        FROM tbl_hanghoa a 
+        JOIN tbl_cthanghoa b ON a.mahh = b.idhanghoa 
+        JOIN tbl_cthoadon c ON a.mahh = c.mahh 
+        JOIN tbl_hoadon d ON c.masohd = d.masohd 
+        WHERE c.masohd = $masohd GROUP BY a.mahh";
         $result = $db->getList($select);
         return $result;
     }
 
-    //Phương thức kiểm tra soluongton trước khi đặt hàng
-    // function checkSoluongTon($mahh, $idmausac, $idsize, $soluongmua)
-    // {
-    //     $db = new connect();
-    //     $checksoluong = "SELECT soluongton FROM tbl_cthanghoa 
-    //                  WHERE idhanghoa = $mahh AND idmau = $idmausac AND idsize = $idsize";
-    //     $soluongconlai = $db->getInstance($checksoluong);
-    //     // Nếu số lượng tồn <= 0, thông báo hết hàng
-    //     if ($soluongconlai[0] <= 0) {
-    //         echo "Rất tiếc, sản phẩm đã hết hàng.";
-    //         return false;
-    //     } elseif ($soluongconlai[0] <= 10) {
-    //         // Thông báo cho người dùng biết rằng sản phẩm đang khan hàng.
-    //         echo "Nhanh lên! Chỉ còn vài sản phẩm trong kho.";
-    //     }
-    //     return true; // Số lượng tồn đủ để đặt hàng
-    // }
+
     // Phương thức Update soluongton
     function updatesoluongton($mahh, $idmausac, $idsize, $soluongmua)
     {
         $db = new connect();
         // update soluongton khi co don mua trong cthanghoa
         $query = "UPDATE tbl_cthanghoa
-    SET soluongton = soluongton - $soluongmua
-    WHERE idhanghoa=$mahh AND idmau =$idmausac AND idsize=$idsize";
+        SET soluongton = soluongton - $soluongmua
+        WHERE idhanghoa=$mahh AND idmau =$idmausac AND idsize=$idsize";
         $db->exec($query);
-        // // //  kiem tra neu so luong it ?hon hoac bang 10
-        //  $checksoluong = "SELECT soluongton FROM tbl_cthanghoa WHERE idhanghoa = $mahh  AND idmau = $idmausac AND idsize = $idsize";
-        //  $soluongconlai = $db->getInstance($checksoluong);
-        //  if ($soluongconlai[0] <= 0) {
-        //     // Thông báo cho người dùng biết rằng sản phẩm đã hết hàng
-        //     echo "Rất tiếc, sản phẩm đã hết hàng.";
-        //     return false;
-        // } elseif ($soluongconlai[0] <= 10) {
-        //     // Thông báo cho người dùng biết rằng sản phẩm đang khan hàng
-        //     echo "Nhanh lên! Chỉ còn vài sản phẩm trong kho.";
-        // }
-
-
+    }
+    // // Phương thức update trạng thái đơn hàng admi
+    // function updateTinhTrang($masohd,$tinhtrang){
+    //     $db = new connect();
+    //     $query = "UPDATE tbl_cthoadon SET tinhtrang = $tinhtrang WHERE masohd = $masohd";
+    //     $db->exec($query);
+    // }
+    function getDonHangByKhachHang($makh) {
+        $db = new connect();
+        $select = "SELECT a.masohd, a.ngaydat, b.soluongmua,b.thanhtien, b.tinhtrang  FROM tbl_hoadon a, tbl_cthoadon b WHERE a.makh = $makh GROUP BY a.masohd";
+        $result = $db->getList($select);
+        return $result;
     }
 }

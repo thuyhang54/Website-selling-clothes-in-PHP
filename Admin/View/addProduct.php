@@ -3,7 +3,7 @@
         Thêm sản phẩm
     </h3>
 
-    <form class="addPro" action="index.php?action=addproduct" method="POST" enctype="multipart/form-data">
+    <form class="addPro" action="index.php?action=insertproduct" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="exampleInputFile">Ảnh sản phẩm</label>
             <div class="custom-file">
@@ -20,7 +20,7 @@
             $result = $menu->getMenu();
             ?>
             <label for="categories">Danh mục:</label>
-            <select class="form-select" aria-label="Default select example">
+            <select class="form-select" name="id_loai" aria-label="Default select example">
                 <option selected>Chọn danh mục</option>
                 <?php
                 while ($menuItem = $result->fetch()) {
@@ -61,7 +61,7 @@
             <textarea class="form-control" name="detail" rows="3" placeholder="Nhập 1 đoạn mô tả ngắn về sản phẩm" style="height: 78px;"></textarea>
         </div>
         <div class="form-group">
-            <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" name="insertproduct" class="btn btn-primary">Thêm sản phẩm</button>
         </div>
     </form>
 </div>

@@ -1,6 +1,10 @@
-<div class="row col-md-4 col-md-offset-4">
+
+<div class="main-content">
+<h3 class="title-page">
+        Thêm sản phẩm
+    </h3>
 <form method="post" action="index.php?action=edithanghoa" enctype="multipart/form-data" >
-  <table class="table" style="border: 0px;">
+  <table class="table table-borderless "  >
 
     <tr>
       <td>Mã hàng</td>
@@ -38,21 +42,23 @@
     <tr>
       <td>Mã loại</td>
       <td>
-        <?php
-        $menu = new menu();
-        $result = $menu->getMenu();
-        ?>
-        <select name="maloai" class="form-control" style="width:150px;">
-          <?php
-          while ($menuItem = $result->fetch()) {
-            $loai = new loaisanpham();
-            $idcon = $loai->getLoaiSanPham($menuItem['idmenu']);
-            while ($subItem = $idcon->fetch()) {
-              echo '<option value="' . $subItem['id_loai'] . '" >' . $subItem['tenloai'] . '</option>';
-            };
-          };
-          ?>
-        </select>
+            <?php
+            $menu = new menu();
+            $result = $menu->getMenu();
+            ?>
+            <select class="form-select" name="id_loai" aria-label="Default select example">
+                <option selected>Chọn danh mục</option>
+                <?php
+                while ($menuItem = $result->fetch()) {
+                    $loai = new loaisanpham();
+                    $idcon = $loai->getLoaiSanPham($menuItem['idmenu']);
+                    while ($subItem = $idcon->fetch()) {
+                        echo '<option value="' . $subItem['id_loai'] . '" >' . $subItem['tenloai'] . '</option>';
+                    };
+                };
+                ?>
+
+            </select>
       </td>
     </tr>
     <tr>
@@ -93,7 +99,7 @@
 
     <tr>
       <td colspan="2">
-      <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" name="submit" class="btn btn-primary">Thêm sản phẩm</button>
       </td>
     </tr>
 

@@ -44,7 +44,27 @@ function checkEmail($email)
             $db->exec($query);
         }
 
+//phương thức hiển thị thông tin khách hàng dựa vào idkh
+function getThongTinUser($idkh)
+{
+    $db = new connect();
+    $select = "SELECT tenkh,diachi, email ,sodienthoai FROM tbl_khachhang WHERE makh=$idkh";
+    $result = $db->getInstance($select);
+    return $result;
+}
 
+//  // Phương thức lấy thông tin hàng hóa theo idKH
+//  function getThongTinCTHH($idkh)
+//  {
+//      $db = new connect();
+//      $select = "SELECT a.tenhh,  c.idmau ,  c.idsize, b.hinh, b.dongia, b.giamgia, c.soluongmua, c.thanhtien 
+//      FROM tbl_hanghoa a JOIN tbl_cthanghoa b ON a.mahh = b.idhanghoa JOIN
+//       tbl_cthoadon c ON a.mahh = c.mahh 
+//       WHERE c.masohd = $masohd
+//        GROUP BY a.mahh;";
+//      $result = $db->getList($select);
+//      return $result;
+//  }
 
 
  } 

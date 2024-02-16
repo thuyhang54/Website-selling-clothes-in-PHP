@@ -1,4 +1,5 @@
 <?php 
+
 if(isset($_SESSION['makh'])){
     $makh =$_SESSION['makh'];
     $hd = new hoadon();
@@ -16,10 +17,12 @@ if(isset($_SESSION['makh'])){
       
     }
     $hd->updateHoaDonTongTien($sohd,$makh,$total);
+    include "./View/confirmation.php";
+    unset($_SESSION['cart']);
 }
-// unset($_SESSION['cart']);
-include_once "./View/checkout.php";
-include_once "./View/orderSuccess.php";
+
+// include_once "./View/checkout.php";
+// include_once "./View/orderSuccess.php";
 
 
 ?>

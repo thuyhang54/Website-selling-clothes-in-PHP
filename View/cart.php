@@ -76,20 +76,22 @@
 																echo '<label for="">'.$color['mausac'].'</label>' ;
 															}
 															 ?>
-														<select name="newmausac[<?php echo $key; ?>]" id="mausac_<?php echo $key; ?>">
+														<!-- <select name="newmausac[<?php echo $key; ?>]" id="mausac_<?php echo $key; ?>">
 															<?php
-															$hh = new hanghoa();
-															$availableColors = $hh->getHangHoaMau($item['mahh']);
-															while ($color = $availableColors->fetch()) {
-																$selected = ($item['mausac'] === $color['Idmau']) ? "selected" : "";
-																echo "<option value=" . $color['Idmau'] . " $selected>" . $color['mausac'] . "</option>";
-															}
+															// $hh = new hanghoa();
+															// $availableColors = $hh->getHangHoaMau($item['mahh']);
+															// while ($color = $availableColors->fetch()) {
+															// 	$selected = ($item['mausac'] === $color['Idmau']) ? "selected" : "";
+															// 	echo "<option value=" . $color['Idmau'] . " $selected>" . $color['mausac'] . "</option>";
+															// }
 															?>
-														</select>
+														</select> -->
 														
 
 														<br>
-														Size: 
+														Size: <?php 
+														// echo $item['size'];
+														 ?> 
 														<?php 
 														 $hh = new hanghoa();
 																$availableSizes = $hh->getHangHoaSize($item['mahh']);
@@ -98,16 +100,16 @@
 																echo '<label for="">'.$size['size'].'</label>' ;
 															}
 															 ?>
-														<select name="newsize[<?php echo $key; ?>]" id="size_<?php echo $key; ?>">
+														<!-- <select name="newsize[<?php echo $key; ?>]" id="size_<?php echo $key; ?>">
 														<?php
-															$hh = new hanghoa();
-															$availableSizes = $hh->getHangHoaSize($item['mahh']);
-															while ($size = $availableSizes->fetch()) {
-																$selected = ($item['size'] === $size['Idsize']) ? "selected" : "";
-																echo "<option value=" . $size['Idsize'] . " $selected>" . $size['size'] . "</option>";
-															}
+															// $hh = new hanghoa();
+															// $availableSizes = $hh->getHangHoaSize($item['mahh']);
+															// while ($size = $availableSizes->fetch()) {
+															// 	$selected = ($item['size'] === $size['Idsize']) ? "selected" : "";
+															// 	echo "<option value=" . $size['Idsize'] . " $selected>" . $size['size'] . "</option>";
+															// }
 															?>
-														</select>
+														</select> -->
 													</td>
 													<td class="">
 														<?php
@@ -158,8 +160,8 @@
 											</tr>
 										</tbody>
 									</table>
-									<a href="index.php?action=thanhtoan" class="btn btn-main pull-right">Thanh toán</a>
-									<!-- <a href="index.php?action=checkout" class="btn btn-main pull-right">Thanh toán</a> -->
+									<a href="index.php?action=checkout" class="btn btn-main pull-right">Mua hàng</a>
+									<!-- <a href="index.php?action=thanhtoan" class="btn btn-main pull-right">Thanh toán</a> -->
 								</form>
 							<?php
 							} else {

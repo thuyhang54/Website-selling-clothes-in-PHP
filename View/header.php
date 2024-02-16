@@ -92,7 +92,7 @@
 							</div>
 							<ul class="text-center cart-buttons" >
 								<li><a href="index.php?action=giohang" class="btn btn-small">View Cart</a></li>
-								<li><a href="checkout.html" class="btn btn-small btn-solid-border">Checkout</a></li>
+								<li><a href="index.php?action=checkout" class="btn btn-small btn-solid-border">Checkout</a></li>
 							</ul>
 						</div>
 						<?php 
@@ -176,7 +176,7 @@
 						$pages = array(
 							'1' => 'index.php?action=sale',
 							'2' => 'index.php?action=shop',
-							'3' => 'index.php?action=blog-left-sidebar',
+							'3' => 'index.php?action=order_dashboard',
 							
 						);
 
