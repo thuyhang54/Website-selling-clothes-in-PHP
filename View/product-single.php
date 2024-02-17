@@ -218,17 +218,36 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 								if (isset($_SESSION['makh'])) :
 								?>
 									<form action="index.php?action=binhluan" method="post">
-										<div class="row">
+										<!-- <div class="row">
 											<input type="hidden" name="txtmahh" value="<?php echo $id; ?>" />
-											<!-- <img src="./Content/imagetourdien/people.png" width="100px" height="100px" />-->
+											<img src="./Content/imagetourdien/people.png" width="100px" height="100px" />
 											<textarea class="input-field" type="text" name="comment" rows="2" cols="70" id="comment" placeholder="Thêm bình luận"></textarea>
 											<input type="submit" name="submit" class="btn " id="submitButton" value="Bình Luận" />
+										</div> -->
+										<!-- <div class="row g-2">
+											<div class="form-floating col-md-6">
+												<label for="">Họ và tên:</label>
+												<input type="text" class="form-control name_comment" id="floatingPassword" placeholder="Họ tên">
+											</div>
+											<div class="form-floating col-md-6">
+												<label for="floatingInput">Địa chỉ email:</label>
+												<input type="email" class="form-control email_comment" id="floatingInput" placeholder="name@example.com">
+											</div>
+										</div> -->
+										<input type="hidden" name="txtmahh" value="<?php echo $id; ?>" />
+										<div class="form-floating">
+											<label for="floatingTextarea2">Bình luận:</label>
+											<textarea type="text" class="form-control content_comment" name="comment" placeholder="Viết đánh giá của bạn ở đây" id="floatingTextarea2" style="height: 100px"></textarea>
+										</div>
+										<div class="" style="margin-top: 10px;">
+											<button type="submit" name="submit" class="btn btn-warning send-comment">Gửi bình luận</button>
 										</div>
 									</form>
 								<?php endif; ?>
 								<ul class="media-list comments-list m-bot-50 clearlist">
 									<!-- Comment Item start-->
 									<?php
+									$iddm = isset($_GET['iddm']) ? $_GET['iddm'] : 0;
 									$bl = new binhluan();
 									$noidung = $bl->showAllComment($id, $startPage, $limit);
 									while ($set = $noidung->fetch()) :
@@ -245,7 +264,10 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 														<a href="#!"> <?php echo '<b>' . $set['username'] . '</b>'; ?></a>
 
 													</h4>
-													<time datetime="2013-04-06T13:53">July 02, 2015, at 11:34</time>
+													<time datetime="<?php echo $set['ngay']; ?>">
+														<?php echo date('d-m-Y, \v\à\o\ \l\ú\c H:i', strtotime($set['ngay'])); ?>
+													</time>
+
 													<a class="comment-button" href="#!"><i class="tf-ion-chatbubbles"></i>Reply</a>
 												</div>
 
@@ -261,7 +283,7 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 									<div class="text-center">
 										<ul class="pagination post-pagination">
 											<?php
-											$baseUrl = "index.php?action=sanpham&act=sanphamchitiet&iddm=4&id=28&reviews";
+											$baseUrl = "index.php?action=sanpham&act=sanphamchitiet&iddm=$iddm&id=$id";
 											if ($current_page > 1 && $totalPages > 1) {
 												echo '<li style="font-size: 18px;"><a href="' . $baseUrl . '&page=' . ($current_page - 1) . '"><i class="tf-ion-ios-arrow-left"></i></a></li>';
 											}
@@ -492,9 +514,9 @@ while ($set = $result->fetch()) {
 	// 		}
 	// 		  // Đẩy dữ liệu lên form
 	// 	// 	  let form = this.closest('ninForm_2'); // Tìm form chứa ngôi sao được click
-    //     // form.querySelector("input[name='pid']").value = form.querySelector(".pstar").dataset.pid; 
-    //     // form.querySelector("input[name='stars']").value = form.dataset.set;
-    //     // form.submit();
+	//     // form.querySelector("input[name='pid']").value = form.querySelector(".pstar").dataset.pid; 
+	//     // form.querySelector("input[name='stars']").value = form.dataset.set;
+	//     // form.submit();
 	// 		document.getElementById("ninPdt").value = this.parentElement.dataset.pid; // 24
 	// 		document.getElementById("ninStar").value = this.dataset.set;
 	// 		document.getElementById("ninForm_2").submit();
@@ -509,8 +531,8 @@ while ($set = $result->fetch()) {
 
 	// Khai báo biến toàn cục để lưu số lượng tồn
 	var soLuongTon = 0;
-	
-	
+
+
 
 	function chonSize(a) {
 		document.getElementById("mysize").value = a;
@@ -605,10 +627,10 @@ while ($set = $result->fetch()) {
 		var errorMessage = document.getElementById("error-message");
 		var currentQuantity = document.querySelector(" .quantity-input");
 		// autoload lại 1 nếu product-quantity = rỗng
-		if(currentQuantity.value == ""){
+		if (currentQuantity.value == "") {
 			currentQuantity.value = 1;
 		}
-		
+
 		if (chonmau.value === "" || chonsize.value === "") {
 			// if(chonmau.value !== "" && chonsize !=="" && soLuongTon < 0){
 			// addToCartBtn.disabled = true;
@@ -681,6 +703,4 @@ while ($set = $result->fetch()) {
 
 
 	}
-
-	
 </script>

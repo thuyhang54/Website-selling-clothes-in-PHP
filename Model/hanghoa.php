@@ -98,7 +98,7 @@ class hanghoa
     function getHangHoaId($id)
     {
         $db = new connect();
-        $select = "SELECT DISTINCT a.mahh, a.tenhh, a.mota, b.dongia, b.giamgia, SUM(b.soluongton) as tongsoluongton FROM tbl_hanghoa a, tbl_cthanghoa b WHERE a.mahh =b.idhanghoa AND a.mahh=$id";
+        $select = "SELECT DISTINCT a.mahh, a.tenhh, a.id_loai, a.mota, b.dongia, b.giamgia, SUM(b.soluongton) as tongsoluongton FROM tbl_hanghoa a, tbl_cthanghoa b WHERE a.mahh =b.idhanghoa AND a.mahh=$id";
         $result = $db->getInstance($select);
         return $result;
     }
