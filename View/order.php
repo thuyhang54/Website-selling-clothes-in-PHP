@@ -59,8 +59,8 @@
 										<tr>
 											<td><?php echo $setsp['masohd']; ?></td>
 											<td><?php echo $setsp['ngaydat']; ?></td>
-											<td><?php echo $setsp['soluongmua']; ?></td>
-											<td><?php echo $setsp['thanhtien']; ?><sup><u>đ</u></sup></td>
+											<td><?php echo $setsp['soluong']; ?></td>
+											<td><?php echo $setsp['tongtien']; ?><sup><u>đ</u></sup></td>
 											<td><span class="<?php echo $ttdhClassCSS[$setsp['tinhtrang']]; ?>"><?php echo $trangThaiDonHang[$setsp['tinhtrang']]; ?></span></td>
 											<td><a href="index.php?action=view_order&masohd=<?php echo $setsp['masohd']; ?>" class="btn btn-default">View</a></td>
 										</tr>

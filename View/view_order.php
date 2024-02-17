@@ -108,7 +108,7 @@
                   <div class="block">
                      <h4 class="widget-title">Chi tiết hóa đơn</h4>
                      <?php
-                     $sp = $hd->getThongTinHHID($masohd);
+                     $sp = $hd->getTTHD($masohd);
                      // echo $sp;
                      while ($setsp = $sp->fetch()) :
                      ?>
@@ -123,16 +123,18 @@
                               $hh = new hanghoa();
                               $availableColors = $hh->getHangHoaMau($setsp['mahh']);
                               while ($color = $availableColors->fetch()) {
-                                 if ($setsp['idmau'] == $color['Idmau'])
+                                 if ($setsp['idcolors'] == $color['Idmau'])
                                     echo '<label for="">' . $color['mausac'] . '</label>';
+                                 // echo $color['Idmau'];
                               }
                               ?>-
                               <?php
                               $hh = new hanghoa();
                               $availableSizes = $hh->getHangHoaSize($setsp['mahh']);
                               while ($size = $availableSizes->fetch()) {
-                                 if ($setsp['idsize'] == $size['Idsize'])
+                                 if ($setsp['idsizes'] == $size['Idsize'])
                                     echo '<label for="">' . $size['size'] . '</label>';
+                                 
                               }; ?>
                                  </p>
                               <p class="price"><?php echo $setsp['soluongmua']; ?> x <?php echo $setsp['giamgia'] ? $setsp['giamgia'] : $setsp['dongia']; ?><sup><u>đ</u></sup></p>
@@ -148,7 +150,7 @@
                               <span>Free</span>
                            </li>
                         </ul>
-                     
+                        
                      <div class="summary-total">
                         <span>Tổng tiền:</span>
                         <span class="price"><?php echo $setsp['tongtien']; ?><sup><u>đ</u></sup></span>
