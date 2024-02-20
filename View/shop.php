@@ -69,7 +69,7 @@
 <section class="products section bg-gray">
 	<div class="container-fluid">
 		<div class="row">
-			<div class="title text-center">
+			<div class="title text-center col-md-12">
 				<h2>Sản phẩm mới nhất</h2>
 			</div>
 			
@@ -123,9 +123,7 @@
 			<?php }; ?>
 			<div class="row text-center ">
 				<div class="col-md-12">
-					<button class="btn">
-						<a href="index.php?action=sanpham">Xem thêm</a>
-					</button>
+						<a href="index.php?action=sanpham" class="btn">Xem thêm</a>
 				</div>
 			</div>
 		</div>
@@ -158,6 +156,7 @@
 			</div>
 		</div>
 		<div class="row">
+		
 			<?php $hh = new hanghoa();
 			$result = $hh->getHangHoaSale();
 			while ($set = $result->fetch()) {
@@ -195,9 +194,7 @@
 			<?php }; ?>
 			<div class="row text-center ">
 				<div class="col-md-12">
-					<button class="btn">
-						<a href="index.php?action=sanpham&act=sanphamkhuyenmai">Xem thêm</a>
-					</button>
+						<a class="btn"  href="index.php?action=sanpham&act=sanphamkhuyenmai">Xem thêm</a>
 				</div>
 			</div>
 		</div>

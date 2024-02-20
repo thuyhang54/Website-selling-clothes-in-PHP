@@ -1,1 +1,1 @@
-<?php include_once './View/sale.php';?>
+<?php include './View/sale.php'; ?>

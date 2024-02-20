@@ -44,6 +44,7 @@ class hanghoa
         $result = $db->getList($select);
         return $result;
     }
+   
     // function getHangHoaAllSale($start, $limit){
     //     $db =new connect();
     //     $select = "SELECT  a.mahh, a.tenhh, a.soluotxem, b.hinh, b.dongia, c.mausac, b.giamgia FROM tbl_hanghoa a, tbl_cthanghoa b, tbl_mausac c
@@ -153,9 +154,15 @@ class hanghoa
     function getHangHoaTheoDanhMuc($id_loai, $start, $limit)
     {
         $db = new connect();
-        $select = "SELECT a.mahh, a.tenhh, a.soluotxem,a.id_loai, b.hinh, b.dongia, c.mausac, b.giamgia FROM tbl_hanghoa a, tbl_cthanghoa b, tbl_mausac c
-        WHERE  a.mahh = b.idhanghoa AND b.idmau=c.Idmau  AND a.id_loai=$id_loai GROUP BY a.mahh ORDER BY a.mahh DESC LIMIT " . $start . "," . $limit;
-        // echo $select;
+        $select = "SELECT a.mahh, a.tenhh, a.soluotxem, a.id_loai, b.hinh, b.dongia, c.mausac, b.giamgia
+        FROM tbl_hanghoa a
+        JOIN tbl_cthanghoa b ON a.mahh = b.idhanghoa
+        JOIN tbl_mausac c ON b.idmau = c.Idmau
+        WHERE a.id_loai = $id_loai
+        GROUP BY a.mahh
+        ORDER BY a.mahh DESC
+        LIMIT $start, $limit";
+        echo $select;
         $result = $db->getList($select);
         return $result;
     }

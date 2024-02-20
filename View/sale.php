@@ -49,7 +49,7 @@ $current_page = isset($_GET['page'])? (int)$_GET['page']:1;
 			// 	echo '<h2>Sản phẩm tìm kiếm</h2>';
 			// }
 			?>
-		<h2>Tất cả </h2>
+		<h2>Tất cả sản phẩm khuyến mãi </h2>
 		</div>
 	</div>
 	<div class="row">
@@ -112,10 +112,8 @@ $current_page = isset($_GET['page'])? (int)$_GET['page']:1;
 	<div class="text-center">
 			<ul class="pagination post-pagination">
 				<?php
-				$baseUrl = "index.php?action=sale";
-				
-					
-				
+				$baseUrl = "index.php?action=sanpham&act=sanphamkhuyenmai";
+			
 				if($current_page >1 && $totalPages >1){
 					echo '<li><a href="'.$baseUrl.'&page='.($current_page-1).'">Prev</a></li>';
 				}
@@ -130,6 +128,7 @@ $current_page = isset($_GET['page'])? (int)$_GET['page']:1;
 		</div>
 	
 </div>
+
 </section>
 
 

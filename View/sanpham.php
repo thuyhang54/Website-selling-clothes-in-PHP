@@ -5,9 +5,11 @@ $count = $hh->getHangHoaAll()->rowCount();
 $limit = 6;
 $page = new page();
 $totalPages = $page->findPage($count, $limit);
-$startPage = $page->findStart($limit); 
+$start = $page->findStart($limit); 
 $current_page = isset($_GET['page'])? (int)$_GET['page']:1;
-
+echo  " chỉ số bắt đầu: $start" ;
+echo "tổng số trang: $totalPages";
+echo " trang hiện tại: $current_page";
 ?>
 <!-- /PHÂN TRANG -->
 <?php
@@ -27,12 +29,12 @@ if (isset($_GET['action'])) {
 }
 ?>
 <?php
-$id_loai="";
-// Kiểm tra xem có tham số id_loai trong URL không
-if (isset($_GET['id']) && ($_GET['id'] > 0)) {
-	$id_loai = $_GET['id'];
-	//echo $id_loai;
-}
+// $id_loai="";
+// // Kiểm tra xem có tham số id_loai trong URL không
+// if (isset($_GET['id']) && ($_GET['id'] > 0)) {
+// 	$id_loai = $_GET['id'];
+// 	//echo $id_loai;
+// }
 ?>
 
 <section class="products section bg-gray">
@@ -62,24 +64,24 @@ if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 
 		if ($ac == 1) {
 			// Nếu không có id_loai thì lấy tất cả sản phẩm
-			$result = ($id_loai) ? $hh->getHangHoaTheoDanhMuc($id_loai,$startPage, $limit) : $hh->getHangHoaAllPage($startPage, $limit);
-			// $result = $hh->getHangHoaAllPage($startPage,$limit);
+			$result =  $hh->getHangHoaAllPage($start, $limit);
+			// $result = $hh->getHangHoaAllPage($start,$limit);
 		}
 		if ($ac==2) {
 
-			$result = ($id_loai) ? $hh->getHangHoaTheoDanhMuc($id_loai,$startPage, $limit) :  $hh->getHangHoaAllSalePage($startPage, $limit);
+			$result =  $hh->getHangHoaAllSalePage($start, $limit);
 		}
 		if($ac==3){
 			if(isset($_POST['txtsearch'])){
 				$tk=$_POST['txtsearch'];
-				$result=$hh->searchProduct($tk,$startPage,$limit);
+				$result=$hh->searchProduct($tk,$start,$limit);
 			}
 		}
 		if($ac ==4){
-			$result = $hh->getHangHoaAllNoiBat($startPage,$limit);
+			$result = $hh->getHangHoaAllNoiBat($start,$limit);
 		}
 		// else{
-		// 	$result = $hh->getHangHoaTheoDanhMuc($id_loai,$startPage, $limit);	
+		// 	$result = $hh->getHangHoaTheoDanhMuc($id_loai,$start, $limit);	
 		// }
 		while ($set = $result->fetch()) {
 		?>
@@ -115,14 +117,12 @@ if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 						<?php
 						if ($ac == 1) {
 							echo '<p class="price">' . number_format($set['dongia']) . ' <u><sup>đ</sup></u></p>';
-						}
-						if ($ac == 2) {
+						} else if ($ac == 2) {
 							echo '  <h5 class="my-4 font-weight-bold" style="color: red;">
 							<font color="red">' . number_format($set['giamgia']) . '<sup><u>đ</u></sup></font>
 							<strike>' . number_format($set['dongia']) . '<sup><u>đ</u></sup></strike>
 							</h5>';
-						}
-						if ($ac == 4 && $set['giamgia']>0){
+						}else if ($ac == 4 && $set['giamgia']>0){
 							echo '<h5 class="my-4 font-weight-bold" style="color: red;">
 							<font color="red">'.number_format($set['giamgia']).'<sup><u>đ</u></sup></font>
 							<strike>'.number_format($set['dongia']).'<sup><u>đ</u></sup></strike>
@@ -145,7 +145,7 @@ if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 				<?php
 				$baseUrl = "index.php?action=";
 				if ($ac == 1) {
-					$baseUrl .= "sanpham&act=sanpham&id={$id_loai}";
+					$baseUrl .= "sanpham&act=sanpham";
 				} elseif ($ac == 2) {
 					$baseUrl .= "sanpham&act=sanphamkhuyenmai";
 				}elseif($ac==4){

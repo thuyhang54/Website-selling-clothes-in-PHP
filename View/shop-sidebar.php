@@ -2,34 +2,36 @@
 <?php
 $hh = new hanghoa();
 $count = $hh->getHangHoaAll()->rowCount();
-$limit = 6;
+$limit = 4;
 $page = new page();
 $totalPages = $page->findPage($count, $limit);
-$startPage = $page->findStart($limit);
+$start = $page->findStart($limit);
 $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-
+echo  " chỉ số bắt đầu: $start" ;
+echo " tổng số trang: $totalPages";
+echo " trang hiện tại: $current_page";
 ?>
 <?php
-$ac = isset($_GET['act']) && $_GET['act'] == 'sanphamkhuyenmai' ? 2 : 1;
-switch ($ac) {
-	case 1:
-		$pageTitle = 'Shop';
-		break;
-	case 2:
-		$pageTitle = 'Sale Products';
-		break;
-}
+// $ac = isset($_GET['act']) && $_GET['act'] == 'sanphamkhuyenmai' ? 2 : 1;
+// switch ($ac) {
+// 	case 1:
+// 		$pageTitle = 'Shop';
+// 		break;
+// 	case 2:
+// 		$pageTitle = 'Sale Products';
+// 		break;
+// }
 ?>
 <?php
-$id_loai = "";
+$iddm = "";
 // Kiểm tra xem có tham số id_loai trong URL không
-if (isset($_GET['id']) && ($_GET['id'] > 0)) {
-	$id_loai = $_GET['id'];
-	//echo $id_loai;
+if (isset($_GET['iddm']) && ($_GET['iddm'] > 0)) {
+	$iddm = $_GET['iddm'];
+	// echo $iddm;
 }
 ?>
 
-<section class="page-header">
+<!-- <section class="page-header">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
@@ -43,7 +45,7 @@ if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 			</div>
 		</div>
 	</div>
-</section>
+</section> -->
 
 
 <section class="products section">
@@ -59,7 +61,7 @@ if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 					while ($row = $dsLoai->fetch()) {
 					?>
 						<div class="form-check">
-							<a href="index.php?action=shop-sidebar&act=shop-sidebar&id=<?php echo  $row['id_loai'] ?>" class="category-link" data-category-id="<?php echo $row['id_loai']; ?>">
+							<a href="index.php?action=shop-sidebar&act=shop-sidebar&iddm=<?php echo  $row['id_loai'] ?>" class="category-link" data-category-id="<?php echo $row['id_loai']; ?>">
 								<?php echo $row['tenloai']; ?>
 							</a>
 						</div>
@@ -132,25 +134,26 @@ if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 		</div>
 
 		<div class="col-md-9">
-			<div class="container-fluid">
+			<div class="container">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="title text-center">
-							<h2>Mới</h2>
+							<!-- <h2>Mới</h2> -->
 						</div>
 					</div>
 				</div>
 
 				<div class="row">
 					<?php $hh = new hanghoa();
-					if ($ac == 1) {
-						$result = $hh->getHangHoaCungLoaiNew($id_loai, $startPage, $limit,$act);
-					}
+					
+						$result = $hh->getHangHoaTheoDanhMuc($iddm, $start, $limit);
+					
 					while ($set = $result->fetch()) {
 					?>
 						<div class="col-md-4">
 							<div class="product-item">
 								<div class="product-thumb">
+								<?php if ($set['giamgia'] > 0) {echo '<span class="bage">Sale</span>';}?>
 									<img class="img-responsive" src="Content/images/shop/products/<?php echo $set['hinh']; ?>" alt="product-img" />
 									<div class="preview-meta">
 										<ul>
@@ -163,15 +166,21 @@ if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 												<a href="#!"><i class="tf-ion-ios-heart"><?php echo $set['soluotxem']; ?></i></a>
 											</li>
 											<li>
-												<a href="#!"><i class="tf-ion-android-cart"></i></a>
+											<a href="index.php?action=sanpham&act=sanphamchitiet&iddm=<?php echo $set['id_loai']; ?>&id=<?php echo $set['mahh']; ?>"><i class="tf-ion-android-cart"></i></a>
 											</li>
 										</ul>
 									</div>
 								</div>
 								<div class="product-content">
-									<h4><a href="product-single.html"><?php echo $set['tenhh'] . " - " . $set['mausac']; ?></a></h4>
+									<h4><a href="product-single.html"><?php echo $set['tenhh']  ?></a></h4>
 									<?php
-									if ($ac == 1) {
+									if ($set['giamgia'] > 0) {
+										echo '  <h5 class="my-4 font-weight-bold" style="color: red;">
+										<font color="red">' . number_format($set['giamgia']) . '<sup><u>đ</u></sup></font>
+										<strike>' . number_format($set['dongia']) . '<sup><u>đ</u></sup></strike>
+										</h5>';
+										
+									}else{
 										echo '<p class="price">' . number_format($set['dongia']) . ' <u><sup>đ</sup></u></p>';
 									}
 
@@ -186,81 +195,25 @@ if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 				</div>
 			</div>
 
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="title text-center">
-							<h2>Khuyến mãi</h2>
-						</div>
-					</div>
-				</div>
-
-				<div class="row">
-					<?php
-					$hh = new hanghoa();
-					if ($ac == 2) {
-						$result = $hh->getHangHoaCungLoaiSale($id_loai, $startPage, $limit,$act);
-					}
-					while ($set = $result->fetch()) {
-					?>
-						<div class="col-md-4">
-							<div class="product-item">
-								<div class="product-thumb">
-									<span class="bage">Sale</span>
-									<img class="img-responsive" src="Content/images/shop/products/<?php echo $set['hinh']; ?>" alt="product-img" />
-									<div class="preview-meta">
-										<ul>
-											<li>
-												<span data-toggle="modal" data-target="#product-modal-<?php echo $set['mahh']; ?>">
-													<i class="tf-ion-ios-search-strong"></i>
-												</span>
-											</li>
-											<li>
-												<a href="#!"><i class="tf-ion-ios-heart"><?php echo $set['soluotxem']; ?></i></a>
-											</li>
-											<li>
-												<a href="#!"><i class="tf-ion-android-cart"></i></a>
-											</li>
-										</ul>
-									</div>
-								</div>
-								<div class="product-content">
-									<h4><a href="product-single.html"><?php echo $set['tenhh'] . " - " . $set['mausac']; ?></a></h4>
-
-									<h5 class="my-4 font-weight-bold" style="color: red;">
-										<font color="red">' . number_format($set['giamgia']) . '<sup><u>đ</u></sup></font>
-										<strike>' . number_format($set['dongia']) . '<sup><u>đ</u></sup></strike>
-									</h5>
-
-
-								</div>
-							</div>
-
-
-						</div>
-					<?php }; ?>
-				</div>
-
-			</div>
 			<!-- HIỂN THỊ SỐ TRANG (Pagination) -->
 			<div class="text-center">
 				<ul class="pagination post-pagination">
 					<?php
-					$baseUrl = "index.php?action=";
-					if ($ac == 1) {
-						$baseUrl .= "shop-sidebar&act=shop-sidebar&id={$id_loai}";
-					} elseif ($ac == 2) {
-						$baseUrl .= "shop-sidebar&act=sanphamkhuyenmai";
-					} else {
-						$baseUrl .= "shop-sidebar";
-					}
-					if ($current_page > 1 && $totalPages > 1) {
+					$baseUrl = "index.php?action=shop-sidebar&act=shop-sidebar";
+					// if ($ac == 1) {
+					// 	$baseUrl .= "&act=shop-sidebar";
+					// } elseif ($ac == 2) {
+					// 	$baseUrl .= "&act=sanphamkhuyenmai";
+					// } else {
+					// 	$baseUrl = $baseUrl;
+					// }
+					if ($current_page > 1  && $totalPages > 1) {
 						echo '<li><a href="' . $baseUrl . '&page=' . ($current_page - 1) . '">Prev</a></li>';
 					}
-					for ($i = 1; $i < $totalPages; $i++) {
+					for ($i = 1; $i <= $totalPages ; $i++) {
 						echo '<li ' . ($i == $current_page ? 'class="active"' : '') . '><a href="' . $baseUrl . '&page=' . $i . '">' . $i . '</a></li>';
 					}
-					if ($current_page < $totalPages && $totalPages > 1) {
+					if ($current_page < $totalPages ) {
 						echo '<li><a href="' . $baseUrl . '&page=' . ($current_page + 1) . '">Next</a></li>';
 					}
 					?>
@@ -299,9 +252,9 @@ while ($set = $result->fetch()) {
 								<?php
 								if ($set['giamgia']) {
 									echo '	<h5 class="my-4 font-weight-bold" style="color: red;">
-								<font color="red">' . number_format($set['giamgia']) . '<sup><u>đ</u></sup></font>
-								<strike> ' . number_format($set['dongia']) . '<sup><u>đ</u></sup></strike>
-							</h5>';
+										<font color="red">' . number_format($set['giamgia']) . '<sup><u>đ</u></sup></font>
+										<strike> ' . number_format($set['dongia']) . '<sup><u>đ</u></sup></strike>
+									</h5>';
 								} else {
 									echo '<p class="product-price">' . number_format($set['dongia']) . '<u><sup>đ</sup></u>';
 								}
@@ -309,8 +262,8 @@ while ($set = $result->fetch()) {
 								<p class="product-short-description">
 									<?php echo $set['mota']; ?>
 								</p>
-								<a href="cart.html" class="btn btn-main">Add To Cart</a>
-								<a href="index.php?action=shop-sidebar&act=sanphamchitiet&iddm=<?php echo $set['id_loai']; ?>&id=<?php echo $set['mahh']; ?>" class="btn btn-transparent">View Product Details</a>
+								<a href="index.php?action=sanpham&act=sanphamchitiet&iddm=<?php echo $set['id_loai']; ?>&id=<?php echo $set['mahh']; ?>" class="btn btn-main">Xem chi tiết</a>
+
 							</div>
 						</div>
 					</div>
