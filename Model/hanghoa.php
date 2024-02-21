@@ -162,7 +162,7 @@ class hanghoa
         GROUP BY a.mahh
         ORDER BY a.mahh DESC
         LIMIT $start, $limit";
-        echo $select;
+        // echo $select;
         $result = $db->getList($select);
         return $result;
     }

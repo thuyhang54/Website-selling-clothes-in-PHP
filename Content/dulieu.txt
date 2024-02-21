@@ -1,0 +1,24 @@
+&
+vnp_Amount=5000000 // tổng tiền
+&
+vnp_BankCode=NCB // tên ngân hàng
+&
+vnp_BankTranNo=VNP14302822 // mã hóa đơn
+&
+vnp_CardType=ATM // kiểu card giao dịch
+&
+vnp_OrderInfo=noi+dung+thanh+toan // thông tin thanh toán
+&
+vnp_PayDate=20240221215855 // ngày đặt hàng
+&
+vnp_ResponseCode=00 // giao dịch thành công 
+&
+vnp_TmnCode=GNZYV9VI // mã bảo mật (id tài khoản giao dịch)
+&
+vnp_TransactionNo=14302822 // mã giao dịch
+&
+vnp_TransactionStatus=00 
+&
+vnp_TxnRef=9915
+&
+vnp_SecureHash=6a03cdb528188554a50a5fa0021be34dc015a44f5a1507a1abaf07e46aacac677e550f611ccfa2eb3e49db7e53d220160be196277365bfc1b6f08db6cad5bd2e

@@ -2,7 +2,7 @@
 if (!isset($_SESSION['makh'])) {
    echo '<script> alert("Bạn chưa đăng nhập"); </script>';
    echo '<meta http-equiv="refresh" content="0;url=index.php?action=dangnhap"/>';
-} else if(isset($_SESSION['makh']) && isset($_SESSION['cart']) && count($_SESSION['cart']) > 0) {
+} else if (isset($_SESSION['makh']) && isset($_SESSION['cart']) && count($_SESSION['cart']) > 0) {
    $idkh = $_SESSION['makh'];
    $kh = new user();
    $thongtinkh = $kh->getThongTinUser($idkh);
@@ -51,12 +51,12 @@ if (!isset($_SESSION['makh'])) {
                      </form>
                   </div>
                   <div class="block">
-                     <h4 class="widget-title">Payment Method</h4>
+                     <h4 class="widget-title">Phương thức thanh toán</h4>
                      <p>Credit Cart Details (Secure payment)</p>
                      <div class="checkout-product-details">
                         <div class="payment">
                            <div class="card-details">
-                              <form class="checkout-form">
+                              <form class="checkout-form" method="POST" action="index.php?action=online-checkout" onsubmit="return confirm('Xác nhân đặt hàng')">
                                  <div class="form-group">
                                     <label for="card-number">Card Number <span class="required">*</span></label>
                                     <input id="card-number" class="form-control" type="tel" placeholder="•••• •••• •••• ••••">
@@ -69,6 +69,9 @@ if (!isset($_SESSION['makh'])) {
                                     <label for="card-cvc">Card Code <span class="required">*</span></label>
                                     <input id="card-cvc" class="form-control" type="tel" maxlength="4" placeholder="CVC">
                                  </div>
+                                 <!-- <button type="submit" name="cod">Thanh toán COD</button> -->
+                                 <button type="submit" name="payUrl">Thanh toán MoMo</button>
+                                 <button type="submit" name="redirect">Thanh toán VPpay</button>
                                  <a href="index.php?action=thanhtoan" class="btn btn-main mt-20">Đặt hàng</a>
                               </form>
                            </div>
@@ -82,7 +85,7 @@ if (!isset($_SESSION['makh'])) {
                      <div class="block">
                         <h4 class="widget-title">Chi tiết hóa đơn</h4>
                         <?php
-                        	foreach ($_SESSION['cart'] as $key => $item) :
+                        foreach ($_SESSION['cart'] as $key => $item) :
                         ?>
                            <div class="media product-card">
                               <a class="pull-left" href="product-single.html">
@@ -125,7 +128,7 @@ if (!isset($_SESSION['makh'])) {
                                  <span>Free</span>
                               </li>
                            </ul>
-                        	<?php endforeach; ?>
+                        <?php endforeach; ?>
                         <div class="summary-total">
                            <span>Tổng tiền:</span>
                            <span>

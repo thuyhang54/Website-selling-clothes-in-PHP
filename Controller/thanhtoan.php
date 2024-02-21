@@ -20,6 +20,7 @@ if(isset($_SESSION['makh'])){
     include "./View/confirmation.php";
     unset($_SESSION['cart']);
 }
+// 
 
 // include_once "./View/checkout.php";
 // include_once "./View/orderSuccess.php";

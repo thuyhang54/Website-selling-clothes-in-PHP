@@ -199,7 +199,7 @@ if (isset($_GET['iddm']) && ($_GET['iddm'] > 0)) {
 			<div class="text-center">
 				<ul class="pagination post-pagination">
 					<?php
-					$baseUrl = "index.php?action=shop-sidebar&act=shop-sidebar";
+					$baseUrl = "index.php?action=shop-sidebar&act=shop-sidebar&iddm={$iddm}";
 					// if ($ac == 1) {
 					// 	$baseUrl .= "&act=shop-sidebar";
 					// } elseif ($ac == 2) {
