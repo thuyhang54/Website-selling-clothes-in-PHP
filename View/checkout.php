@@ -71,7 +71,7 @@ if (!isset($_SESSION['makh'])) {
                                  </div>
                                  <!-- <button type="submit" name="cod">Thanh toán COD</button> -->
                                  <button type="submit" name="payUrl">Thanh toán MoMo</button>
-                                 <button type="submit" name="redirect">Thanh toán VPpay</button>
+                                 <button type="submit" name="redirect">Thanh toán VNpay</button>
                                  <a href="index.php?action=thanhtoan" class="btn btn-main mt-20">Đặt hàng</a>
                               </form>
                            </div>

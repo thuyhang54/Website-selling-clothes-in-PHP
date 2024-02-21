@@ -95,4 +95,21 @@ class hoadon
         $result = $db->getList($select);
         return $result;
     }
+
+    // Phương thức insert dl vào tb vnpay
+    function insertVNPay($data_vnpay)
+    {
+        $db = new connect();
+        $columns = implode(", ", array_keys($data_vnpay));
+        $values = ":" . implode(", :", array_keys($data_vnpay));
+        $query = "INSERT INTO vnpay ({$columns}) VALUES ({$values})";
+        // Chuẩn bị câu lệnh
+        $statement = $db->execp($query);
+        // Liên kết tham số
+        foreach ($data_vnpay as $key => $value) {
+            $statement->bindValue(":{$key}", $value);
+        }
+        // Thực thi câu lệnh
+        $statement->execute();
+    }
 }

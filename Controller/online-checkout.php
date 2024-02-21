@@ -1,5 +1,6 @@
 <?php
-// function lấy và trả về dữ liệu JSON
+
+// function lấy và trả về dữ liệu JSON MOMO
 function execPostRequest($url, $data)
 {
    $ch = curl_init($url);
@@ -22,9 +23,14 @@ function execPostRequest($url, $data)
    curl_close($ch);
    return $result;
 }
-// url tạo giao dịch test thử của momo
 
-
+// Tính tổng tiền
+$total = 0;
+$subtotal = 0;
+        foreach ($_SESSION['cart'] as $key => $item) {
+            $subtotal = $item['soluong']*$item['dongia'];
+            $total += $subtotal;
+        }
 if (isset($_POST['cod'])) {
    echo 'cod';
    // $cod=$_POST["cod"];
@@ -36,7 +42,7 @@ if (isset($_POST['cod'])) {
    $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa'; // momo sẽ cung cấp URL real để sd thanh toán real
 
    $orderInfo = "Thanh toán qua MoMo";
-   $amount = "10000";
+   $amount = $total;
    $orderId = rand(00, 9999); // idOder random
    $redirectUrl = "http://localhost:8080/PHP2/MyProject-update/index.php?action=confirmation"; //  kết quả trả về sau khi thanh toán thành công
    $ipnUrl = "http://localhost:8080/PHP2/MyProject-update/index.php?action=confirmation"; //  trang truy vấn kết quả
@@ -83,7 +89,7 @@ if (isset($_POST['cod'])) {
    header('Location: ' . $jsonResult['payUrl']);
    // }
 
-} elseif (isset($_POST['vnpay'])) {
+} elseif (isset($_POST['redirect'])) {
 
    $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
    $vnp_Returnurl = "http://localhost:8080/PHP2/MyProject-update/index.php?action=confirmation"; // trả về thông tin để lưu csdl
@@ -93,7 +99,7 @@ if (isset($_POST['cod'])) {
    $vnp_TxnRef = rand(00,9999); //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
    $vnp_OrderInfo = 'noi dung thanh toan';
    $vnp_OrderType = 'billpayment';
-   $vnp_Amount = 50000 * 100;
+   $vnp_Amount = $total * 100;
    $vnp_Locale = 'vn';
    $vnp_BankCode ='NCB';
    $vnp_IpAddr = $_SERVER['REMOTE_ADDR']; // 127.0.0.1
@@ -188,3 +194,4 @@ if (isset($_POST['cod'])) {
    }
    // vui lòng tham khảo thêm tại code demo
 }
+
