@@ -93,7 +93,7 @@
                         }
                     }
                 }
-                // echo '<meta http-equiv="refresh" content="0;url=index.php?action=dangnhap"/>';
+                echo '<meta http-equiv="refresh" content="0;url=index.php?action=dangnhap"/>';
                 break;
         }
 ?>

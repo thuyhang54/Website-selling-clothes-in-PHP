@@ -199,7 +199,7 @@ if (isset($_GET['iddm']) && ($_GET['iddm'] > 0)) {
 			<div class="text-center">
 				<ul class="pagination post-pagination">
 					<?php
-					$baseUrl = "index.php?action=shop-sidebar&act=shop-sidebar&iddm={$iddm}";
+					$baseUrl = "index.php?action=shop-sidebar&iddm={$iddm}";
 					// if ($ac == 1) {
 					// 	$baseUrl .= "&act=shop-sidebar";
 					// } elseif ($ac == 2) {
@@ -210,7 +210,7 @@ if (isset($_GET['iddm']) && ($_GET['iddm'] > 0)) {
 					if ($current_page > 1  && $totalPages > 1) {
 						echo '<li><a href="' . $baseUrl . '&page=' . ($current_page - 1) . '">Prev</a></li>';
 					}
-					for ($i = 1; $i <= $totalPages ; $i++) {
+					for ($i = 1; $i < $totalPages ; $i++) {
 						echo '<li ' . ($i == $current_page ? 'class="active"' : '') . '><a href="' . $baseUrl . '&page=' . $i . '">' . $i . '</a></li>';
 					}
 					if ($current_page < $totalPages ) {

@@ -29,8 +29,8 @@ switch ($act) {
                 // echo '<script> showSuccessToast(); </script>';
             } else {
                 // echo '<script>alert("Tài khoản hoặc mật khẩu sai");</script>';
-                echo '<meta http-equiv="refresh" content="0;url=index.php?action=dangnhap"/>';
-                echo '<script>showWarningToast();</script>';
+                echo '<meta http-equiv="refresh" content="0;url=index.php?action=home"/>';
+                // echo '<script>showWarningToast();</script>';
             }
 
         }

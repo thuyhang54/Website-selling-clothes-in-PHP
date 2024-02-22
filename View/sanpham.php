@@ -137,29 +137,30 @@ if (isset($_GET['action'])) {
 		<?php }; ?>
 	</div>
 	<?php
+
 	if ($ac==1 || $ac==2 || $ac==4):
 	 ?>
 		<!-- HIỂN THỊ SỐ TRANG (Pagination) -->
 	<div class="text-center">
 			<ul class="pagination post-pagination">
 				<?php
-				$baseUrl = "index.php?action=";
+				$baseUrl = "index.php?action=sanpham";
 				if ($ac == 1) {
-					$baseUrl .= "sanpham&act=sanpham";
+					$baseUrl .= "&act=sanpham";
 				} elseif ($ac == 2) {
-					$baseUrl .= "sanpham&act=sanphamkhuyenmai";
+					$baseUrl .= "&act=sanphamkhuyenmai";
 				}elseif($ac==4){
-					$baseUrl .= "sanpham&act=sanphamnoibat";
+					$baseUrl .= "&act=sanphamnoibat";
 				}else {
 					$baseUrl .= "sanpham";
 				}
 				if($current_page >1 && $totalPages >1){
 					echo '<li><a href="'.$baseUrl.'&page='.($current_page-1).'">Prev</a></li>';
 				}
-				for ($i=1; $i <= $totalPages; $i++) { 
+				for ($i=1; $i < $totalPages; $i++) { 
 					echo '<li ' .($i == $current_page ? 'class="active"': ''). '><a href="'.$baseUrl.'&page='.$i.'">'.$i.'</a></li>';
 				}
-				if ($current_page < $totalPages && $totalPages > 1) {
+				if ($current_page <= $totalPages && $totalPages > 1) {
 					echo '<li><a href="'.$baseUrl.'&page=' . ($current_page + 1) . '">Next</a></li>';
 				}
 				?>

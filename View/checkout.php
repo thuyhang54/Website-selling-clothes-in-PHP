@@ -57,22 +57,22 @@ if (!isset($_SESSION['makh'])) {
                         <div class="payment">
                            <div class="card-details">
                               <form class="checkout-form" method="POST" action="index.php?action=online-checkout" onsubmit="return confirm('Xác nhân đặt hàng')">
-                                 <div class="form-group">
+                                 <!-- <div class="form-group">
                                     <label for="card-number">Card Number <span class="required">*</span></label>
                                     <input id="card-number" class="form-control" type="tel" placeholder="•••• •••• •••• ••••">
-                                 </div>
-                                 <div class="form-group half-width padding-right">
+                                 </div> -->
+                                 <!-- <div class="form-group half-width padding-right">
                                     <label for="card-expiry">Expiry (MM/YY) <span class="required">*</span></label>
                                     <input id="card-expiry" class="form-control" type="tel" placeholder="MM / YY">
-                                 </div>
-                                 <div class="form-group half-width padding-left">
+                                 </div> -->
+                                 <!-- <div class="form-group half-width padding-left">
                                     <label for="card-cvc">Card Code <span class="required">*</span></label>
                                     <input id="card-cvc" class="form-control" type="tel" maxlength="4" placeholder="CVC">
-                                 </div>
+                                 </div> -->
                                  <!-- <button type="submit" name="cod">Thanh toán COD</button> -->
                                  <button type="submit" name="payUrl">Thanh toán MoMo</button>
                                  <button type="submit" name="redirect">Thanh toán VNpay</button>
-                                 <a href="index.php?action=thanhtoan" class="btn btn-main mt-20">Đặt hàng</a>
+                                 <a href="index.php?action=thanhtoan"  class="btn btn-main mt-20">Đặt hàng</a>
                               </form>
                            </div>
                         </div>

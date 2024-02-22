@@ -9,12 +9,12 @@
         
             <input type="hidden" name="email" value="">
             <p>Enter New password</p>
-            <input type="password" name='password'>
+            <input type="password" name="password">
             <input type="submit" name="submit_password">
 
         </form>
       
-        <div class="copy-text">Shop Giày <i class="fa fa-heart"></i> <a href="http://grafreez.com">shopgiay.com</a></div>
+        <!-- <div class="copy-text">Shop Giày <i class="fa fa-heart"></i> <a href="http://grafreez.com">shopgiay.com</a></div> -->
       </div>
       <div class="col-md-8 banner-sec">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
