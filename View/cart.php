@@ -150,10 +150,19 @@
 												</td>
 												<td>
 													<strong>
+														<?php 
+														$total = 0;
+														$subtotal = 0;
+																foreach ($_SESSION['cart'] as $key => $item) {
+																	$subtotal = $item['soluong']*$item['dongia'];
+																	$total += $subtotal;
+																}
+																echo number_format($total);
+														?>
 														<?php
-														$gh = new giohang();
-														$total = $gh->getSubTotal();
-														echo "$total <sup><u>đ</u></sup>";
+														// $gh = new giohang();
+														// $total = $gh->getSubTotal();
+														// echo "$total <sup><u>đ</u></sup>";
 														?>
 													</strong>
 												</td>
