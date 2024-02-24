@@ -140,7 +140,7 @@
 													</td>
 													<td><?php echo number_format($item['thanhtien']); ?> <sup><u>đ</u></sup></td>
 													<td class="">
-														<a class="badge badg" href="index.php?action=giohang&act=giohang_xoa&id=<?php echo $key; ?>">Xóa</a>
+														<a class="btn btn-danger" href="index.php?action=giohang&act=giohang_xoa&id=<?php echo $key; ?>">Xóa</a>
 														
 													</td>
 												</tr>
