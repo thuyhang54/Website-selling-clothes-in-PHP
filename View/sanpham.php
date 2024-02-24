@@ -6,7 +6,7 @@ $limit = 6;
 $page = new page();
 $totalPages = $page->findPage($count, $limit);
 $start = $page->findStart($limit); 
-$current_page = isset($_GET['page'])? (int)$_GET['page']:1;
+$current_page = isset($_GET['page'])? $_GET['page']:1;
 echo  " chỉ số bắt đầu: $start" ;
 echo "tổng số trang: $totalPages";
 echo " trang hiện tại: $current_page";
@@ -157,10 +157,10 @@ if (isset($_GET['action'])) {
 				if($current_page >1 && $totalPages >1){
 					echo '<li><a href="'.$baseUrl.'&page='.($current_page-1).'">Prev</a></li>';
 				}
-				for ($i=1; $i < $totalPages; $i++) { 
+				for ($i=1; $i <= $totalPages; $i++) { 
 					echo '<li ' .($i == $current_page ? 'class="active"': ''). '><a href="'.$baseUrl.'&page='.$i.'">'.$i.'</a></li>';
 				}
-				if ($current_page <= $totalPages && $totalPages > 1) {
+				if ($current_page < $totalPages && $totalPages > 1) {
 					echo '<li><a href="'.$baseUrl.'&page=' . ($current_page + 1) . '">Next</a></li>';
 				}
 				?>

@@ -2,7 +2,7 @@
 class page{
     // tính số trang
     function findPage($count,$limit){
-        $page = (($count%$limit)==0 ? $count/$limit : ceil($count/$limit));
+        $page = (($count%$limit)==0 ? $count/$limit : floor($count/$limit));
         return $page;
     }
     // tính trang start

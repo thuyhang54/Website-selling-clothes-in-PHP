@@ -139,13 +139,14 @@
 													
 													</td>
 													<td><?php echo number_format($item['thanhtien']); ?> <sup><u>đ</u></sup></td>
-													<td class=""><a class="product-remove" href="index.php?action=giohang&act=giohang_xoa&id=<?php echo $key; ?>"><button type="button" class="badge ">Xóa</button></a>
-														<button type="submit" class="update_soluong badge " data-index="<?php echo $key; ?>" data-slt="<?php echo $slt; ?>">Sửa</button>
+													<td class="">
+														<a class="badge badg" href="index.php?action=giohang&act=giohang_xoa&id=<?php echo $key; ?>">Xóa</a>
+														
 													</td>
 												</tr>
 											<?php endforeach; ?>
 											<tr>
-												<td colspan="6">
+												<td colspan="5">
 													<strong style="float:right">Tổng Tiền:</strong>
 												</td>
 												<td>
@@ -166,6 +167,7 @@
 														?>
 													</strong>
 												</td>
+												<td><button type="submit" class="update_soluong btn btn-warning " data-index="<?php echo $key; ?>" data-slt="<?php echo $slt; ?>">Sửa</button></td>
 											</tr>
 										</tbody>
 									</table>

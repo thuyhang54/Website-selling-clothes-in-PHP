@@ -195,7 +195,7 @@
 													$loai = new loaisanpham();
 													$idcon = $loai->getLoaiSanPham($menuItem['idmenu']);
 													while ($menuItem = $idcon->fetch()) {
-														echo '<li class="dropdown-header"><a href="index.php?action=shop-sidebar&act=shop-sidebar&iddm=' . $menuItem['id_loai'] . '">' . $menuItem['tenloai'] . '</a></li>
+														echo '<li class="dropdown-header"><a href="index.php?action=shop-sidebar&iddm=' . $menuItem['id_loai'] . '">' . $menuItem['tenloai'] . '</a></li>
 															<li role="separator" class="divider"></li>';
 													};
 												}; ?>
