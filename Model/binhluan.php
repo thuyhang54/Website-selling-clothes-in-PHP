@@ -24,12 +24,13 @@ class binhluan{
         return $result ? $result['total_comments'] : 0;
     }
     //Phương thức lấy trung bình đánh giá sao
-    function AvgRatingStar (){
+    function AvgRatingStar ($idhanghoa){
         $db = new connect();
-        $select = "SELECT SUM(star) AS total_star ,COUNT(idkh)  AS total_KH
-        FROM  tbl_comment";
+        $select = "SELECT SUM(b.star) AS total_star ,COUNT(b.idkh)  AS total_KH
+        FROM tbl_khachhang a, tbl_comment b
+        WHERE  a.makh = b.idkh AND b.idhanghoa=$idhanghoa";
         $result = $db->getInstance($select);
-        return $result ? ($result["total_star"]/$result["total_KH"]) : 0 ;
+        return $result && $result["total_KH"] > 0 ? number_format($result["total_star"] / $result["total_KH"], 1) :number_format(0,1);
     }
 }
 ?>

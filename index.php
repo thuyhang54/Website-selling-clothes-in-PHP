@@ -50,7 +50,7 @@ include_once "Model/class.phpmailer.php";
 
     <!-- <link rel="stylesheet" href="Content/plugins/toast/toastMess.css"> -->
     <!-- Thêm đoạn mã này vào thẻ head của trang web của bạn -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 
 
 

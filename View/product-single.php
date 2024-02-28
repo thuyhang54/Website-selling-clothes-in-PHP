@@ -94,25 +94,27 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                     </div>
                 </div>
                 <div class="col-md-7">
-                    <!-- hidden để hiển thị star -->
-                    <form id="ninForm_2" method="post" target="_self">
-                        <input type="text" name="pid" id="ninPdt">
-                        <input type="text" name="stars" id="ninStar">
-                    </form>
                     <input type="text" name="mahh" id="mahh" value="<?php echo $id; ?>">
                     <div class="single-product-details">
                         <h2><?php echo $tenhh; ?></h2>
 
                         <div class="" style="display:inline-flex;">
                             <!-- Hiển thị số sao -->
-                            <div class="rating">
+                            <div class="rating" style="font-size: 3.5vh; line-height: 21px;">
                                 <?php
                                 $stars = new binhluan();
-                                $starRating = $stars->AvgRatingStar();
+                                $starRating = $stars->AvgRatingStar($id);
+                                if ($starRating > 0) {
                                 echo $starRating;
                                 for ($i = 1; $i <= $starRating; $i++) {
-                                    echo '<span class="starrating' . ($i <= $starRating ? ' active' : '') . '">★</span>';
+                                    echo '<span class="starrating ' . ($i <= $starRating ? ' active' : '') . '">★</span>';
                                 }
+                            }else{
+                                echo $starRating;
+                                for ($i = 1; $i <= 5; $i++) {
+                                    echo '<span class="">★</span>';
+                                }
+                            };
                                 ?>
                             </div>
 
@@ -256,10 +258,10 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                                         </span>
                                         <span onclick="gfg(5)" class="star">★
                                         </span>
-                                        <input type="text" class="star_rating_value" name="star_rating_value" />
-                                        <h3 id="output">
+                                        <input type="hidden" class="star_rating_value" name="star_rating_value" />
+                                        <span id="output">
                                             Rating is: 0/5
-                                        </h3>
+                                        </span>
                                     </div>
                                     <div class="form-floating">
                                         <label for="floatingTextarea2">Bình luận:</label>
@@ -280,6 +282,7 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                                     $bl = new binhluan();
                                     $noidung = $bl->showAllComment($id, $startPage, $limit);
                                     while ($set = $noidung->fetch()) :
+                                        
                                     ?>
                                     <li class="media">
 
@@ -293,7 +296,7 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
                                                 <h4 class="comment-author">
                                                     <a href="#!"> <?php echo '<b>' . $set['username'] . '</b>'; ?></a>
                                                     <!-- Hiển thị số sao -->
-                                                    <div class="rating">
+                                                    <div class="rating ">
                                                         <?php
                                                             $starRating = $set['star'];
                                                             echo $starRating;
