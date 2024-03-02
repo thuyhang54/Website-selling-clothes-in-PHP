@@ -1,6 +1,7 @@
 <?php
 session_start(); // Bắt đầu phiên session
 // ob_start();
+// unset($_SESSION['admin']);
 set_include_path(get_include_path().PATH_SEPARATOR.'Model/');
 spl_autoload_extensions('.php');
 spl_autoload_register();
@@ -31,11 +32,16 @@ spl_autoload_register();
 
 <body>
 <!-- Thanh header tao menu -->
-<?php include "View/header.php";?>
+<?php
+ if(isset($_SESSION['admin'])){
+    include "View/headder.php";
+ }
+
+ ?>
        
         <?php
             //load controler
-            $ctrl="home";
+            $ctrl="dangnhap";
             if(isset($_GET['action']))
                 $ctrl=$_GET['action'];
             include './Controller/'.$ctrl.'.php';
@@ -43,7 +49,11 @@ spl_autoload_register();
         ?>
    
     <!-- footer -->
-    <?php // include "View/footer.php" ?>
+    <?php 
+    if(isset($_SESSION['admin'])){
+        include "View/footer.php" ;
+    }
+    ?>
     <!-- end footer -->
    
 </body>

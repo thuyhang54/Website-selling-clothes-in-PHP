@@ -6,7 +6,7 @@
 						<h1 class="text-center text-bold mt-4x" style="color:#fff">Admin | Sign in</h1>
 						<div class="well row pt-2x pb-3x bk-light">
 							<div class="col-md-8 col-md-offset-2">
-								<form method="post" action="" class="login-form">
+								<form method="post" action="index.php?action=dangnhap&act=dangnhap_action" class="login-form">
 
 									<label for="" class="text-uppercase text-sm">Your Username </label>
 									<input type="text" placeholder="Username" name="txtusername" class="form-control mb">

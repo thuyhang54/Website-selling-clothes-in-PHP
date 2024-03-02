@@ -6,12 +6,12 @@
             <div class="row">
 
                 <!-- test -->
-                <nav class="navbar navbar-expand-sm bg-light navbar-light">
+                <nav class="navbar navbar-expand-sm bg-light navbar-light ">
                     <!-- Brand -->
                     <a class="navbar-brand" href="#">Logo</a>
 
                     <!-- Links -->
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav ">
                         <li class="nav-item">
                             <a class="nav-link" href="index.php">Trang Chủ</a>
                         </li>
@@ -54,7 +54,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#">Tồn Kho</a>
                         </li>
+                       
                     </ul>
+                    <div class="">
+                        <a href="index.php?action=dangnhap&act=dangxuat">Đăng xuất</a>
+                    </div>
                 </nav>
                 <!-- end test -->
             </div>

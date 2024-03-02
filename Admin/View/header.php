@@ -1,3 +1,4 @@
+
 <div class="container-fluid main-page">
 
 <div class="app-main">
@@ -5,6 +6,9 @@
         <ul>
             <li>
                 <a href="index.php"><i class="fa-solid fa-house ico-side"></i>Dashboards</a>
+            </li>
+            <li>
+                <a href="index.php?action=dangnhap&act=dangxuat"><i class="fa-solid fa-house ico-side"></i>Đăng xuất</a>
             </li>
             <li>
                 <a href="index.php?action=bills"><i class="fa-solid fa-cart-shopping ico-side"></i>Quản kí đơn hàng</a>
@@ -20,3 +24,5 @@
             </li>
         </ul>
     </nav>
+
+    
