@@ -52,7 +52,7 @@
         <!-- <td><?php echo $set['tongkho']; ?></td> -->
         <!-- <td><?php echo implode(', ',explode(',',$set['mausac'])); ?></td>
         <td><?php echo implode(', ',explode(',',$set['sizes'])); ?></td> -->
-        <td><a href="">Cập nhật</a></td>
+        <td><a href="index.php?action=hanghoa&act=update_hanghoa&id=<?php echo $set['mahh']; ?>">Cập nhật</a></td>
         <td><a href="">Xóa</a></td>
       </tr>
       <?php }; ?>

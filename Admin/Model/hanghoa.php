@@ -17,14 +17,30 @@
 //     }
 function getHangHoaAll(){
     $db = new connect();
-    $select = "SELECT * from tbl_hanghoa";
+    $select = "SELECT * FROM tbl_hanghoa";
     $result = $db->getList($select);
+    return $result;
+} 
+// Phương thức lấy thông tin của một sản phẩm
+function getHangHoaID($id){
+    $db = new connect();
+    $select = "SELECT * FROM tbl_hanghoa WHERE mahh=$id";
+    $result = $db->getInstance($select);
     return $result;
 }
     // Phương thức insert hàng hóa
     function insertHangHoa($tenhh,$maloai,$dacbiet,$slx,$ngaylap,$mota){
         $db=new connect();
         $query = "INSERT INTO tbl_hanghoa (mahh, tenhh, id_loai, dacbiet, soluotxem, ngaylap, mota) VALUES (NULL, '$tenhh', $maloai, $dacbiet, $slx, '$ngaylap', '$mota')";
+       $result =$db->exec($query);
+       return $result;    
+    }
+    // Phương thức update hàng hóa
+    function updateHangHoa($mahh,$tenhh,$maloai,$dacbiet,$slx,$ngaylap,$mota){
+        $db=new connect();
+        $query = "UPDATE tbl_hanghoa 
+        SET tenhh='$tenhh',id_loai=$maloai,dacbiet=$dacbiet,soluotxem = $slx,ngaylap= '$ngaylap', mota ='$mota'
+         WHERE mahh=$mahh" ;
        $result =$db->exec($query);
        return $result;    
     }

@@ -33,9 +33,9 @@ spl_autoload_register();
 <body>
 <!-- Thanh header tao menu -->
 <?php
- if(isset($_SESSION['admin'])){
-    include "View/headder.php";
- }
+//  if(isset($_SESSION['admin'])){
+//     include "View/headder.php";
+//  }
 
  ?>
        

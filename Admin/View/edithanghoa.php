@@ -1,18 +1,57 @@
-
+<?php 
+if(isset($_GET['id'])){
+  $idhh = $_GET['id'];
+  // truy vấn thôn tin của idhh
+  $hh =new hanghoa();
+  $kq = $hh->getHangHoaID($idhh);
+  $tenhh =$kq['tenhh'];
+  $maloai =$kq['id_loai'];
+  $dacbiet =$kq['dacbiet'];
+  $slx =$kq['soluotxem'];
+  $ngaylap =$kq['ngaylap'];
+  $mota =$kq['mota'];
+}
+?>
+<?php 
+if(isset($_GET['action'])){
+  if(isset($_GET['act']) && $_GET['act'] == 'insert_action'){
+    $ac = 1;
+  }else{
+    $ac = 2;
+  }
+}
+?>
 <div class=" row main-content">
-  <h3 class="title-page">
-    Thêm sản phẩm
-  </h3>
-  <form method="post" action="index.php?action=hanghoa&act=insert_action" enctype="multipart/form-data">
+  
+  
+  <?php
+  if($ac == 1){
+    echo '
+    <h3 class="title-page">
+        Thêm sản phẩm
+       </h3>
+    <form method="post" action="index.php?action=hanghoa&act=insert_action" enctype="multipart/form-data">
+    ';
+  }else{
+    echo '
+    <h3 class="title-page">
+    Cập nhật sản phẩm
+      </h3>
+    <form method="post" action="index.php?action=hanghoa&act=update_action" enctype="multipart/form-data">
+    ';
+  }
+ 
+   ?>
+  
     <table class="table table-borderless ">
 
       <tr>
         <td>Mã hàng</td>
-        <td> <input type="text" class="form-control" name="mahh" readonly /></td>
+        <td> <input type="text" class="form-control" name="mahh" readonly  value="<?php echo isset($idhh) ? $idhh : '';?>"/></td>
       </tr>
       <tr>
         <td>Tên hàng</td>
-        <td><input type="text" class="form-control" name="tenhh" maxlength="100px"></td>
+        <td><input type="text" class="form-control" name="tenhh" maxlength="100px" value="<?php echo isset($tenhh)? $tenhh : '' ;?>"></td>
       </tr>
       <!-- <tr>
       <td>Đơn giá</td>
@@ -22,14 +61,14 @@
       <td>Giảm giá</td>
       <td><input type="text" class="form-control" name="giamgia"></td>
     </tr> -->
-      <tr>
+      <!-- <tr>
         <td>Hình</td>
         <td>
         Chọn file để upload:
           <label><img width="50px" height="50px" id="previewImage"></label>
           <input type="file" name="image" id="fileupload">
         </td>
-      </tr>
+      </tr> -->
       <!-- <tr>
       <td>Nhóm</td>
       <td>
@@ -40,42 +79,46 @@
         <td>Mã loại</td>
         <td>
           <?php
+          $selectloai = -1;
+          if(isset($maloai) && $maloai != -1){
+            $selectloai =$maloai;
+          }
           $menu = new menu();
           $result = $menu->getMenu();
           ?>
           <select class="form-select" name="id_loai" aria-label="Default select example">
-            <option selected>Chọn danh mục</option>
             <?php
             while ($menuItem = $result->fetch()) {
               $loai = new loaisanpham();
               $idcon = $loai->getLoaiSanPham($menuItem['idmenu']);
               while ($subItem = $idcon->fetch()) {
-                echo '<option value="' . $subItem['id_loai'] . '" >' . $subItem['tenloai'] . '</option>';
+            ?>
+            <option value="<?php echo $subItem['id_loai'];?>" <?php echo $selectloai == $subItem['id_loai'] ? 'selected': '' ?> ><?php echo $subItem['tenloai']; ?></option>
+            <?php
               };
             };
-            ?>
-
+             ?>
           </select>
         </td>
       </tr>
       <tr>
         <td>Đặc biệt</td>
-        <td><input type="number" class="form-control" name="dacbiet">
+        <td><input type="number" class="form-control" name="dacbiet" value="<?php echo isset($dacbiet)? $dacbiet : '' ;?>">
         </td>
       </tr>
       <tr>
         <td>Số lượt xem</td>
-        <td><input type="text" class="form-control" name="slx">
+        <td><input type="text" class="form-control" name="slx" value="<?php echo isset($slx) ? $slx : '' ;?>">
         </td>
       </tr>
       <tr>
         <td>Ngày lập</td>
-        <td><input type="date" class="form-control" name="ngaylap">
+        <td><input type="date" class="form-control" name="ngaylap" value="<?php echo isset($ngaylap)? $ngaylap : '' ;?>">
         </td>
       </tr>
       <tr>
         <td>Mô tả</td>
-        <td><input type="text" class="form-control" name="mota">
+        <td><input type="text" class="form-control" name="mota" value="<?php echo isset($mota) ? $mota : '' ;?>">
         </td>
       </tr>
       <!-- <tr>
@@ -96,7 +139,14 @@
 
       <tr>
         <td colspan="2">
-          <button type="submit" name="submit" class="btn btn-primary">Thêm sản phẩm</button>
+          <?php
+          if($ac==1){
+            echo ' <button type="submit" name="submit" class="btn btn-primary">Thêm</button>';
+          }else{
+            echo ' <button type="submit" name="submit" class="btn btn-primary">Cập nhật</button>';
+          }
+           ?>
+         
         </td>
       </tr>
 
