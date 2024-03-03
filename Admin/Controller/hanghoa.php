@@ -27,7 +27,8 @@ switch ($act) {
                 echo '<script>alert("Thêm hàng hóa thành công")</script>';
                 echo '<meta http-equiv="refresh" content="0;url=index.php?action=hanghoa"/>';
             } else {
-                echo '<script>alert("Lỗi, Thêm hàng hóa không thành công")</script>';
+                echo '<script>alert("Lỗi, Thêm hàng hóa ")</script>';
+                echo '<meta http-equiv="refresh" content="0;url=index.php?action=hanghoa&act=insert_action"/>';
             }
         }
         break;
@@ -51,9 +52,10 @@ switch ($act) {
                 echo '<script>alert("Cập nhật hàng hóa thành công")</script>';
                 echo '<meta http-equiv="refresh" content="0;url=index.php?action=hanghoa"/>';
             } else {
-                echo '<script>alert("Lỗi, Cập nhật hàng hóa không thành công")</script>';
+                echo '<script>alert("Lỗi, Cập nhật hàng hóa")</script>';
             }
         }
         break;
 
 }
+?>

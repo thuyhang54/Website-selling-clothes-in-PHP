@@ -1,6 +1,7 @@
 <?php
 session_start(); // Bắt đầu phiên session
 // ob_start();
+
 // unset($_SESSION['admin']);
 set_include_path(get_include_path().PATH_SEPARATOR.'Model/');
 spl_autoload_extensions('.php');
@@ -24,8 +25,10 @@ spl_autoload_register();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
     </script>
-    <link rel="stylesheet" href="./layout/assets/css/main.css">
+    <!-- <link rel="stylesheet" href="./layout/assets/css/main.css"> -->
     <script src="https://kit.fontawesome.com/8c204d0fdf.js" crossorigin="anonymous"></script>
+    
+    <link href="./Content/css/style.css" rel="stylesheet">
     <title>Document</title>
 </head>
 
@@ -33,9 +36,10 @@ spl_autoload_register();
 <body>
 <!-- Thanh header tao menu -->
 <?php
-//  if(isset($_SESSION['admin'])){
-//     include "View/headder.php";
-//  }
+ if(isset($_SESSION['admin'])){
+    include "View/headder.php";
+   
+ }
 
  ?>
        
@@ -57,5 +61,12 @@ spl_autoload_register();
     <!-- end footer -->
    
 </body>
+  <!--**********************************
+        Scripts
+    ***********************************-->
+    <!-- Required vendors -->
+    <script src="./Content/vendor/global/global.min.js"></script>
+    <script src="./Content/js/quixnav-init.js"></script>
+    <script src="./Content/js/custom.min.js"></script>
 
 </html>

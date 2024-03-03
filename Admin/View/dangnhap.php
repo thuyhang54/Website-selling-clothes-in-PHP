@@ -1,31 +1,49 @@
-<div class="login-page bk-img" style="background-image: url(img/login-bg.jpg);">
-		<div class="form-content">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-6 col-md-offset-3">
-						<h1 class="text-center text-bold mt-4x" style="color:#fff">Admin | Sign in</h1>
-						<div class="well row pt-2x pb-3x bk-light">
-							<div class="col-md-8 col-md-offset-2">
-								<form method="post" action="index.php?action=dangnhap&act=dangnhap_action" class="login-form">
 
-									<label for="" class="text-uppercase text-sm">Your Username </label>
-									<input type="text" placeholder="Username" name="txtusername" class="form-control mb">
 
-									<label for="" class="text-uppercase text-sm">Password</label>
-									<input type="password" placeholder="Password" name="txtpassword" class="form-control mb">
-		
 
-									<button class="btn btn-primary btn-block" name="login" type="submit">LOGIN</button>
 
-								</form>
-
-			<p style="margin-top: 4%" align="center"><a href="">Back to Home</a>	</p>
-							</div>
-
-						</div>
-							
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+	<div class="authincation h-100">
+        <div class="container-fluid h-100">
+            <div class="row justify-content-center h-100 align-items-center">
+                <div class="col-md-6">
+                    <div class="authincation-content">
+                        <div class="row no-gutters">
+                            <div class="col-xl-12">
+                                <div class="auth-form">
+                                    <h4 class="text-center mb-4">Sign in your Admin account</h4>
+                                    <form  method="post" action="index.php?action=dangnhap&act=dangnhap_action">
+                                        <div class="form-group">
+                                            <label><strong>Username</strong></label>
+                                            <input type="text" class="form-control" placeholder="Username" name="txtusername">
+                                        </div>
+                                        <div class="form-group">
+                                            <label><strong>Password</strong></label>
+                                            <input type="password" class="form-control" placeholder="Password" name="txtpassword">
+                                        </div>
+                                        <div class="form-row d-flex justify-content-between mt-4 mb-2">
+                                            <div class="form-group">
+                                                <div class="form-check ml-2">
+                                                    <input class="form-check-input" type="checkbox" id="basic_checkbox_1">
+                                                    <label class="form-check-label" for="basic_checkbox_1">Remember me</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <a href="page-forgot-password.html">Forgot Password?</a>
+                                            </div>
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="submit" name="login" class="btn btn-primary btn-block">Sign me in</button>
+                                        </div>
+                                    </form>
+                                    <div class="new-account mt-3">
+                                        <p>Don't have an account? <a class="text-primary" href="./page-register.html">Sign up</a></p>
+                                    </div>
+									<p style="margin-top: 4%" align="center"><a href="">Back to Home</a>	</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

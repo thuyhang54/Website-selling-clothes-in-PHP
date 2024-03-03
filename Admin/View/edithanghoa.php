@@ -22,29 +22,16 @@ if(isset($_GET['action'])){
 }
 ?>
 <div class=" row main-content">
-  
-  
+ <?php echo $ac==1 ? ' <h3 class="title-page"> Thêm sản phẩm </h3>': '<h3 class="title-page">Cập nhật sản phẩm</h3>' ; ?>
+ 
   <?php
   if($ac == 1){
-    echo '
-    <h3 class="title-page">
-        Thêm sản phẩm
-       </h3>
-    <form method="post" action="index.php?action=hanghoa&act=insert_action" enctype="multipart/form-data">
-    ';
+    echo '<form method="post" action="index.php?action=hanghoa&act=insert_action" enctype="multipart/form-data"> ';
   }else{
-    echo '
-    <h3 class="title-page">
-    Cập nhật sản phẩm
-      </h3>
-    <form method="post" action="index.php?action=hanghoa&act=update_action" enctype="multipart/form-data">
-    ';
+    echo ' <form method="post" action="index.php?action=hanghoa&act=update_action" enctype="multipart/form-data">';
   }
- 
    ?>
-  
     <table class="table table-borderless ">
-
       <tr>
         <td>Mã hàng</td>
         <td> <input type="text" class="form-control" name="mahh" readonly  value="<?php echo isset($idhh) ? $idhh : '';?>"/></td>

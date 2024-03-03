@@ -22,7 +22,7 @@
                                 Quản Trị Doanh Mục
                             </a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="">Loại Sản Phẩm</a>
+                                <a class="dropdown-item" href="index.php?action=quanlyloaihang">Loại Sản Phẩm</a>
                                 <a class="dropdown-item" href="index.php?action=hanghoa">Sản Phẩm</a>
                                 <a class="dropdown-item" href="#">Loại menu</a>
                             </div>
