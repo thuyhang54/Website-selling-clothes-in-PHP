@@ -44,5 +44,65 @@ function getHangHoaID($id){
        $result =$db->exec($query);
        return $result;    
     }
+    // Phương thức ẩn sp khi xóa
+    function softDeleteHangHoa($id) {
+        $db=new connect();
+        $query = "UPDATE tbl_hanghoa SET is_deleted = 1 WHERE mahh =$id";
+        $result =$db->exec($query);
+        return $result;      
+    }
+
+    function getMau()
+    {
+        $db=new connect();
+        $select="select * from tbl_mausac";
+        $result=$db->getList($select);
+        return $result;
+    }
+    function getSize()
+    {
+        $db=new connect();
+        $select="select * from tbl_size";
+        $result=$db->getList($select);
+        return $result;
+    }
+     // phương thức thống kê
+     function getThongKe($option)
+     {
+          // Khởi tạo biến kết quả
+        //   $result = [];
+
+          // Xây dựng câu lệnh SQL dựa trên lựa chọn của người dùng
+          switch ($option) {
+              case '7ngay':
+                  $query = "SELECT c.tenhh, SUM(b.soluongmua) AS soluong FROM tbl_hoadon a JOIN tbl_cthoadon b ON a.masohd = b.masohd JOIN tbl_hanghoa c ON b.mahh = c.mahh WHERE a.ngaydat >= DATE_SUB(NOW(), INTERVAL 7 DAY) GROUP BY c.tenhh";
+                  break;
+              case '28ngay':
+                  $query = "SELECT c.tenhh, SUM(b.soluongmua) AS soluong FROM tbl_hoadon a JOIN tbl_cthoadon b ON a.masohd = b.masohd JOIN tbl_hanghoa c ON b.mahh = c.mahh WHERE a.ngaydat >= DATE_SUB(NOW(), INTERVAL 28 DAY) GROUP BY c.tenhh";
+                  break;
+              case '90ngay':
+                  $query = "SELECT c.tenhh, SUM(b.soluongmua) AS soluong FROM tbl_hoadon a JOIN tbl_cthoadon b ON a.masohd = b.masohd JOIN tbl_hanghoa c ON b.mahh = c.mahh WHERE a.ngaydat >= DATE_SUB(NOW(), INTERVAL 90 DAY) GROUP BY c.tenhh";
+                  break;
+              case '365ngay':
+                  $query = "SELECT c.tenhh, SUM(b.soluongmua) AS soluong FROM tbl_hoadon a JOIN tbl_cthoadon b ON a.masohd = b.masohd JOIN tbl_hanghoa c ON b.mahh = c.mahh WHERE a.ngaydat >= DATE_SUB(NOW(), INTERVAL 365 DAY) GROUP BY c.tenhh";
+                  break;
+          }
+  
+          // Thực thi câu lệnh SQL và lấy kết quả
+          $db = new connect();
+          $result = $db->getList($query);
+        //   if ($result_set) {
+        //       while ($row = $result_set->fetch(PDO::FETCH_ASSOC)) {
+        //           $result[] = $row;
+        //       }
+        //   }
+  
+          // Trả về tổng số lượng sản phẩm đã bán
+          return $result;
+        //  $db=new connect();
+        //  $select="SELECT b.tenhh,sum(a.soluongmua)as soluong FROM tbl_cthoadon a,tbl_hanghoa b WHERE a.mahh=b.mahh GROUP by b.tenhh";
+        //  $result=$db->getList($select);
+        //  return $result;
+     }
  }
  ?>

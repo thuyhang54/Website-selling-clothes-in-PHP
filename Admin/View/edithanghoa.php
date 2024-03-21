@@ -13,23 +13,35 @@ if(isset($_GET['id'])){
 }
 ?>
 <?php 
+$ac = 1;
 if(isset($_GET['action'])){
-  if(isset($_GET['act']) && $_GET['act'] == 'insert_action'){
+  if(isset($_GET['act']) && $_GET['act'] === 'insert_hanghoa'){
     $ac = 1;
-  }else{
+  }
+  if(isset($_GET['act']) && $_GET['act'] === 'update_hanghoa'){
     $ac = 2;
   }
 }
 ?>
 <div class=" row main-content">
- <?php echo $ac==1 ? ' <h3 class="title-page"> Thêm sản phẩm </h3>': '<h3 class="title-page">Cập nhật sản phẩm</h3>' ; ?>
+  <div class="col-md-6 offset-3">
+ <?php
+ if($ac==1){
+  echo ' <h3 class="title-page"> Thêm sản phẩm </h3>';
+ }
+ if ($ac==2){
+  echo '<h3 class="title-page">Cập nhật sản phẩm</h3>';
+ }
+  // echo $ac==1 ? ' <h3 class="title-page"> Thêm sản phẩm </h3>': '<h3 class="title-page">Cập nhật sản phẩm</h3>' ;
+   ?>
  
   <?php
   if($ac == 1){
     echo '<form method="post" action="index.php?action=hanghoa&act=insert_action" enctype="multipart/form-data"> ';
-  }else{
+  }else if($ac==2) {
     echo ' <form method="post" action="index.php?action=hanghoa&act=update_action" enctype="multipart/form-data">';
   }
+
    ?>
     <table class="table table-borderless ">
       <tr>
@@ -65,6 +77,9 @@ if(isset($_GET['action'])){
       <tr>
         <td>Mã loại</td>
         <td>
+          <div class="form-group">
+           
+         
           <?php
           $selectloai = -1;
           if(isset($maloai) && $maloai != -1){
@@ -73,19 +88,20 @@ if(isset($_GET['action'])){
           $menu = new menu();
           $result = $menu->getMenu();
           ?>
-          <select class="form-select" name="id_loai" aria-label="Default select example">
+          <select class="form-control" name="id_loai" aria-label="Default select example">
             <?php
             while ($menuItem = $result->fetch()) {
               $loai = new loaisanpham();
               $idcon = $loai->getLoaiSanPham($menuItem['idmenu']);
               while ($subItem = $idcon->fetch()) {
             ?>
-            <option value="<?php echo $subItem['id_loai'];?>" <?php echo $selectloai == $subItem['id_loai'] ? 'selected': '' ?> ><?php echo $subItem['tenloai']; ?></option>
+            <option  value="<?php echo $subItem['id_loai'];?>" <?php echo $selectloai == $subItem['id_loai'] ? 'selected': '' ?> ><?php echo $subItem['tenloai']; ?></option>
             <?php
               };
             };
              ?>
           </select>
+          </div>
         </td>
       </tr>
       <tr>
@@ -129,7 +145,8 @@ if(isset($_GET['action'])){
           <?php
           if($ac==1){
             echo ' <button type="submit" name="submit" class="btn btn-primary">Thêm</button>';
-          }else{
+          }
+          if($ac==2){
             echo ' <button type="submit" name="submit" class="btn btn-primary">Cập nhật</button>';
           }
            ?>
@@ -139,6 +156,7 @@ if(isset($_GET['action'])){
 
     </table>
   </form>
+</div>
 </div>
 
 <script>

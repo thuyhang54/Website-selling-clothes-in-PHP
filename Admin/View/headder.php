@@ -1,10 +1,10 @@
 
-<header class="row no-gutters">
+<header class=" no-gutters">
+    <div class="row">
     <!-- nav san pham -->
-    <section class="col-12" style="height:40px;">
-        <div class="col-12">
+    <section class="col-md-12" style="height:40px;">
+        <div class="col-md-12">
             <div class="row">
-
                 <!-- test -->
                 <nav class="navbar navbar-expand-sm bg-light navbar-light ">
                     <!-- Brand -->
@@ -24,7 +24,8 @@
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="index.php?action=quanlyloaihang">Loại Sản Phẩm</a>
                                 <a class="dropdown-item" href="index.php?action=hanghoa">Sản Phẩm</a>
-                                <a class="dropdown-item" href="#">Loại menu</a>
+                                <a class="dropdown-item" href="index.php?action=cthanghoa">Chi tiết sản phẩm</a>
+                                <!-- <a class="dropdown-item" href="#">Loại menu</a> -->
                             </div>
                         </li>
                         <!-- Thống kê -->
@@ -33,22 +34,22 @@
                                 Thống Kê
                             </a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Sản Phẩm bán được nhiều Nhất</a>
+                                <!-- <a class="dropdown-item" href="index.php?action=thongke">Sản Phẩm bán được nhiều Nhất</a>
                                 <a class="dropdown-item" href="#">Sản Phẩm chưa được giao</a>
-                                <a class="dropdown-item" href="#">Sản phẩm bán ít nhất</a>
-                                <a class="dropdown-item" href="">Thống kê</a>
+                                <a class="dropdown-item" href="#">Sản phẩm bán ít nhất</a> -->
+                                <a class="dropdown-item" href="index.php?action=thongke">Thống kê</a>
                             </div>
                         </li>
                         <!-- Báo cáo -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                                Báo Cáo
+                        <li class="nav-item ">
+                            <a class="nav-link " href="index.php?action=donhang" id="navbardrop" >
+                                Đơn hàng
                             </a>
-                            <div class="dropdown-menu">
+                            <!-- <div class="dropdown-menu">
                                 <a class="dropdown-item" href="#">Tháng</a>
                                 <a class="dropdown-item" href="#">Quý</a>
                                 <a class="dropdown-item" href="#">Năm</a>
-                            </div>
+                            </div> -->
                         </li>
                         <!-- Báo cáo Tồn kho -->
                         <li class="nav-item">
@@ -67,6 +68,6 @@
     </section>
 
 
-
+    </div>
 </header>
 <!-- dang ky -->

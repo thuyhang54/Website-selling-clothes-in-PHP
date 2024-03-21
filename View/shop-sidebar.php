@@ -1,7 +1,16 @@
+<?php
+$iddm = "";
+// Kiểm tra xem có tham số id_loai trong URL không
+if (isset($_GET['iddm']) && ($_GET['iddm'] > 0)) {
+	$iddm = $_GET['iddm'];
+	// echo $iddm;
+
+}
+?>
 <!-- PHÂN TRANG -->
 <?php
 $hh = new hanghoa();
-$count = $hh->getHangHoaAll()->rowCount();
+$count = $hh->getAllHHByDM($iddm)->rowCount();
 $limit = 4;
 $page = new page();
 $totalPages = $page->findPage($count, $limit);
@@ -11,6 +20,7 @@ echo  " chỉ số bắt đầu: $start" ;
 echo " tổng số trang: $totalPages";
 echo " trang hiện tại: $current_page";
 ?>
+
 <?php
 // $ac = isset($_GET['act']) && $_GET['act'] == 'sanphamkhuyenmai' ? 2 : 1;
 // switch ($ac) {
@@ -22,14 +32,7 @@ echo " trang hiện tại: $current_page";
 // 		break;
 // }
 ?>
-<?php
-$iddm = "";
-// Kiểm tra xem có tham số id_loai trong URL không
-if (isset($_GET['iddm']) && ($_GET['iddm'] > 0)) {
-	$iddm = $_GET['iddm'];
-	// echo $iddm;
-}
-?>
+
 
 <!-- <section class="page-header">
 	<div class="container">

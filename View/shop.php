@@ -54,11 +54,13 @@
 					$dsLoai = $loai->getAllCategories();
 					while ($row = $dsLoai->fetch()) {
 					?>
+					<?php if ($row['status'] == 0):?>
 						<div class="form-check">
 							<a href="index.php?action=shop-sidebar&act=shop-sidebar&id=<?php echo  $row['id_loai'] ?>" class="category-link" data-category-id="<?php echo $row['id_loai']; ?>">
 								<?php echo $row['tenloai']; ?>
 							</a>
 						</div>
+						<?php endif; ?>
 					<?php }; ?>
 				</div>
 
@@ -91,6 +93,7 @@
 			$result = $hh->getHangHoaNew();
 			while ($set = $result->fetch()) {
 			?>
+			<?php if($set['is_deleted']==0):?>
 				<div class="col-md-3 ">
 					<div class="product-item">
 						<div class="product-thumb">
@@ -120,6 +123,7 @@
 						</div>
 					</div>
 				</div>
+				<?php endif; ?>
 			<?php }; ?>
 			<div class="row text-center ">
 				<div class="col-md-12">
@@ -161,6 +165,7 @@
 			$result = $hh->getHangHoaSale();
 			while ($set = $result->fetch()) {
 			?>
+			<?php if($set['is_deleted']==0):?>
 				<div class="col-md-4">
 					<div class="product-item">
 						<div class="product-thumb">
@@ -191,6 +196,7 @@
 						</div>
 					</div>
 				</div>
+				<?php endif; ?>
 			<?php }; ?>
 			<div class="row text-center ">
 				<div class="col-md-12">

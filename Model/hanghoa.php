@@ -4,7 +4,7 @@ class hanghoa
     function getHangHoaNew()
     {
         $db = new connect();
-        $select = "SELECT a.mahh, a.tenhh, a.soluotxem,a.id_loai, b.hinh, b.dongia, c.mausac FROM tbl_hanghoa a, tbl_cthanghoa b, tbl_mausac c
+        $select = "SELECT a.mahh, a.tenhh, a.soluotxem,a.id_loai, b.hinh, b.dongia, c.mausac, a.is_deleted FROM tbl_hanghoa a, tbl_cthanghoa b, tbl_mausac c
         WHERE  a.mahh = b.idhanghoa AND b.idmau=c.Idmau AND b.giamgia=0 GROUP BY a.mahh ORDER BY a.mahh DESC LIMIT 6";
         $result = $db->getList($select);
         return $result;
@@ -12,7 +12,7 @@ class hanghoa
     function getHangHoaSale()
     {
         $db = new connect();
-        $select = "SELECT  a.mahh, a.tenhh, a.soluotxem,a.id_loai, b.hinh, b.dongia, c.mausac, b.giamgia FROM tbl_hanghoa a, tbl_cthanghoa b, tbl_mausac c
+        $select = "SELECT  a.mahh, a.tenhh, a.soluotxem,a.id_loai, b.hinh, b.dongia, c.mausac, b.giamgia,a.is_deleted FROM tbl_hanghoa a, tbl_cthanghoa b, tbl_mausac c
         WHERE  a.mahh = b.idhanghoa AND b.idmau=c.Idmau AND b.giamgia!=0 GROUP BY a.mahh ORDER BY a.mahh DESC LIMIT 6";
         $result = $db->getList($select);
         return $result;
@@ -20,7 +20,7 @@ class hanghoa
     function getHangHoaMuaNhieu()
     {
         $db = new connect();
-        $select = "SELECT hh.mahh, hh.tenhh, hh.soluotxem, hh.id_loai, cthh.*, SUM(cthd.soluongmua) as soluotmua 
+        $select = "SELECT hh.mahh, hh.tenhh, hh.soluotxem, hh.id_loai, cthh.*, SUM(cthd.soluongmua) as soluotmua, hh.is_deleted
         FROM tbl_cthoadon cthd 
         JOIN tbl_cthanghoa cthh ON cthd.mahh = cthh.idhanghoa 
         JOIN tbl_hanghoa hh ON cthh.idhanghoa = hh.mahh GROUP BY hh.mahh ORDER BY `soluotmua` DESC LIMIT 6";
@@ -34,12 +34,13 @@ class hanghoa
         $result = $db->getInstance($select);
         return $result['daban'];
     }
+   
     
 
     function getHangHoaAll()
     {
         $db = new connect();
-        $select = "SELECT a.mahh, a.tenhh, a.soluotxem, a.mota,a.id_loai, b.hinh, b.dongia,b.giamgia, c.mausac FROM tbl_hanghoa a, tbl_cthanghoa b, tbl_mausac c
+        $select = "SELECT a.mahh, a.tenhh, a.soluotxem, a.mota,a.id_loai, b.hinh, b.dongia,b.giamgia, c.mausac, a.is_deleted FROM tbl_hanghoa a, tbl_cthanghoa b, tbl_mausac c
         WHERE  a.mahh = b.idhanghoa AND b.idmau=c.Idmau  GROUP BY a.mahh ORDER BY a.mahh DESC";
         $result = $db->getList($select);
         return $result;
@@ -55,7 +56,7 @@ class hanghoa
     function getHangHoaAllSalePage($start, $limit)
     {
         $db = new connect();
-        $select = "SELECT  a.mahh, a.tenhh, a.soluotxem,a.id_loai, b.hinh, b.dongia, c.mausac, b.giamgia FROM tbl_hanghoa a, tbl_cthanghoa b, tbl_mausac c
+        $select = "SELECT  a.mahh, a.tenhh, a.soluotxem,a.id_loai, b.hinh, b.dongia, c.mausac, b.giamgia, a.is_deleted  FROM tbl_hanghoa a, tbl_cthanghoa b, tbl_mausac c
         WHERE  a.mahh = b.idhanghoa AND b.idmau=c.Idmau AND giamgia!=0 GROUP BY a.mahh ORDER BY a.mahh DESC LIMIT " . $start . "," . $limit;
         $result = $db->getList($select);
         return $result;
@@ -64,7 +65,7 @@ class hanghoa
     function getHangHoaAllPage($start, $limit)
     {
         $db = new connect();
-        $select = "SELECT  a.mahh, a.tenhh, a.soluotxem,a.id_loai, b.hinh, b.dongia, c.mausac FROM tbl_hanghoa a, tbl_cthanghoa b, tbl_mausac c
+        $select = "SELECT  a.mahh, a.tenhh, a.soluotxem,a.id_loai, b.hinh, b.dongia, c.mausac, a.is_deleted FROM tbl_hanghoa a, tbl_cthanghoa b, tbl_mausac c
         WHERE  a.mahh = b.idhanghoa AND b.idmau=c.Idmau AND b.giamgia=0 GROUP BY a.mahh ORDER BY a.mahh DESC LIMIT " . $start . "," . $limit;
         $result = $db->getList($select);
         return $result;
@@ -150,7 +151,7 @@ class hanghoa
     // }
 
 
-
+ 
     function getHangHoaTheoDanhMuc($id_loai, $start, $limit)
     {
         $db = new connect();
@@ -219,12 +220,26 @@ class hanghoa
         // echo $result[0];
         return $result[0] ? $result[0] : 0;
     }
+
+    //Phương thức lấy all hh của dm hiện tại
+    function getAllHHByDM($id_dm){
+        $db=new connect();
+        $select="SELECT a.mahh, a.tenhh, a.soluotxem, a.mota,a.id_loai, b.hinh, b.dongia,b.giamgia FROM tbl_hanghoa a, tbl_cthanghoa b WHERE a.mahh = b.idhanghoa AND a.id_loai=$id_dm GROUP BY a.mahh ORDER BY a.mahh DESC;";
+        $result = $db->getList($select);
+        return $result;
+        }
     //    function getTongSoLuongTon($idhh ){
     //     $db = new connect();
     //     $select = "SELECT SUM(soluongton) FROM tbl_cthanghoa WHERE idhanghoa = $idhh ";
     //     $result = $db->getInstance($select);
     //     return $result;
     //    }
-
+ // Phương thức ẩn sp khi xóa
+ function softDeleteHangHoa($id) {
+    $db=new connect();
+    $query = "UPDATE tbl_hanghoa SET is_deleted = 1 WHERE mahh =$id";
+    $result =$db->exec($query);
+    return $result;      
+}
    
 }

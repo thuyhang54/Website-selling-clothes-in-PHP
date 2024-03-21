@@ -70,6 +70,9 @@ $current_page = isset($_GET['page'])? (int)$_GET['page']:1;
 		// }
 		while ($set = $result->fetch()) {
 		?>
+		<?php 
+		if($set['is_deleted']==0):
+		?>
 			<div class="col-md-4">
 				<div class="product-item">
 					<div class="product-thumb">
@@ -105,6 +108,7 @@ $current_page = isset($_GET['page'])? (int)$_GET['page']:1;
 					</div>
 				</div>
 			</div>
+			<?php endif; ?>
 		<?php }; ?>
 	</div>
 	

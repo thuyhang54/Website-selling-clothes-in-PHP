@@ -1,6 +1,7 @@
 <!-- PHÂN TRANG -->
 <?php
 $hh = new hanghoa();
+
 $count = $hh->getHangHoaAll()->rowCount();
 $limit = 6;
 $page = new page();
@@ -83,7 +84,11 @@ if (isset($_GET['action'])) {
 		// else{
 		// 	$result = $hh->getHangHoaTheoDanhMuc($id_loai,$start, $limit);	
 		// }
+		
 		while ($set = $result->fetch()) {
+		?>
+		<?php 
+		if($set['is_deleted']==0):
 		?>
 			<div class="col-md-4">
 				<div class="product-item">
@@ -134,11 +139,12 @@ if (isset($_GET['action'])) {
 					</div>
 				</div>
 			</div>
+			<?php endif; ?>
 		<?php }; ?>
 	</div>
 	<?php
 
-	if ($ac==1 || $ac==2 || $ac==4):
+	if ($ac==1 || $ac==2 || $ac==4 || $ac==3):
 	 ?>
 		<!-- HIỂN THỊ SỐ TRANG (Pagination) -->
 	<div class="text-center">
@@ -151,9 +157,8 @@ if (isset($_GET['action'])) {
 					$baseUrl .= "&act=sanphamkhuyenmai";
 				}elseif($ac==4){
 					$baseUrl .= "&act=sanphamnoibat";
-				}else {
-					$baseUrl .= "sanpham";
 				}
+				
 				if($current_page >1 && $totalPages >1){
 					echo '<li><a href="'.$baseUrl.'&page='.($current_page-1).'">Prev</a></li>';
 				}

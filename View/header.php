@@ -50,6 +50,7 @@
 						<?php if (isset($_SESSION['cart'])) { ?>
 							<div class="dropdown-menu cart-dropdown" style="min-width: 350px;">
 								<?php foreach ($_SESSION['cart'] as $key => $item) : ?>
+
 									<!-- Cart Item -->
 									<div class="media">
 										<a class="pull-left" href="#!">
@@ -75,6 +76,7 @@
 										</div>
 										<a href="index.php?action=giohang&act=giohang_xoa&id=<?php echo $key; ?>" class="remove"><i class="tf-ion-close"></i></a>
 									</div><!-- / Cart Item -->
+
 								<?php endforeach; ?>
 
 
@@ -195,8 +197,10 @@
 													$loai = new loaisanpham();
 													$idcon = $loai->getLoaiSanPham($menuItem['idmenu']);
 													while ($menuItem = $idcon->fetch()) {
-														echo '<li class="dropdown-header"><a href="index.php?action=shop-sidebar&iddm=' . $menuItem['id_loai'] . '">' . $menuItem['tenloai'] . '</a></li>
+														if ($menuItem['status'] == 0) {
+															echo '<li class="dropdown-header"><a href="index.php?action=shop-sidebar&iddm=' . $menuItem['id_loai'] . '">' . $menuItem['tenloai'] . '</a></li>
 															<li role="separator" class="divider"></li>';
+														};
 													};
 												}; ?>
 											</ul>

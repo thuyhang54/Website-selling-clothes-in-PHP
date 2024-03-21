@@ -59,6 +59,9 @@ include_once "hero-slider.php";
 			$result = $hh->getHangHoaNew();
 			while ($set = $result->fetch()) {
 			?>
+			<?php 
+		if($set['is_deleted']==0):
+		?>
 				<div class="col-md-4">
 					<div class="product-item">
 						<div class="product-thumb">
@@ -71,7 +74,8 @@ include_once "hero-slider.php";
 										</span>
 									</li>
 									<li>
-										<a href="#!"><i class="tf-ion-ios-heart"><?php echo $set['soluotxem']; ?></i></a>
+									<!-- <i class="tf-ion-ios-heart"> -->
+										<!-- <a href="#!"><?php echo $set['soluotxem']; ?></i></a> -->
 									</li>
 									<li>
 
@@ -82,12 +86,18 @@ include_once "hero-slider.php";
 							</div>
 						</div>
 						<div class="product-content">
-							<h4><a href="index.php?action=sanpham&act=sanphamchitiet&id=<?php echo $set['mahh']; ?> ">
-									<?php echo $set['tenhh'] . " - " . $set['mausac']; ?></a></h4>
+						<?php echo $set['mahh']; ?>
+							<h4 id="increaseViews" data-idhh="<?php echo $set['mahh']; ?>">
+							<a href="javascript:void(0);" onclick="handlerClick('<?php echo $set['mahh']; ?>')">
+									<?php echo $set['tenhh'] . " - " . $set['mausac']; ?>
+								</a>
+								</h4>
+									<span id="views" ><?php echo $set['soluotxem']; ?></span>
 							<p class="price"><?php echo number_format($set['dongia']); ?> <u><sup>đ</sup></u></p>
 						</div>
 					</div>
 				</div>
+				<?php endif; ?>
 			<?php }; ?>
 			<div class="row text-center ">
 				<div class="col-md-12">
@@ -110,6 +120,9 @@ include_once "hero-slider.php";
 			$result = $hh->getHangHoaSale();
 			while ($set = $result->fetch()) {
 			?>
+			<?php 
+		if($set['is_deleted']==0):
+		?>
 				<div class="col-md-4">
 					<div class="product-item">
 						<div class="product-thumb">
@@ -140,6 +153,7 @@ include_once "hero-slider.php";
 						</div>
 					</div>
 				</div>
+				<?php endif; ?>
 			<?php }; ?>
 			<div class="row text-center ">
 				<div class="col-md-12">
@@ -163,6 +177,9 @@ include_once "hero-slider.php";
 			$result = $hh->getHangHoaMuaNhieu();
 			while ($set = $result->fetch()) {
 			?>
+			<?php 
+		if($set['is_deleted']==0):
+		?>
 				<div class="col-md-4">
 					<div class="product-item">
 						<div class="product-thumb">
@@ -176,7 +193,7 @@ include_once "hero-slider.php";
 										</span>
 									</li>
 									<li>
-										<a href="#!"><i class="tf-ion-ios-heart"><?php echo $set['soluotxem']; ?></i></a>
+										<a href="#!"><i class="heart tf-ion-ios-heart"><?php echo $set['soluotxem']; ?></i></a>
 									</li>
 									<li>
 										<a href="index.php?action=sanpham&act=sanphamchitiet&iddm=<?php echo $set['id_loai']; ?>&id=<?php echo $set['mahh']; ?>"><i class="tf-ion-android-cart"></i></a>
@@ -198,6 +215,7 @@ include_once "hero-slider.php";
 						</div>
 					</div>
 				</div>
+				<?php endif; ?>
 			<?php }; ?>
 			<div class="row text-center ">
 				<div class="col-md-12">
@@ -218,6 +236,9 @@ $result = $hh->getHangHoaAll();
 while ($set = $result->fetch()) {
 
 ?>
+<?php 
+		if($set['is_deleted']==0):
+		?>
 	<div class="modal product-modal fade" id="product-modal-<?php echo $set['mahh']; ?>">
 		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			<i class="tf-ion-close"></i>
@@ -256,6 +277,7 @@ while ($set = $result->fetch()) {
 			</div>
 		</div>
 	</div>
+	<?php endif; ?>
 <?php }; ?>
 <!-- /.modal -->
 
@@ -285,3 +307,44 @@ Start Call To Action
 	</div>   	<!-- End container -->
 </section>   <!-- End section -->
 <?php endif ?>
+<script>
+// $(".heart.tf-ion-ios-heart").click(function() {
+//   $(this).toggleClass("fa-heart fa-heart-o");
+// });
+
+function handlerClick(id) {
+   
+      // Gửi yêu cầu đến máy chủ để cập nhật cột is_deleted
+      window.location.href = "index.php?action=sanpham&act=sanphamchitiet&id=" + id;
+   
+  }
+
+document.getElementById("increaseViews").addEventListener("click", () => {
+    var idhh = document.getElementById('increaseViews').dataset.idhh;
+    console.log(idhh);
+    var currentViews = parseInt(document.getElementById("views").innerText);
+    var newViews = currentViews + 1;
+    console.log(newViews);
+
+    // Gửi dữ liệu số lượt xem mới về server bằng Fetch API
+    fetch('update_views.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id: idhh, views: newViews })
+    })
+    .then(response => {
+        if (response.ok) {
+            // Cập nhật số lượt xem trên giao diện nếu request thành công
+            document.getElementById('views').innerText = newViews;
+        } else {
+            console.error('Có lỗi xảy ra khi gửi dữ liệu số lượt xem mới về server');
+        }
+    })
+    .catch(error => {
+        console.error('Có lỗi xảy ra khi gửi dữ liệu số lượt xem mới về server:', error);
+    });
+});
+
+</script>

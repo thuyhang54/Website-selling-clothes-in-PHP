@@ -56,6 +56,18 @@ switch ($act) {
             }
         }
         break;
+    case 'soft_delete_hanghoa':
+        $id = $_GET['id'];
+        // Kiểm tra xem người dùng đã xác nhận xóa chưa
+        if(isset($id)) {
+            // Thực hiện cập nhật trong cơ sở dữ liệu
+            $hh = new hanghoa();
+            $hh->softDeleteHangHoa($id);
+            // Sau khi cập nhật, chuyển hướng người dùng trở lại trang danh sách
+            header("Location: index.php?action=hanghoa");
+            exit();
+        }
+        break;
 
 }
 ?>

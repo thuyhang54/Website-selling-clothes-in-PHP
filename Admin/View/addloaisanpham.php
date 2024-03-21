@@ -9,28 +9,50 @@ if (isset($_GET['iddm'])) {
 }
 ?>
 <?php
+$ac = 1;
 if (isset($_GET['action'])) {
-  if (isset($_GET['act']) && $_GET['act'] == 'insert_action') {
+  if (isset($_GET['act']) && $_GET['act'] == 'insert_loaihang') {
     $ac = 1;
-  } else {
+  }
+  if(isset($_GET['act']) && $_GET['act'] == 'insert_loaihangfile'){
+    $ac =3;
+  }
+   if(isset($_GET['act']) && $_GET['act'] == 'update_loaihang') {
     $ac = 2;
   }
+   
 }
+
 ?>
 <div class="card mt-3">
   <div class="card-header info">
     <?php
-    echo $ac == 1 ? ' THÊM LOẠI HÀNG HÓA' : 'CẬP NHẬT LOẠI HÀNG HÓA';
+    echo $ac == 1 || $ac == 3? ' THÊM LOẠI HÀNG HÓA' : 'CẬP NHẬT LOẠI HÀNG HÓA';
     ?>
   </div>
   <div class="card-body">
     <?php
-    if ($ac == 1) {
-      echo '<form action="index.php?action=quanlyloaihang&act=insert_action" method="POST">';
-    } else {
-      echo '<form action="index.php?action=quanlyloaihang&act=update_action" method="POST">';
+    if ($ac == 1) { 
+      echo '<form action="index.php?action=quanlyloaihang&act=insert_action" method="POST" ';
+    } 
+    if($ac==2) {
+      echo '<form action="index.php?action=quanlyloaihang&act=update_action" method="POST" >';
     }
     ?>
+    <?php
+  if ($ac == 3) {
+    echo '
+      <form action="index.php?action=quanlyloaihang&act=loai_action" class="form-group" method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+      <label for="">Chọn file để thêm loại danh mục: </label>
+      <input type="file" name="file" class="form-control"/>
+    </div>
+    <input type="submit" value="Thêm" class="btn btn-primary">
+      </form>
+    ';
+  }
+  ?> 
+ <?php if($ac==1 || $ac==2): ?>
     <div class="form-group">
       <label for="">Mã danh mục</label>
       <input type="text" readonly name="id" class="form-control" value="<?php echo isset($iddm) ? $iddm : ''; ?>">
@@ -44,7 +66,7 @@ if (isset($_GET['action'])) {
       <label for="">Menu số:</label>
       <input type="text" name="menu" class="form-control" value="<?php echo isset($idmenu) ? $idmenu : ''; ?>">
     </div>
-    <div class="mb-3">
+    <!-- <div class="mb-3">
       <label for="">Status:</label>
       <?php
       $selectedStatus = -1;
@@ -62,18 +84,20 @@ if (isset($_GET['action'])) {
         }
         ?>
       </select>
-    </div>
+    </div> -->
 
     <div class="form-group">
       <?php
-      if ($ac == 1) {
+      if ($ac == 1 || $ac ==3) {
         echo '<button type="submit" name="submit" class="btn btn-primary">Thêm</button>';
       } else {
-        echo '<button type="submit" name="submit" class="btn btn-primary">Lưu</button>';
+        echo '<button type="submit" name="submit" class="btn btn-primary">Cập nhật</button>';
       }
       ?>
+      <?php endif ?>
+      <!-- <button type="submit" name="submit" class="btn btn-primary">Lưu</button> -->
       <a href="index.php?action=quanlyloaihang" class="btn btn-danger">Danh sách</a>
     </div>
-    </form>
+   
   </div>
 </div>

@@ -7,5 +7,6 @@ class rating{
       // Kiểm tra xem $result có phải là mảng và không trống trước khi truy cập phần tử đầu tiên
       return is_array($result) && !empty($result) ? $result[0]: 0;
     }
+    
 }
 ?>
